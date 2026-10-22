@@ -256,7 +256,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | Nombre                    | Rol / responsabilidad                    | Contacto                                                         |
 | ------------------------- | ---------------------------------------- | ---------------------------------------------------------------- |
 | Samuel Escandón          | Por definir                              | [s.escandoc@uniandes.edu.co](mailto:s.escandoc@uniandes.edu.co)   |
-| Douglas Plazas Guzmán    | Por definir                              | [d.plazasg@uniandes.edu.co](mailto:d.plazasg@uniandes.edu.co)     |
+| Douglas Plazas Guzmán    | analisi historico                              | [d.plazasg@uniandes.edu.co](mailto:d.plazasg@uniandes.edu.co)     |
 | Mateo Olmos Becerra       | Por definir                              | [m.olmosb@uniandes.edu.co](mailto:m.olmosb@uniandes.edu.co)       |
 | Santiago Martínez López | Por definir                              | [s.martinezl@uniandes.edu.co](mailto:s.martinezl@uniandes.edu.co) |
 | Santiago Muñoz Martínez | Por definir                              | [s.munozm234@uniandes.edu.co](mailto:s.munozm234@uniandes.edu.co) |
