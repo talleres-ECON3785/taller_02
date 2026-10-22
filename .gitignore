@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Registro crudo (.jsonl) de las conversaciones con los agentes: no se versiona
+09_Conversaciones/
