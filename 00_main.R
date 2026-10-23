@@ -28,7 +28,9 @@ if (!file.exists("taller_02.Rproj")) {
 # paquete, se agrega aqui (no dentro del script)
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
-  tidyverse # limpieza, manipulacion y graficas (incluye ggplot2)
+  tidyverse,    # limpieza, manipulacion y graficas (incluye ggplot2)
+  gt,           # formato de las tablas de la presentacion
+  modelsummary # tablas de regresion con errores robustos (output = "gt")
 )
 
 # -----------------------------------------------------------------------------

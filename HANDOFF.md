@@ -18,14 +18,11 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P0.2–P0.3: formato de tablas y paquetes.** Crear
-   `02_Scripts/00_formato_tablas.R` con `guardar_tabla()` (`.png` para la
-   diapositiva y `.csv` sin formato), eligiendo el paquete de tablas, y agregar
-   al `p_load()` de `00_main.R` `rpart`, `rpart.plot`, `ranger`, `glmnet`,
-   `caret`, `fixest`, `grf` y ese paquete.
-   *Terminado cuando:* `00_main.R` corre desde cero con los paquetes nuevos, una
-   tabla de prueba sale con `guardar_tabla()` y el paquete elegido está en
-   "Decisiones tomadas".
+1. **P0.3: paquetes de árboles y estimación.** Agregar al `p_load()` de
+   `00_main.R` `rpart`, `rpart.plot`, `ranger`, `glmnet`, `caret`, `fixest` y
+   `grf`, cada uno con un comentario de para qué se usa.
+   *Terminado cuando:* `00_main.R` corre desde cero con los paquetes nuevos y
+   cada paquete tiene su comentario.
 2. **P0.4–P0.5: `log_revenue` y README.** Construir `log_revenue` en los
    scripts `01_` y `02_` (convención del Taller 1, verificando en el código que
    no se pierden observaciones) y crear el `README.md` inicial (objetivo,
@@ -53,6 +50,10 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - Escribir la primera nota de `05_Notas/` con `registrar-hallazgo` apenas exista
   el primer resultado (H1) y comprobar que `model: haiku` de `cerrar-sesion`
   se aplica.
+- `guardar_tabla()` (Chrome headless, sin `webshot2`) solo se probó en la máquina
+  de Santiago Muñoz (macOS). Un segundo integrante debe probarlo antes del 25 de
+  octubre; si Chrome está en otra ruta, definir `CHROME_PATH`. Decidir si se fija
+  una fuente del sistema en lugar de Inter (Google Fonts).
 - Antes del 25 de octubre, unir por aparte los `.jsonl` de todos los
   integrantes para el material de soporte (P7.4).
 
@@ -63,7 +64,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1.
+  tabla pregunta del enunciado → paso. Hecho: P0.1 y P0.2 (P0.3 parcial).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md` y este `HANDOFF.md`. Una rama por integrante en
   GitHub; nada se commitea en `main` directamente.
@@ -80,17 +81,20 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   que `ln(Revenue)` no pierde observaciones, pero todavía no está construido en
   las bases. Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
-  paquetes con `pacman` (hoy solo `tidyverse`), crea las carpetas de salida que
+  paquetes con `pacman` (hoy `tidyverse`, `gt` y `modelsummary`), crea las carpetas de salida que
   falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R`.
-  `00_formato_graficas.R` define paleta, tema y `guardar_figura()`. Falta
-  `00_formato_tablas.R`.
+  `00_formato_graficas.R` define paleta, tema y `guardar_figura()`.
+  `00_formato_tablas.R` define decimales por tipo de cifra, `nota_tabla()`,
+  `estilo_tabla()` y `guardar_tabla()` (`.png` con `gt` + Chrome headless, y
+  `.csv`); aún no lo usa ningún script de análisis.
 - **Resultados:** solo los reportes de calidad de la base observacional
   (`03_Resultados/Tablas/reporte_calidad_observacional*.csv`). Ningún modelo
   estimado.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
-  `grf`), más tres ampliaciones registradas: importancia de variables, varianza
-  de los CATE y ATE por subgrupo. LASSO entra en la Parte A; `time_spent` es
+  `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
+  de los CATE, ATE por subgrupo y paquetes de formato de tablas (`gt`,
+  `modelsummary`, Chrome headless). LASSO entra en la Parte A; `time_spent` es
   moderador en la Parte B (con robustez sin ella).
 - **Guías:** heurísticas H1–H11 en
   `07_Recursos/heuristicas_retroalimentacion_taller1.md`; reglas de
@@ -102,6 +106,21 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: formato de tablas con `gt` y `modelsummary`
+
+- Santiago Muñoz (`SantiagoMunozM`). Se compararon alternativas de paquetes y se
+  eligió `gt` con `modelsummary`; se creó `02_Scripts/00_formato_tablas.R`
+  (estilo, decimales, notas al pie y `guardar_tabla()`) y se agregaron ambos
+  paquetes al `p_load()`. Cerrado P0.2; P0.3 avanzó solo con los paquetes de tablas.
+- `webshot2` no compiló (dependencia `websocket` con OpenSSL), así que `.png` se
+  genera con Chrome headless; probado en una máquina. Decisión y ampliación del
+  catálogo registradas.
+- Los objetivos P0.4–P0.5 y P1.1–P1.3 no se trabajaron; se mantienen.
+- Bitácora: [2026-10-23_formato-tablas.md](06_Bitacoras/2026-10-23_formato-tablas.md)
+- **Siguientes objetivos:** (1) P0.3: paquetes de árboles y estimación en
+  `p_load()`; (2) P0.4–P0.5: `log_revenue` en las bases listas y README; (3)
+  P1.1–P1.3: descriptiva de la Parte A.
 
 ### 2026-10-23: notas de hallazgos y división de las skills de cierre
 

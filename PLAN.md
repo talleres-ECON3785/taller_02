@@ -52,7 +52,7 @@ el experimento es perfecto (`easier_signup` × `sign_up`: 5,043 / 0 / 0 / 4,957)
   variables, varianza de los CATE, ATE por subgrupo) y las decisiones de
   alcance (LASSO en la Parte A, `time_spent` como moderador, diseño 2×2) en
   `catalogo_metodos.md` y en "Decisiones tomadas".
-- [ ] **P0.2** Crear `02_Scripts/00_formato_tablas.R` con `guardar_tabla()`
+- [x] **P0.2** Crear `02_Scripts/00_formato_tablas.R` con `guardar_tabla()`
   (`.png` para la diapositiva más `.csv` sin formato). Elegir el paquete (p. ej.
   `gt`) y registrarlo.
 - [ ] **P0.3** Agregar al `p_load()` de `00_main.R` `rpart`, `rpart.plot`,
