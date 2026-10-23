@@ -16,80 +16,83 @@ octubre de 2026.**
      cada objetivo cita el paso del plan del que sale. Se reescribe al cerrar
      cada sesión. -->
 
-Todavía no hay plan de implementación; estos objetivos salen de los pendientes
-de las bitácoras y de `CLAUDE.md`.
+Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **Construir `ln(Revenue)` y la estadística descriptiva de la Parte A.**
-   Script `02_Scripts/03_descriptivas_observacional.R` que verifica
-   `Revenue > 0` (reporta cuántas observaciones se pierden), construye
-   `log_revenue` (convención del Taller 1) y describe cómo varía
-   `ln(Revenue)` con cada covariable (heurística H3).
-   *Terminado cuando:* el script está en la lista de `00_main.R`, corre sin
-   errores y exporta sus tablas y figuras con `guardar_tabla()` /
-   `guardar_figura()`, y la decisión sobre `Revenue <= 0` está en "Decisiones
-   tomadas".
-2. **Parte A: árboles frente al benchmark lineal sobre `ln(Revenue)`.** Antes,
-   decidir y registrar los paquetes (p. ej. `rpart`, `ranger`). Misma
-   partición 80/20 con semilla 2026 que el Taller 1, hiperparámetros por
-   validación cruzada solo en entrenamiento, RMSE de prueba escalonado e
-   interpretado en unidades del negocio (H4–H6).
-   *Terminado cuando:* existe la tabla de RMSE de prueba (ingenuo, lineal,
-   árbol, bosque) en la escala de `ln(Revenue)` y la decisión sobre cómo
-   comparar con el RMSE en dólares del Taller 1 está registrada.
-3. **Parte B: ATE y CATE de `easier_signup` sobre `ln(Revenue)`.** Validación
-   del experimento con balance **y** cumplimiento (H7), bosque causal (p. ej.
-   `grf`) con evidencia formal de heterogeneidad (calibración o muestras
-   separadas) e intervalos por grupo (H8), y la conciliación con el ITT en
-   nivel del Taller 1 (H2).
-   *Terminado cuando:* existen las tablas de ATE (nivel y log) y de CATE por
-   grupo con intervalos, y la prueba de heterogeneidad, todas regeneradas por
-   `00_main.R`.
+1. **P0.2–P0.3: formato de tablas y paquetes.** Crear
+   `02_Scripts/00_formato_tablas.R` con `guardar_tabla()` (`.png` para la
+   diapositiva y `.csv` sin formato), eligiendo el paquete de tablas, y agregar
+   al `p_load()` de `00_main.R` `rpart`, `rpart.plot`, `ranger`, `glmnet`,
+   `caret`, `fixest`, `grf` y ese paquete.
+   *Terminado cuando:* `00_main.R` corre desde cero con los paquetes nuevos, una
+   tabla de prueba sale con `guardar_tabla()` y el paquete elegido está en
+   "Decisiones tomadas".
+2. **P0.4–P0.5: `log_revenue` y README.** Construir `log_revenue` en los
+   scripts `01_` y `02_` (convención del Taller 1, verificando en el código que
+   no se pierden observaciones) y crear el `README.md` inicial (objetivo,
+   estructura, ejecución solo con `00_main.R`, mapa script → resultado).
+   *Terminado cuando:* las bases de `01_Datos/03_Listos/` traen `log_revenue`
+   con 100,000 y 10,000 obs., y el README existe.
+3. **P1.1–P1.3: descriptiva de la Parte A.** Script
+   `02_Scripts/03_descriptivas_observacional.R`: densidad de `Revenue` frente a
+   `ln(Revenue)`, `ln(Revenue)` frente a cada covariable (con el quiebre en
+   5 min) y la tabla de cifras del Taller 1.
+   *Terminado cuando:* el script está en la lista de `00_main.R` y exporta sus
+   figuras y su tabla con `guardar_figura()` / `guardar_tabla()`.
 
 **Bloqueos / preguntas abiertas:**
 
-- Falta el plan de implementación del proyecto completo (se hará más
-  adelante); cuando exista, los objetivos de arriba se reemplazan por sus
-  próximos pasos.
-- Definir roles: ningún integrante tiene responsabilidad asignada salvo
-  Douglas Plazas ("análisis histórico", en `main`). Con la entrega el 25 de
-  octubre, hace falta repartir Partes A, B, presentación y video.
-- Elegir paquetes de árboles (Parte A) y de árboles o bosques causales (Parte
-  B) y registrarlos en "Decisiones tomadas".
-- Crear `02_Scripts/00_formato_tablas.R` (con `guardar_tabla()`) y
-  `README.md` antes de que haya resultados que mostrar.
+- Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
+  el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
+  paralelo el sábado.
+- Decisiones pendientes dentro del plan: retransformar a dólares con
+  *smearing* o comparar solo mejoras relativas (P2.5); `W.hat` igual a 0.5 o a
+  la proporción observada, 4,957 / 10,000 (P3.2).
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
-- `SantiagoMunozM` está dos commits atrás de `main` (cambio de rol de Douglas):
-  traerlos con `git merge origin/main` después del próximo commit.
+- Escribir la primera nota de `05_Notas/` con `registrar-hallazgo` apenas exista
+  el primer resultado (H1) y comprobar que `model: haiku` de `cerrar-sesion`
+  se aplica.
 - Antes del 25 de octubre, unir por aparte los `.jsonl` de todos los
-  integrantes para el material de soporte.
+  integrantes para el material de soporte (P7.4).
 
 ## Estado actual
 
 <!-- Qué existe y funciona hoy: datos, scripts, resultados. Se reescribe al
      cerrar cada sesión; no es un historial. -->
 
+- **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
+  el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
+  tabla pregunta del enunciado → paso. Hecho: P0.1.
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
-  `.gitignore`, `CLAUDE.md`, este `HANDOFF.md` y la skill `registrar-sesion`
-  (bitácora, handoff, commit y push a la rama del integrante, copia del
-  `.jsonl`). Una rama por integrante en GitHub; nada se commitea en `main`
-  directamente.
+  `.gitignore`, `CLAUDE.md` y este `HANDOFF.md`. Una rama por integrante en
+  GitHub; nada se commitea en `main` directamente.
+- **Skills** (`.claude/skills/`): `bitacora-sesion` (bitácora, notas y handoff),
+  `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
+  `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
+  sin probar con un resultado real.
+- **Notas:** `05_Notas/README.md` con el índice vacío; todavía no hay notas de
+  hallazgos porque no hay resultados.
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
-  `experimento_listos.RDS`), sin pérdidas de observaciones. `ln(Revenue)`
-  todavía no se ha construido.
+  `experimento_listos.RDS`), sin pérdidas. `Revenue` > 0 en las dos bases, así
+  que `ln(Revenue)` no pierde observaciones, pero todavía no está construido en
+  las bases. Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
   paquetes con `pacman` (hoy solo `tidyverse`), crea las carpetas de salida que
   falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R`.
-  Probado desde cero (sin `03_Resultados/` ni `01_Datos/03_Listos/`): corre sin
-  errores. `00_formato_graficas.R` define paleta, tema y `guardar_figura()`.
+  `00_formato_graficas.R` define paleta, tema y `guardar_figura()`. Falta
+  `00_formato_tablas.R`.
 - **Resultados:** solo los reportes de calidad de la base observacional
   (`03_Resultados/Tablas/reporte_calidad_observacional*.csv`). Ningún modelo
-  estimado todavía.
-- **Guías:** retroalimentación del Taller 1 (video 73.9/100, material 100/100)
-  convertida en heurísticas H1–H11 en
+  estimado.
+- **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
+  (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
+  `grf`), más tres ampliaciones registradas: importancia de variables, varianza
+  de los CATE y ATE por subgrupo. LASSO entra en la Parte A; `time_spent` es
+  moderador en la Parte B (con robustez sin ella).
+- **Guías:** heurísticas H1–H11 en
   `07_Recursos/heuristicas_retroalimentacion_taller1.md`; reglas de
   reproducibilidad, tablas y entregas en `CLAUDE.md`.
 
@@ -99,6 +102,55 @@ de las bitácoras y de `CLAUDE.md`.
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: notas de hallazgos y división de las skills de cierre
+
+- Santiago Muñoz (`SantiagoMunozM`). `05_Notas/` pasa a ser memoria de hallazgos
+  (una nota por hallazgo, con tablas/figuras, explicación intuitiva e
+  importancia) y los agentes contrastan la evidencia nueva con ellas y alertan
+  ante contradicciones. Skill nueva `registrar-hallazgo`.
+- `registrar-sesion` se renombra `bitacora-sesion` (solo bitácora, notas y
+  handoff, leyendo solo la última bitácora); `cerrar-sesion` hace commit, push y
+  `.jsonl` con `model: haiku`. Se borró la skill global `cerrar-sesion`.
+- Los tres objetivos anteriores no se trabajaron; se mantienen (sin pasos nuevos
+  del plan).
+- Bitácora: [2026-10-23_notas-hallazgos-y-skills.md](06_Bitacoras/2026-10-23_notas-hallazgos-y-skills.md)
+- **Siguientes objetivos:** (1) P0.2–P0.3: `00_formato_tablas.R` y paquetes en
+  `p_load()`; (2) P0.4–P0.5: `log_revenue` en las bases listas y README; (3)
+  P1.1–P1.3: descriptiva de la Parte A.
+
+### 2026-10-23: plan de implementación
+
+- Santiago Muñoz (`SantiagoMunozM`). Se creó `PLAN.md`: hitos H0–H7 con tareas
+  `Pk.n` y casillas, calendario hasta el 25 de octubre, diseño 2×2 (forma
+  funcional × método) y tabla pregunta del enunciado → paso.
+- Decisiones registradas en `CLAUDE.md` y en el catálogo: las tres
+  ampliaciones, LASSO en la Parte A y `time_spent` como moderador (con
+  robustez). Se verificó que `Revenue` > 0 (0 pérdidas) y que el cumplimiento
+  del experimento es perfecto. Cerrado P0.1.
+- Los objetivos anteriores (descriptiva, Parte A, Parte B) no se trabajaron;
+  quedaron dentro del plan (H1–H4).
+- Bitácora: [2026-10-23_plan-implementacion.md](06_Bitacoras/2026-10-23_plan-implementacion.md)
+- **Siguientes objetivos:** (1) P0.2–P0.3: `00_formato_tablas.R` y paquetes en
+  `p_load()`; (2) P0.4–P0.5: `log_revenue` en las bases listas y README; (3)
+  P1.1–P1.3: descriptiva de la Parte A.
+
+### 2026-10-23: catálogo de métodos, librerías y funciones
+
+- Santiago Muñoz (`SantiagoMunozM`). Se trajo `origin/main` (avance rápido,
+  sin conflictos). Se revisaron los laboratorios 04 a 10 y se creó
+  `07_Recursos/catalogo_metodos.md`: métodos, paquetes y funciones
+  permitidos, con convenciones y adaptación a CheMarket.
+- `CLAUDE.md` ahora limita el trabajo al catálogo y exige documentar cualquier
+  ampliación antes de usarla. El árbol causal individual se descartó por
+  decisión del equipo; la Parte B usará solo el bosque causal.
+- Los tres objetivos anteriores no se trabajaron; avanzó el bloqueo de
+  elección de paquetes.
+- Bitácora: [2026-10-23_catalogo-metodos.md](06_Bitacoras/2026-10-23_catalogo-metodos.md)
+- **Siguientes objetivos:** (1) construir `ln(Revenue)` y la descriptiva de la
+  Parte A; (2) Parte A: lineal, CART y bosque con el catálogo sobre
+  `ln(Revenue)`; (3) Parte B: ATE y CATE con `grf`, validación del
+  experimento y conciliación nivel–log.
 
 ### 2026-10-23: retroalimentación del Taller 1, `00_main.R`, ramas por integrante y handoff
 
