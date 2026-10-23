@@ -61,7 +61,7 @@ el experimento es perfecto (`easier_signup` × `sign_up`: 5,043 / 0 / 0 / 4,957)
 - [x] **P0.4** Construir `log_revenue` en las bases listas (scripts `01_` y
   `02_`, convención del Taller 1) y verificar en el código que no se pierden
   observaciones (ya anotado en "Restricciones de muestra").
-- [ ] **P0.5** Crear el `README.md` inicial: objetivo, estructura, ejecución
+- [x] **P0.5** Crear el `README.md` inicial: objetivo, estructura, ejecución
   (solo `00_main.R`) y el mapa script → resultado, por llenar.
 
 *Terminado cuando:* `00_main.R` corre desde cero con los paquetes nuevos y las

@@ -18,19 +18,19 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P0.5: README inicial.** Crear `README.md` (raíz) con objetivo,
-   estructura de carpetas, ejecución solo con `00_main.R` (pacman instala lo
-   necesario) y el mapa script → tablas/figuras, por llenar.
-   *Terminado cuando:* el README existe y se puede seguir sin leer nada más.
-2. **P1.1–P1.3: descriptiva de la Parte A.** Script
+1. **P1.1–P1.3: descriptiva de la Parte A.** Script
    `02_Scripts/03_descriptivas_observacional.R`: densidad de `Revenue` frente a
    `ln(Revenue)`, `ln(Revenue)` frente a cada covariable (con el quiebre en
    5 min) y la tabla de cifras del Taller 1.
    *Terminado cuando:* el script está en la lista de `00_main.R` y exporta sus
    figuras y su tabla con `guardar_figura()` / `guardar_tabla()`.
-3. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
+2. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
    (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
    *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
+3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
+   de `train`), lineal del Taller 1, lineal flexible y LASSO (`cv.glmnet`).
+   *Terminado cuando:* hay RMSE de `train`/CV para cada uno en `Revenue` y en
+   `ln(Revenue)`, sin tocar `test`.
 
 **Bloqueos / preguntas abiertas:**
 
@@ -61,9 +61,10 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.4.
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
-  `.gitignore`, `CLAUDE.md` y este `HANDOFF.md`. Una rama por integrante en
+  `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
+  script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
   GitHub; nada se commitea en `main` directamente.
 - **Skills** (`.claude/skills/`): `bitacora-sesion` (bitácora, notas y handoff),
   `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
@@ -103,6 +104,18 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: README inicial
+
+- Santiago Muñoz (`SantiagoMunozM`). Se creó `README.md` (objetivo, ejecución solo
+  con `00_main.R`, estructura de carpetas y mapa script → resultados: los cuatro
+  scripts existentes más los previstos de `PLAN.md`, por llenar). Cerrado P0.5;
+  H0 completo.
+- P1.1–P1.3 y P2.1 no se trabajaron; se mantienen.
+- Bitácora: [2026-10-23_readme-inicial.md](06_Bitacoras/2026-10-23_readme-inicial.md)
+- **Siguientes objetivos:** (1) P1.1–P1.3: descriptiva de la Parte A; (2) P2.1:
+  partición 80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en las dos
+  escalas.
 
 ### 2026-10-23: paquetes de árboles en `p_load()` y `log_revenue`
 
