@@ -307,9 +307,9 @@ código de los laboratorios**. No se usan hasta que se registren en
 
 | Herramienta | Por qué podría hacer falta | Estado |
 | --- | --- | --- |
-| Importancia de variables en `ranger` (`importance = "impurity"` o `"permutation"`, `$variable.importance`) y en `rpart` (`$variable.importance`) | Parte A: "¿qué variables resultan más útiles para predecir `ln(Revenue)`?" | Sin registrar |
-| Varianza de los CATE en `grf`: `predict(cf, estimate.variance = TRUE)` | `CLAUDE.md` exige declarar la incertidumbre (intervalos) de cada CATE | Sin registrar |
-| `average_treatment_effect(cf, subset = ...)` para el ATE de un subgrupo | Parte B: efectos por grupo con su error estándar | Sin registrar |
+| Importancia de variables en `ranger` (`importance = "impurity"` o `"permutation"`, `$variable.importance`) y en `rpart` (`$variable.importance`) | Parte A: "¿qué variables resultan más útiles para predecir `ln(Revenue)`?" | Registrada (2026-10-23) |
+| Varianza de los CATE en `grf`: `predict(cf, estimate.variance = TRUE)` | `CLAUDE.md` exige declarar la incertidumbre (intervalos) de cada CATE | Registrada (2026-10-23) |
+| `average_treatment_effect(cf, subset = ...)` para el ATE de un subgrupo | Parte B: efectos por grupo con su error estándar | Registrada (2026-10-23) |
 
 ## Fuera del catálogo
 
@@ -331,4 +331,6 @@ Cada método, paquete o función que se agregue al catálogo se anota aquí
 
 | Fecha | Qué se agrega (método / paquete / función) | Para qué (pregunta del taller) | Fuente (clase, paper, documentación) | Quién lo aprobó |
 | --- | --- | --- | --- | --- |
-| — | — | — | — | — |
+| 2026-10-23 | Importancia de variables: `ranger(..., importance = "permutation")` y `$variable.importance`; `$variable.importance` de `rpart` | Parte A: "¿qué variables resultan más útiles para predecir `ln(Revenue)`?", como complemento de la escalera de RMSE (H5). Se lee como uso del modelo, no como efecto | Documentación de `ranger` y `rpart` | Equipo (Santiago Muñoz, sesión del plan de implementación) |
+| 2026-10-23 | Varianza de los CATE: `predict(cf, estimate.variance = TRUE)` en `grf` | Parte B: intervalos de cada CATE, que exige `CLAUDE.md` | Documentación de `grf` (Athey, Tibshirani y Wager 2019) | Equipo (Santiago Muñoz, sesión del plan de implementación) |
+| 2026-10-23 | ATE por subgrupo: `average_treatment_effect(cf, subset = ...)` en `grf` | Parte B: efecto por grupo de usuarios con su error estándar ("¿hay grupos con efecto mayor, menor o cercano a cero?") | Documentación de `grf` | Equipo (Santiago Muñoz, sesión del plan de implementación) |

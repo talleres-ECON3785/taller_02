@@ -325,12 +325,13 @@ sigue.
     primero), de tres a cinco líneas: quién trabajó y en qué rama, qué se hizo,
     el enlace a la bitácora y, al final, los **dos a tres siguientes
     objetivos** que quedaron al cerrar. Las entradas anteriores no se editan.
-- **Plan de implementación:** cuando exista el plan del proyecto completo (se
-  creará más adelante; su ruta se registrará aquí), los "Siguientes objetivos"
-  se derivan automáticamente de los próximos pasos no terminados del plan,
-  citando el número de paso, y el registro de cada sesión indica qué pasos del
-  plan avanzó o cerró. Mientras no exista, se derivan de los "Pendientes" de la
-  última bitácora.
+- **Plan de implementación:** el plan del proyecto completo está en
+  `PLAN.md` (raíz), organizado en hitos H0–H7 con tareas numeradas (`Pk.n`) y
+  casillas de verificación. Los "Siguientes objetivos" se derivan
+  automáticamente de los próximos pasos sin marcar del plan, citando el número
+  de paso, y el registro de cada sesión indica qué pasos del plan avanzó o
+  cerró. Las casillas se marcan `[x]` en la misma sesión en que se termina la
+  tarea.
 - **Conflictos entre ramas:** como cada integrante actualiza `HANDOFF.md` en su
   rama, al traer `main` pueden chocar las entradas del registro. Se resuelven
   conservando todas las entradas, ordenadas por fecha, y reescribiendo
@@ -507,6 +508,11 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-21 | Variable dependiente de las Partes A y B: `ln(Revenue)`; `Revenue` en nivel se conserva solo para la comparación con el Taller 1.              | Lo exige el enunciado; permite separar el efecto de la transformación del efecto del método.                                                                                  |
 | 2026-10-23 | Las conversaciones con los agentes (`.jsonl`) se guardan localmente en `09_Conversaciones/` (ignorada por git) y al final se unen por aparte.  | Cada integrante trabaja en su máquina; unirlas fuera de git evita conflictos y subir registros crudos al repositorio, y aun así cumple con el registro que pide la rúbrica.      |
 | 2026-10-23 | Los métodos, paquetes y funciones se limitan al catálogo `07_Recursos/catalogo_metodos.md` (lineal, LASSO, CART con `rpart`, bagging/bosque con `ranger`, bosque causal con `grf`). Boosting y el árbol causal individual quedan fuera. Toda ampliación se documenta primero en el "Registro de ampliaciones" del catálogo. | Son los métodos vistos en los laboratorios 04 a 10; usar las mismas funciones que el curso facilita la verificación del código y evita introducir métodos que no se vieron en clase. |
+| 2026-10-23 | Plan de implementación en `PLAN.md` (raíz), con hitos H0–H7 y casillas de verificación; `HANDOFF.md` deriva de él sus siguientes objetivos.                       | Con la entrega el 25 de octubre, una sola lista priorizada permite repartir el trabajo y verificar qué falta.                                                                    |
+| 2026-10-23 | Diseño 2×2 en las dos partes: forma funcional (`Revenue` / `ln(Revenue)`) × método (lineal / árboles).                                                              | Es la forma de atribuir cada diferencia con el Taller 1 a la transformación, al método o a ambos, como pide el enunciado.                                                         |
+| 2026-10-23 | Se registran tres ampliaciones del catálogo: importancia de variables en `ranger`/`rpart`, varianza de los CATE (`estimate.variance = TRUE`) y ATE por subgrupo (`average_treatment_effect(..., subset = )`). | Sin ellas quedan sin herramienta la pregunta "¿qué variables predicen mejor?" (A) y los intervalos de los CATE y de los grupos (B), que exige `CLAUDE.md`. Ver "Registro de ampliaciones" del catálogo. |
+| 2026-10-23 | LASSO (`cv.glmnet`) entra en la Parte A como benchmark lineal flexible, junto con la regresión lineal del Taller 1.                                                   | Un benchmark solo lineal inflaría la ventaja aparente de los árboles (H4); LASSO con un diccionario de no linealidades e interacciones es la referencia lineal más exigente del catálogo. |
+| 2026-10-23 | `time_spent` se trata como covariable pre-tratamiento (moderador) en el bosque causal, con una prueba de robustez sin ella.                                          | En el Taller 1, `easier_signup` no afectó significativamente a `time_spent`; la robustez cubre la posibilidad de que se mida en la misma sesión que el gasto.                         |
 
 ## Análisis descartados
 
@@ -553,7 +559,8 @@ como covariable pre-tratamiento.
 
 | Criterio de exclusión | N antes | N después |
 | ---------------------- | ------- | ---------- |
-| (sin análisis todavía) | —       | —          |
+| `Revenue > 0` para construir `ln(Revenue)`, base observacional (mín. 0.545) | 100,000 | 100,000 |
+| `Revenue > 0` para construir `ln(Revenue)`, experimento (mín. 0.665)        | 10,000  | 10,000  |
 
 Punto de partida (Taller 1): observacional 100,000 obs. y experimento 10,000
 obs., sin pérdidas por NA.
