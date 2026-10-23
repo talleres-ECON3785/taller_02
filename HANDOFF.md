@@ -28,19 +28,21 @@ de las bitácoras y de `CLAUDE.md`.
    errores y exporta sus tablas y figuras con `guardar_tabla()` /
    `guardar_figura()`, y la decisión sobre `Revenue <= 0` está en "Decisiones
    tomadas".
-2. **Parte A: árboles frente al benchmark lineal sobre `ln(Revenue)`.** Antes,
-   decidir y registrar los paquetes (p. ej. `rpart`, `ranger`). Misma
-   partición 80/20 con semilla 2026 que el Taller 1, hiperparámetros por
-   validación cruzada solo en entrenamiento, RMSE de prueba escalonado e
+2. **Parte A: árboles frente al benchmark lineal sobre `ln(Revenue)`.** Con
+   los métodos y funciones de `07_Recursos/catalogo_metodos.md` (`lm`,
+   `rpart` con poda por CV, `ranger` con selección por OOB; LASSO si el
+   equipo lo decide). Misma partición 80/20 con semilla 2026 que el Taller 1,
+   hiperparámetros solo con entrenamiento, RMSE de prueba escalonado e
    interpretado en unidades del negocio (H4–H6).
    *Terminado cuando:* existe la tabla de RMSE de prueba (ingenuo, lineal,
    árbol, bosque) en la escala de `ln(Revenue)` y la decisión sobre cómo
    comparar con el RMSE en dólares del Taller 1 está registrada.
 3. **Parte B: ATE y CATE de `easier_signup` sobre `ln(Revenue)`.** Validación
-   del experimento con balance **y** cumplimiento (H7), bosque causal (p. ej.
-   `grf`) con evidencia formal de heterogeneidad (calibración o muestras
-   separadas) e intervalos por grupo (H8), y la conciliación con el ITT en
-   nivel del Taller 1 (H2).
+   del experimento con balance **y** cumplimiento (H7), bosque causal con
+   `grf` (único método causal del catálogo; sin `clusters`, asignación
+   individual), con `test_calibration()` y TOC/AUTOC en muestras separadas
+   como evidencia formal de heterogeneidad, intervalos por grupo (H8) y la
+   conciliación con el ITT en nivel del Taller 1 (H2).
    *Terminado cuando:* existen las tablas de ATE (nivel y log) y de CATE por
    grupo con intervalos, y la prueba de heterogeneidad, todas regeneradas por
    `00_main.R`.
@@ -53,15 +55,21 @@ de las bitácoras y de `CLAUDE.md`.
 - Definir roles: ningún integrante tiene responsabilidad asignada salvo
   Douglas Plazas ("análisis histórico", en `main`). Con la entrega el 25 de
   octubre, hace falta repartir Partes A, B, presentación y video.
-- Elegir paquetes de árboles (Parte A) y de árboles o bosques causales (Parte
-  B) y registrarlos en "Decisiones tomadas".
+- Los paquetes ya están acotados por `07_Recursos/catalogo_metodos.md`; falta
+  decidir qué métodos del catálogo entran a cada parte (p. ej. si LASSO entra
+  en la Parte A) y registrarlo en "Decisiones tomadas".
+- Decidir si se registran como ampliación las tres herramientas previstas del
+  catálogo: importancia de variables (`ranger`/`rpart`), varianza de los CATE
+  (`estimate.variance = TRUE`) y ATE por subgrupo. Sin ellas, las preguntas
+  sobre qué variables predicen mejor y los intervalos por CATE quedan sin
+  herramienta.
+- Confirmar la probabilidad de asignación de `easier_signup` en el diseño del
+  experimento (define `W.hat` en `causal_forest()`).
 - Crear `02_Scripts/00_formato_tablas.R` (con `guardar_tabla()`) y
   `README.md` antes de que haya resultados que mostrar.
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
-- `SantiagoMunozM` está dos commits atrás de `main` (cambio de rol de Douglas):
-  traerlos con `git merge origin/main` después del próximo commit.
 - Antes del 25 de octubre, unir por aparte los `.jsonl` de todos los
   integrantes para el material de soporte.
 
@@ -92,6 +100,12 @@ de las bitácoras y de `CLAUDE.md`.
   convertida en heurísticas H1–H11 en
   `07_Recursos/heuristicas_retroalimentacion_taller1.md`; reglas de
   reproducibilidad, tablas y entregas en `CLAUDE.md`.
+- **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
+  (de los laboratorios 04 a 10): regresión lineal (`lm`, `sandwich`,
+  `fixest`, CV con `caret`), LASSO (`glmnet`), CART (`rpart`, `rpart.plot`),
+  bagging y bosque aleatorio (`ranger`) y bosque causal (`grf`). Quedan fuera
+  el árbol causal individual y boosting. Toda ampliación se registra primero
+  en el catálogo.
 
 ## Registro de sesiones
 
@@ -99,6 +113,23 @@ de las bitácoras y de `CLAUDE.md`.
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: catálogo de métodos, librerías y funciones
+
+- Santiago Muñoz (`SantiagoMunozM`). Se trajo `origin/main` (avance rápido,
+  sin conflictos). Se revisaron los laboratorios 04 a 10 y se creó
+  `07_Recursos/catalogo_metodos.md`: métodos, paquetes y funciones
+  permitidos, con convenciones y adaptación a CheMarket.
+- `CLAUDE.md` ahora limita el trabajo al catálogo y exige documentar cualquier
+  ampliación antes de usarla. El árbol causal individual se descartó por
+  decisión del equipo; la Parte B usará solo el bosque causal.
+- Los tres objetivos anteriores no se trabajaron; avanzó el bloqueo de
+  elección de paquetes.
+- Bitácora: [2026-10-23_catalogo-metodos.md](06_Bitacoras/2026-10-23_catalogo-metodos.md)
+- **Siguientes objetivos:** (1) construir `ln(Revenue)` y la descriptiva de la
+  Parte A; (2) Parte A: lineal, CART y bosque con el catálogo sobre
+  `ln(Revenue)`; (3) Parte B: ATE y CATE con `grf`, validación del
+  experimento y conciliación nivel–log.
 
 ### 2026-10-23: retroalimentación del Taller 1, `00_main.R`, ramas por integrante y handoff
 

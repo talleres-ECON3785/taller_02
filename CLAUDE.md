@@ -104,8 +104,9 @@ Preguntas:
 - `06_Bitacoras/`            documentación de cada sesión de trabajo
 - `07_Recursos/`             referencias externas y documentación (aquí está el
   enunciado, `Problem_Set_2.pdf`; la retroalimentación del Taller 1, en los PDF
-  `Comentarios para ...`; y las heurísticas derivadas de ella,
-  `heuristicas_retroalimentacion_taller1.md`)
+  `Comentarios para ...`; las heurísticas derivadas de ella,
+  `heuristicas_retroalimentacion_taller1.md`; y el catálogo de métodos,
+  librerías y funciones permitidos, `catalogo_metodos.md`)
 - `08_Entregables/`          presentación final y video
 - `09_Conversaciones/`       registro crudo (`.jsonl`) de las conversaciones con los agentes; en `.gitignore`, no se versiona (cada integrante guarda las suyas localmente; al final se unen por aparte)
 - `.claude/skills/`          skills del proyecto (`registrar-sesion`)
@@ -367,17 +368,30 @@ sesión), la skill pregunta al usuario en vez de adivinar.
 ## Regla metodológica: regresión lineal como referencia, árboles como extensión
 
 - A diferencia del Taller 1, **este taller sí exige métodos basados en árboles**:
-  árboles de regresión y/o ensambles (p. ej. bosques aleatorios, boosting) para
-  la Parte A, y métodos causales basados en árboles (árboles causales, bosques
-  causales) para la Parte B.
+  árboles de regresión y/o ensambles (bagging, bosques aleatorios) para la
+  Parte A, y métodos causales basados en árboles (bosques causales) para la
+  Parte B.
+- **Catálogo cerrado de métodos:** el trabajo se limita a los métodos,
+  librerías y funciones de `07_Recursos/catalogo_metodos.md`, recopilados de
+  los laboratorios del curso: regresión lineal (`lm`, `sandwich`, `fixest`,
+  validación cruzada con `caret`), LASSO (`glmnet`), árboles de regresión
+  (`rpart`, `rpart.plot`), bagging y bosques aleatorios (`ranger`) y bosques
+  causales (`grf`). El árbol causal individual no se usa (ver "Análisis
+  descartados"). Lea ese documento antes de escribir un script de
+  estimación y use las funciones y convenciones que ahí se fijan.
+- **Ampliar el catálogo:** si en algún punto se decide agregar otro método,
+  paquete o función (incluidas las "herramientas previstas" que el catálogo
+  marca como no cubiertas en los laboratorios), se documenta **antes de
+  usarlo** en la sección "Registro de ampliaciones" de
+  `07_Recursos/catalogo_metodos.md` y se registra en "Decisiones tomadas".
+  Sin ese registro, no se usa.
 - La regresión lineal del Taller 1 se mantiene como **modelo de referencia**
   (benchmark) en ambas partes: toda mejora predictiva o hallazgo de
   heterogeneidad se reporta contra ella.
 - No proponga ni ajuste familias de modelos ajenas al enfoque del enunciado
-  (redes neuronales, SVM, matching, etc.) sin autorización del equipo. Dentro de
-  los métodos basados en árboles, la elección concreta de algoritmos y paquetes
-  queda por definir y debe registrarse en "Decisiones tomadas" con su
-  justificación.
+  (redes neuronales, SVM, matching, boosting, etc.) sin autorización del
+  equipo. Dentro del catálogo, la elección concreta de qué métodos entran a
+  cada parte se registra en "Decisiones tomadas" con su justificación.
 - Distinga siempre tres cosas al reportar un resultado: el **estimando** (lo que
   se quiere conocer: p. ej. el ATE o el CATE(x) sobre `ln(Revenue)`), el
   **estimador** (la regresión lineal, el árbol, el bosque causal) y la
@@ -492,6 +506,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | (heredada) | El estimando central del experimento es el efecto de `easier_signup` sobre el ingreso (ITT); `sign_up` es un mecanismo, no la palanca.         | `easier_signup` es lo que CheMarket puede manipular. En el Taller 1, `sign_up` y `easier_signup` coinciden perfectamente en el experimento (primer estadio = 1, LATE = ITT).      |
 | 2026-10-21 | Variable dependiente de las Partes A y B: `ln(Revenue)`; `Revenue` en nivel se conserva solo para la comparación con el Taller 1.              | Lo exige el enunciado; permite separar el efecto de la transformación del efecto del método.                                                                                  |
 | 2026-10-23 | Las conversaciones con los agentes (`.jsonl`) se guardan localmente en `09_Conversaciones/` (ignorada por git) y al final se unen por aparte.  | Cada integrante trabaja en su máquina; unirlas fuera de git evita conflictos y subir registros crudos al repositorio, y aun así cumple con el registro que pide la rúbrica.      |
+| 2026-10-23 | Los métodos, paquetes y funciones se limitan al catálogo `07_Recursos/catalogo_metodos.md` (lineal, LASSO, CART con `rpart`, bagging/bosque con `ranger`, bosque causal con `grf`). Boosting y el árbol causal individual quedan fuera. Toda ampliación se documenta primero en el "Registro de ampliaciones" del catálogo. | Son los métodos vistos en los laboratorios 04 a 10; usar las mismas funciones que el curso facilita la verificación del código y evita introducir métodos que no se vieron en clase. |
 
 ## Análisis descartados
 
@@ -502,6 +517,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | ---------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | (heredado) | IV/LATE con `easier_signup` como instrumento de `sign_up` (Taller 1)                   | Primer estadio exactamente 1 por correspondencia perfecta; LATE = ITT. No se retoma salvo que cambie la estructura de los datos.                  |
 | (heredado) | Hipótesis de que `time_spent` sesgaba el ITT como mediador/mal control (Taller 1)      | `easier_signup` no afecta significativamente a `time_spent`.                                                                                       |
+| 2026-10-23 | Árbol causal individual (Athey e Imbens 2016, implementación propia del Laboratorio 09) para la Parte B | Decisión del equipo: no se usará. La heterogeneidad (CATE, HTE) se estima solo con el bosque causal (`grf`). Retirado de `07_Recursos/catalogo_metodos.md`. |
 
 ## Definición de variables
 
@@ -614,8 +630,9 @@ Referencia para las comparaciones; ver el repositorio `taller1/` para el detalle
 
 - No modificar ni sobrescribir archivos en `01_Datos/01_Crudos/`.
 - No eliminar ni mover archivos fuera de la estructura del proyecto sin autorización.
-- No usar familias de modelos fuera de los métodos basados en árboles y la
-  regresión lineal de referencia sin autorización del equipo (ver "Regla
+- No usar métodos, paquetes ni funciones de estimación que no estén en
+  `07_Recursos/catalogo_metodos.md`. Para agregar uno, primero se documenta en
+  su "Registro de ampliaciones" con autorización del equipo (ver "Regla
   metodológica").
 - No evaluar desempeño predictivo dentro de muestra ni omitir `set.seed(2026)`.
 - No incluir código en la presentación final.
