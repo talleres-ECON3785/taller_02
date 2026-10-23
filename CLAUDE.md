@@ -100,7 +100,8 @@ Preguntas:
 - `02_Scripts/`              scripts de R
 - `03_Resultados/`           Tablas/ y Figuras/ generadas
 - `04_Presentaciones/`       borradores de la presentación
-- `05_Notas/`                notas e ideas preliminares
+- `05_Notas/`                notas de hallazgos: un `.md` por hallazgo principal, con
+  referencia a sus tablas/figuras (ver "Notas de hallazgos")
 - `06_Bitacoras/`            documentación de cada sesión de trabajo
 - `07_Recursos/`             referencias externas y documentación (aquí está el
   enunciado, `Problem_Set_2.pdf`; la retroalimentación del Taller 1, en los PDF
@@ -109,7 +110,7 @@ Preguntas:
   librerías y funciones permitidos, `catalogo_metodos.md`)
 - `08_Entregables/`          presentación final y video
 - `09_Conversaciones/`       registro crudo (`.jsonl`) de las conversaciones con los agentes; en `.gitignore`, no se versiona (cada integrante guarda las suyas localmente; al final se unen por aparte)
-- `.claude/skills/`          skills del proyecto (`registrar-sesion`)
+- `.claude/skills/`          skills del proyecto (`bitacora-sesion`, `cerrar-sesion`, `registrar-hallazgo`)
 - `00_main.R`                (raíz) script maestro: corre todo el pipeline
 - `HANDOFF.md`               (raíz) estado actual, siguientes objetivos y registro de sesiones
 - `taller_02.Rproj`          proyecto de RStudio (raíz del proyecto)
@@ -133,7 +134,8 @@ Preguntas:
   de forma explícita y, cuando se compare con el Taller 1, equivalentes a las de
   allá (80/20, semilla 2026, RMSE). Si algo se cambia, se registra en
   "Decisiones tomadas".
-- Al cerrar una sesión, registre la sesión con la skill `registrar-sesion` (ver
+- Al cerrar una sesión, registre la sesión con la skill `bitacora-sesion` y
+  después ciérrela con `cerrar-sesion` (commit, push y conversación; ver
   "Registro de sesión de trabajo").
 - **Heurísticas de la retroalimentación del Taller 1:** antes de (i) definir un
   estimando o una especificación, (ii) diseñar la estadística descriptiva,
@@ -261,7 +263,7 @@ Reglas que los agentes siguen **siempre**, sin excepción:
    antes de trabajar, para reducir conflictos. Si hay conflictos, se muestran al
    usuario y se resuelven con él.
 3. **Todo el trabajo se hace, se commitea y se empuja en la rama del
-   integrante** (`git push origin <rama>`). La skill `registrar-sesion` hace
+   integrante** (`git push origin <rama>`). La skill `cerrar-sesion` hace
    este commit y push al cerrar cada sesión.
 4. **Nunca commitear ni hacer push directamente a `main`.** Llevar los cambios
    a `main` es una decisión del integrante, no del agente: se hace solo cuando el
@@ -311,7 +313,7 @@ sigue.
   "Flujo de versiones"), lea `HANDOFF.md` antes que cualquier otro archivo y
   proponga trabajar en el primero de sus "Siguientes objetivos" que no esté
   asignado a otro integrante, salvo que el usuario indique otra cosa.
-- **Al cerrar una sesión** (lo hace la skill `registrar-sesion`), después de
+- **Al cerrar una sesión** (lo hace la skill `bitacora-sesion`), después de
   escribir la bitácora, actualice las tres secciones:
   - **Siguientes objetivos:** se reescribe con **dos a tres** tareas concretas,
     en orden de prioridad. Cada una lleva el archivo que debe producirse, un
@@ -338,23 +340,122 @@ sigue.
   "Siguientes objetivos" y "Estado actual" para que reflejen el trabajo
   combinado.
 
-### Skill de Claude Code: `registrar-sesion`
+### Notas de hallazgos (`05_Notas/`)
 
-Definida en `.claude/skills/registrar-sesion/SKILL.md`. Se invoca al terminar
-una sesión (pidiendo "cerrar sesión", "registrar la sesión", "escribir la
-bitácora", "actualizar el handoff" o "guardar la conversación") y hace cuatro
-cosas, en orden:
+`05_Notas/` es la memoria analítica del taller: recopila **qué se encontró y por
+qué importa**, mientras que las bitácoras (`06_Bitacoras/`) registran **qué se
+hizo en cada sesión**. Quien arme la presentación debe poder leer solo las notas
+y reconstruir los mensajes principales.
 
-1. Escribe la bitácora de la sesión en `06_Bitacoras/` con la estructura de
-   arriba.
-2. Actualiza `HANDOFF.md`: siguientes objetivos (dos a tres, del plan de
-   implementación cuando exista), estado actual y una entrada nueva en el
-   registro de sesiones (ver "`HANDOFF.md`").
-3. Hace commit de la bitácora y de los cambios de la sesión, y push **a la
-   rama del integrante**, nunca a `main` (ver "Flujo de versiones").
-4. Copia el registro crudo (`.jsonl`) de la conversación a
-   `09_Conversaciones/`. Esa carpeta está en `.gitignore`: las conversaciones
-   se guardan localmente y **no se suben a GitHub**.
+- **Una nota por hallazgo principal**, no por sesión ni por script. Un hallazgo
+  es un resultado que sostiene (o matiza, o contradice) una conclusión del
+  taller. Nombre: `<parte>_<slug>.md` (p. ej. `A_quiebre_time_spent.md`,
+  `B_evidencia_hte.md`), con `<parte>` = `A`, `B` o `X` (transversal, p. ej.
+  qué cambia por la transformación vs. por el método).
+- **Una nota se crea o actualiza en la misma sesión en que el resultado que la
+  sostiene se genera o cambia.** No se espera al cierre ni a la presentación.
+- **Estructura de cada nota:**
+
+  ```markdown
+  # <Hallazgo, enunciado como conclusión>
+
+  - **Estado:** vigente | matizado | reemplazado (con enlace a la nota que lo reemplaza)
+  - **Parte / base:** A o B; observacional o experimento; descriptivo, predictivo o causal
+  - **Última verificación:** YYYY-MM-DD, con el script que lo genera
+
+  ## Evidencia
+  Referencias a una o más tablas/figuras en `03_Resultados/` (ruta exacta,
+  p. ej. `03_Resultados/Figuras/observacional_importancia_variables.png`) y el
+  script de `02_Scripts/` que las produce. Las cifras clave se citan con su
+  escala (`ln(Revenue)` o `Revenue`), `n` y si son de entrenamiento o prueba.
+
+  ## Qué dice, en lenguaje intuitivo
+  Explicación para alguien sin formación técnica: qué muestra la figura o la
+  tabla, cómo leerla y qué significa en el negocio. Distinguir estimando,
+  estimador y estimación; separar lo predictivo/descriptivo de lo causal.
+
+  ## Por qué importa en el estudio
+  Qué pregunta del taller responde (Parte A o B), con qué conclusión del Taller 1
+  se conecta (se mantiene, se matiza o cambia) y si la diferencia se asocia a la
+  transformación, al método o a ambos. Qué implica para la decisión de CheMarket.
+
+  ## Límites e incertidumbre
+  Qué no permite afirmar (p. ej. predicción no es causalidad), intervalos o
+  variabilidad, y qué evidencia adicional haría falta.
+
+  ## Historial
+  Una línea por cambio de estado o de cifras: fecha, qué cambió y por qué.
+  ```
+
+- Las notas siguen las reglas de redacción del proyecto: sin juicios de "bueno"
+  o "malo", sin entusiasmo por métricas ni significancia, sin código, y con las
+  heurísticas H1–H11 aplicadas. Solo se cita lo que está en `03_Resultados/`:
+  una cifra sin archivo de respaldo no entra a una nota.
+- `05_Notas/README.md` es el índice: una línea por nota con su estado y la
+  pregunta del taller que responde. Se actualiza cada vez que se crea o cambia el
+  estado de una nota.
+
+#### Contrastar la evidencia nueva con lo ya registrado
+
+Cada vez que un resultado nuevo se genera o se modifica (un script nuevo, un
+cambio de especificación, una corrida distinta de `00_main.R`), el agente, antes
+de darlo por cerrado:
+
+1. **Lee `05_Notas/README.md` y las notas relacionadas**, y los puntos de partida
+   de "Punto de partida: resultados del Taller 1".
+2. **Contrasta** el resultado nuevo con lo que ya dicen las notas y con el Taller 1:
+   misma dirección y orden de magnitud, misma escala, mismas conclusiones.
+3. **Si todo es consistente**, actualiza "Última verificación" de la nota y lo
+   deja en el historial.
+4. **Si algo es contradictorio, alerta al usuario de inmediato**, sin esperar al
+   cierre de sesión y sin resolverlo en silencio. La alerta indica: (i) qué nota
+   o resultado previo se contradice (con la ruta), (ii) las cifras de ambos lados
+   con su escala y base, (iii) hipótesis de la causa, distinguiendo si viene de
+   la transformación, del método, de la partición/semilla, de un error de
+   código o de datos distintos, y (iv) qué verificar para resolverlo.
+5. **Mientras el usuario no decida**, no se sobrescribe la nota anterior: se marca
+   su estado como `matizado` o `reemplazado` solo con su confirmación, se deja la
+   evidencia nueva en una nota propia o en el historial, y se registra la
+   decisión en "Decisiones tomadas" si cambia una conclusión.
+6. **Una diferencia con el Taller 1 no es una contradicción**: es lo que el taller
+   quiere medir. Se reporta como "cambia" en la nota, atribuida a la
+   transformación, al método o a ambos. La alerta es para inconsistencias dentro
+   del Taller 2 o diferencias con el Taller 1 que no tienen una explicación
+   atribuible.
+
+La skill `registrar-hallazgo` (`.claude/skills/registrar-hallazgo/SKILL.md`)
+implementa este procedimiento: se invoca al generar o cambiar un resultado, y
+`bitacora-sesion` verifica al registrar la sesión que cada resultado nuevo tenga su nota.
+
+### Skills de cierre de sesión: `bitacora-sesion` y `cerrar-sesion`
+
+El cierre se divide en dos skills, que se corren en este orden. Las dos
+preguntan al usuario cuando algo no es inferible con certeza (p. ej. quién del
+equipo trabajó en la sesión) en vez de adivinar.
+
+1. **`bitacora-sesion`** (`.claude/skills/bitacora-sesion/SKILL.md`). Se invoca
+   al terminar una sesión (pidiendo "registrar la sesión", "escribir la
+   bitácora" o "actualizar el handoff"). Usa el modelo de la sesión, porque
+   requiere juicio y el historial de la conversación. Hace tres cosas:
+   - Escribe la bitácora de la sesión en `06_Bitacoras/` con la estructura de
+     arriba. Para ubicarse lee `HANDOFF.md` y solo la última bitácora; abre
+     otras únicamente si necesita más contexto.
+   - Verifica que cada resultado nuevo tenga su nota en `05_Notas/` (invoca
+     `registrar-hallazgo` si falta).
+   - Actualiza `HANDOFF.md`: siguientes objetivos (dos a tres, del plan de
+     implementación cuando exista), estado actual y una entrada nueva en el
+     registro de sesiones (ver "`HANDOFF.md`").
+
+   Al terminar, indica que el siguiente paso es `cerrar-sesion`; no hace commit.
+2. **`cerrar-sesion`** (`.claude/skills/cerrar-sesion/SKILL.md`). Se invoca
+   después de la anterior (pidiendo "cerrar sesión", "hacer el commit", "subir
+   los cambios" o "guardar la conversación"). Es mecánica y corre con
+   `model: haiku` en su frontmatter. Hace dos cosas:
+   - Hace commit de la bitácora y de los cambios de la sesión, y push **a la
+     rama del integrante**, nunca a `main` (ver "Flujo de versiones").
+   - Copia el registro crudo (`.jsonl`) de la conversación a
+     `09_Conversaciones/`. Esa carpeta está en `.gitignore`: las conversaciones
+     se guardan localmente y **no se suben a GitHub**.
 
 **Cómo se entregan las conversaciones:** cada integrante acumula sus `.jsonl` en
 su copia local de `09_Conversaciones/`. Al final del taller, el equipo las une
@@ -362,9 +463,6 @@ por aparte, fuera del flujo de git, para entregarlas con el material de
 soporte (la rúbrica del Taller 1 asigna puntos por incluir el registro de la
 conversación en `.json`). Los agentes no deben versionar esa carpeta, quitarla
 del `.gitignore` ni intentar unir las conversaciones de otros integrantes.
-
-Si algo no es inferible con certeza (p. ej. quién del equipo trabajó en la
-sesión), la skill pregunta al usuario en vez de adivinar.
 
 ## Regla metodológica: regresión lineal como referencia, árboles como extensión
 
@@ -512,6 +610,8 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-23 | Diseño 2×2 en las dos partes: forma funcional (`Revenue` / `ln(Revenue)`) × método (lineal / árboles).                                                              | Es la forma de atribuir cada diferencia con el Taller 1 a la transformación, al método o a ambos, como pide el enunciado.                                                         |
 | 2026-10-23 | Se registran tres ampliaciones del catálogo: importancia de variables en `ranger`/`rpart`, varianza de los CATE (`estimate.variance = TRUE`) y ATE por subgrupo (`average_treatment_effect(..., subset = )`). | Sin ellas quedan sin herramienta la pregunta "¿qué variables predicen mejor?" (A) y los intervalos de los CATE y de los grupos (B), que exige `CLAUDE.md`. Ver "Registro de ampliaciones" del catálogo. |
 | 2026-10-23 | LASSO (`cv.glmnet`) entra en la Parte A como benchmark lineal flexible, junto con la regresión lineal del Taller 1.                                                   | Un benchmark solo lineal inflaría la ventaja aparente de los árboles (H4); LASSO con un diccionario de no linealidades e interacciones es la referencia lineal más exigente del catálogo. |
+| 2026-10-23 | `05_Notas/` pasa a ser un conjunto de `.md` de hallazgos (uno por hallazgo principal, con referencia a tablas/figuras, explicación intuitiva e importancia), y los agentes contrastan la evidencia nueva con esas notas y alertan ante contradicciones. | Mantener una memoria analítica separada de las bitácoras (que son cronológicas) facilita armar la presentación *answer-first* y detectar inconsistencias entre corridas, partes y talleres antes de grabar el video. |
+| 2026-10-23 | El cierre de sesión se divide en `bitacora-sesion` (bitácora, notas y handoff; modelo de la sesión) y `cerrar-sesion` (commit, push y copia del `.jsonl`; `model: haiku`). Se descarta `context: fork` para la bitácora. | Reduce el uso de tokens delegando a un modelo más barato solo la parte mecánica; la bitácora requiere juicio y el historial de la conversación, que un subagente no ve. |
 | 2026-10-23 | `time_spent` se trata como covariable pre-tratamiento (moderador) en el bosque causal, con una prueba de robustez sin ella.                                          | En el Taller 1, `easier_signup` no afectó significativamente a `time_spent`; la robustez cubre la posibilidad de que se mida en la misma sesión que el gasto.                         |
 
 ## Análisis descartados

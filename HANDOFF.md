@@ -50,6 +50,9 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
+- Escribir la primera nota de `05_Notas/` con `registrar-hallazgo` apenas exista
+  el primer resultado (H1) y comprobar que `model: haiku` de `cerrar-sesion`
+  se aplica.
 - Antes del 25 de octubre, unir por aparte los `.jsonl` de todos los
   integrantes para el material de soporte (P7.4).
 
@@ -62,8 +65,14 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
   tabla pregunta del enunciado → paso. Hecho: P0.1.
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
-  `.gitignore`, `CLAUDE.md`, este `HANDOFF.md` y la skill `registrar-sesion`.
-  Una rama por integrante en GitHub; nada se commitea en `main` directamente.
+  `.gitignore`, `CLAUDE.md` y este `HANDOFF.md`. Una rama por integrante en
+  GitHub; nada se commitea en `main` directamente.
+- **Skills** (`.claude/skills/`): `bitacora-sesion` (bitácora, notas y handoff),
+  `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
+  `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
+  sin probar con un resultado real.
+- **Notas:** `05_Notas/README.md` con el índice vacío; todavía no hay notas de
+  hallazgos porque no hay resultados.
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
@@ -93,6 +102,22 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: notas de hallazgos y división de las skills de cierre
+
+- Santiago Muñoz (`SantiagoMunozM`). `05_Notas/` pasa a ser memoria de hallazgos
+  (una nota por hallazgo, con tablas/figuras, explicación intuitiva e
+  importancia) y los agentes contrastan la evidencia nueva con ellas y alertan
+  ante contradicciones. Skill nueva `registrar-hallazgo`.
+- `registrar-sesion` se renombra `bitacora-sesion` (solo bitácora, notas y
+  handoff, leyendo solo la última bitácora); `cerrar-sesion` hace commit, push y
+  `.jsonl` con `model: haiku`. Se borró la skill global `cerrar-sesion`.
+- Los tres objetivos anteriores no se trabajaron; se mantienen (sin pasos nuevos
+  del plan).
+- Bitácora: [2026-10-23_notas-hallazgos-y-skills.md](06_Bitacoras/2026-10-23_notas-hallazgos-y-skills.md)
+- **Siguientes objetivos:** (1) P0.2–P0.3: `00_formato_tablas.R` y paquetes en
+  `p_load()`; (2) P0.4–P0.5: `log_revenue` en las bases listas y README; (3)
+  P1.1–P1.3: descriptiva de la Parte A.
 
 ### 2026-10-23: plan de implementación
 
