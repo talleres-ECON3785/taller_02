@@ -6,7 +6,7 @@
 # modelo. La base cruda NUNCA se modifica ni se sobrescribe.
 # =============================================================================
 
-library(tidyverse)
+# los paquetes los carga 00_main.R con pacman
 
 set.seed(2026)
 

@@ -15,7 +15,7 @@
 # El formato de referencia es el que quedo en '07_graficas_experimento.R'.
 # =============================================================================
 
-library(ggplot2)
+# los paquetes los carga 00_main.R con pacman
 
 # -----------------------------------------------------------------------------
 # 1. Paleta categorica

@@ -2,7 +2,7 @@
 #y realiza limpieza y verificaciones para asegurar que esta listo para
 #utilizarse en analisis. Guarda el resultado en 03_Listos.
 
-library(tidyverse)
+# los paquetes los carga 00_main.R con pacman
 
 
 data_experimento <- readRDS("01_Datos/01_Crudos/datos_experimento.Rds")
