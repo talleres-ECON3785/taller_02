@@ -55,10 +55,10 @@ el experimento es perfecto (`easier_signup` × `sign_up`: 5,043 / 0 / 0 / 4,957)
 - [x] **P0.2** Crear `02_Scripts/00_formato_tablas.R` con `guardar_tabla()`
   (`.png` para la diapositiva más `.csv` sin formato). Elegir el paquete (p. ej.
   `gt`) y registrarlo.
-- [ ] **P0.3** Agregar al `p_load()` de `00_main.R` `rpart`, `rpart.plot`,
+- [x] **P0.3** Agregar al `p_load()` de `00_main.R` `rpart`, `rpart.plot`,
   `ranger`, `glmnet`, `caret`, `fixest`, `grf` y el paquete de tablas, con un
   comentario de para qué se usa cada uno.
-- [ ] **P0.4** Construir `log_revenue` en las bases listas (scripts `01_` y
+- [x] **P0.4** Construir `log_revenue` en las bases listas (scripts `01_` y
   `02_`, convención del Taller 1) y verificar en el código que no se pierden
   observaciones (ya anotado en "Restricciones de muestra").
 - [ ] **P0.5** Crear el `README.md` inicial: objetivo, estructura, ejecución

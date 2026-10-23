@@ -30,7 +30,15 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
   tidyverse,    # limpieza, manipulacion y graficas (incluye ggplot2)
   gt,           # formato de las tablas de la presentacion
-  modelsummary # tablas de regresion con errores robustos (output = "gt")
+  modelsummary, # tablas de regresion con errores robustos (output = "gt")
+  sandwich,     # errores estandar robustos (vcovHC) para la regresion lineal
+  fixest,       # feols() y etable(): ITT con errores robustos hc1 (Parte B)
+  caret,        # validacion cruzada y particion train/test (benchmarks lineales)
+  glmnet,       # LASSO con cv.glmnet(): benchmark lineal flexible (Parte A)
+  rpart,        # arboles de regresion CART con poda por validacion cruzada
+  rpart.plot,   # figura del arbol podado
+  ranger,       # bagging y bosques aleatorios; importancia por permutacion
+  grf           # bosque causal: ATE, CATE, calibracion y TOC (Parte B)
 )
 
 # -----------------------------------------------------------------------------

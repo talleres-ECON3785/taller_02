@@ -18,26 +18,23 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P0.3: paquetes de árboles y estimación.** Agregar al `p_load()` de
-   `00_main.R` `rpart`, `rpart.plot`, `ranger`, `glmnet`, `caret`, `fixest` y
-   `grf`, cada uno con un comentario de para qué se usa.
-   *Terminado cuando:* `00_main.R` corre desde cero con los paquetes nuevos y
-   cada paquete tiene su comentario.
-2. **P0.4–P0.5: `log_revenue` y README.** Construir `log_revenue` en los
-   scripts `01_` y `02_` (convención del Taller 1, verificando en el código que
-   no se pierden observaciones) y crear el `README.md` inicial (objetivo,
-   estructura, ejecución solo con `00_main.R`, mapa script → resultado).
-   *Terminado cuando:* las bases de `01_Datos/03_Listos/` traen `log_revenue`
-   con 100,000 y 10,000 obs., y el README existe.
-3. **P1.1–P1.3: descriptiva de la Parte A.** Script
+1. **P0.5: README inicial.** Crear `README.md` (raíz) con objetivo,
+   estructura de carpetas, ejecución solo con `00_main.R` (pacman instala lo
+   necesario) y el mapa script → tablas/figuras, por llenar.
+   *Terminado cuando:* el README existe y se puede seguir sin leer nada más.
+2. **P1.1–P1.3: descriptiva de la Parte A.** Script
    `02_Scripts/03_descriptivas_observacional.R`: densidad de `Revenue` frente a
    `ln(Revenue)`, `ln(Revenue)` frente a cada covariable (con el quiebre en
    5 min) y la tabla de cifras del Taller 1.
    *Terminado cuando:* el script está en la lista de `00_main.R` y exporta sus
    figuras y su tabla con `guardar_figura()` / `guardar_tabla()`.
+3. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
+   (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
+   *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
 
 **Bloqueos / preguntas abiertas:**
 
+- Confirmar que la convención de `log_revenue` (`log()` natural, sin constante) coincide con la del Taller 1; el repositorio `taller1/` no estaba en esta máquina.
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
@@ -64,7 +61,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 y P0.2 (P0.3 parcial).
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.4.
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md` y este `HANDOFF.md`. Una rama por integrante en
   GitHub; nada se commitea en `main` directamente.
@@ -81,8 +78,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   que `ln(Revenue)` no pierde observaciones, pero todavía no está construido en
   las bases. Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
-  paquetes con `pacman` (hoy `tidyverse`, `gt` y `modelsummary`), crea las carpetas de salida que
-  falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R`.
+  paquetes con `pacman` (`tidyverse`, `gt`, `modelsummary`, `sandwich`, `fixest`, `caret`, `glmnet`, `rpart`, `rpart.plot`, `ranger`, `grf`), crea las carpetas de salida que
+  falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R` (ambos construyen `log_revenue`); `00_main.R` corre completo sin errores.
   `00_formato_graficas.R` define paleta, tema y `guardar_figura()`.
   `00_formato_tablas.R` define decimales por tipo de cifra, `nota_tabla()`,
   `estilo_tabla()` y `guardar_tabla()` (`.png` con `gt` + Chrome headless, y
@@ -106,6 +103,17 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-23: paquetes de árboles en `p_load()` y `log_revenue`
+
+- Santiago Muñoz (`SantiagoMunozM`). Se agregaron `sandwich`, `fixest`, `caret`,
+  `glmnet`, `rpart`, `rpart.plot`, `ranger` y `grf` al `p_load()` y se construyó
+  `log_revenue` en los scripts `01_` y `02_` (con `stopifnot(Revenue > 0)`, 0 obs.
+  perdidas). `00_main.R` corrió completo sin errores. Cerrados P0.3 y P0.4.
+- P0.5 (README) y P1.1–P1.3 no se trabajaron; se mantienen.
+- Bitácora: [2026-10-23_paquetes-y-log-revenue.md](06_Bitacoras/2026-10-23_paquetes-y-log-revenue.md)
+- **Siguientes objetivos:** (1) P0.5: README inicial; (2) P1.1–P1.3: descriptiva
+  de la Parte A; (3) P2.1: partición 80/20 que reproduce el RMSE 2.314.
 
 ### 2026-10-23: formato de tablas con `gt` y `modelsummary`
 
