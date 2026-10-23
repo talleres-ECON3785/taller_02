@@ -7,6 +7,10 @@ de los Andes). Cliente ficticio: CheMarket Inc., empresa de comercio electrónic
 Es la continuación del Taller 1 (repositorio `taller1/`, carpeta hermana de este
 proyecto).
 
+- **Objetivo del curso para este taller:** es la continuación de un informe de
+  consultoría y aplica los conceptos de las semanas 5 a 8. En particular, la
+  exploración de relaciones no lineales y la estimación de efectos
+  heterogéneos mediante árboles de regresión.
 - **Pregunta del taller:** ¿cambian las conclusiones del Taller 1 cuando se usan
   métodos más flexibles (basados en árboles), capaces de representar relaciones
   no lineales, interacciones y diferencias entre grupos de usuarios? La mesa
@@ -28,10 +32,30 @@ proyecto).
   la forma funcional de la variable dependiente (`ln(Revenue)` en lugar de
   `Revenue`) y el método (árboles en lugar de regresión lineal). Siempre hay que
   distinguir si una diferencia viene de la transformación, del método, o de ambos.
-- **Entregable final:** una presentación al cliente en `08_Entregables/`, sin
-  código, estilo *answer-first* (ver sección "Entregable: presentación al
-  cliente"), más el video si el curso lo pide (confirmar con el enunciado de la
-  entrega).
+- **Entregables finales** (ver "Entregas y fechas"): (1) el video de la
+  presentación al cliente más los slides usados, en `08_Entregables/`, sin
+  código y estilo *answer-first* (ver "Entregable: presentación al cliente");
+  (2) el material de soporte, es decir, este repositorio reproducible.
+
+### Entregas y fechas (instrucciones generales del curso)
+
+Los enlaces de entrega están en Bloque Neón; el enunciado está en
+`07_Recursos/Problem_Set_2.pdf`.
+
+| Entrega                                         | Qué se sube                                                                         | Fecha límite              |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
+| Cambios en la conformación del grupo            | Aviso al equipo docente (solo si hubo cambios)                                      | Viernes 16 de octubre (vencida) |
+| Vídeo                                           | Los slides usados y un enlace al video (OneDrive, YouTube, Dropbox, etc.)           | Domingo 25 de octubre     |
+| Material de soporte                             | El repositorio reproducible (README, scripts, resultados, registro de conversaciones) | Domingo 25 de octubre     |
+| Vídeo para retroalimentación de pares           | El mismo video, en el enlace de pares                                               | Domingo 25 de octubre     |
+| Retroalimentación a compañeros                  | Comentarios a los videos asignados (7 días hábiles)                                 | Martes 3 de noviembre     |
+| Lectura de los comentarios recibidos            | —                                                                                   | Miércoles 4 de noviembre  |
+
+- Las tres entregas del equipo vencen el **mismo día (domingo 25 de
+  octubre)**. Planear el trabajo hacia atrás desde esa fecha: el video debe
+  grabarse con las figuras y tablas ya finales y regeneradas por `00_main.R`.
+- La retroalimentación de pares y la lectura de comentarios son posteriores a
+  la entrega y no afectan el repositorio.
 
 ### Parte A: predicción (base observacional)
 
@@ -79,10 +103,14 @@ Preguntas:
 - `05_Notas/`                notas e ideas preliminares
 - `06_Bitacoras/`            documentación de cada sesión de trabajo
 - `07_Recursos/`             referencias externas y documentación (aquí está el
-  enunciado, `Problem_Set_2.pdf`)
+  enunciado, `Problem_Set_2.pdf`; la retroalimentación del Taller 1, en los PDF
+  `Comentarios para ...`; y las heurísticas derivadas de ella,
+  `heuristicas_retroalimentacion_taller1.md`)
 - `08_Entregables/`          presentación final y video
-- `09_Conversaciones/`       registro crudo (`.jsonl`) de las conversaciones con los agentes; en `.gitignore`, no se versiona
+- `09_Conversaciones/`       registro crudo (`.jsonl`) de las conversaciones con los agentes; en `.gitignore`, no se versiona (cada integrante guarda las suyas localmente; al final se unen por aparte)
 - `.claude/skills/`          skills del proyecto (`registrar-sesion`)
+- `00_main.R`                (raíz) script maestro: corre todo el pipeline
+- `HANDOFF.md`               (raíz) estado actual, siguientes objetivos y registro de sesiones
 - `taller_02.Rproj`          proyecto de RStudio (raíz del proyecto)
 
 ## Reglas de trabajo
@@ -106,11 +134,147 @@ Preguntas:
   "Decisiones tomadas".
 - Al cerrar una sesión, registre la sesión con la skill `registrar-sesion` (ver
   "Registro de sesión de trabajo").
+- **Heurísticas de la retroalimentación del Taller 1:** antes de (i) definir un
+  estimando o una especificación, (ii) diseñar la estadística descriptiva,
+  (iii) evaluar o interpretar un modelo predictivo o causal, (iv) validar el
+  experimento, o (v) redactar conclusiones, recomendaciones o diapositivas, lea
+  `07_Recursos/heuristicas_retroalimentacion_taller1.md` y aplique las
+  heurísticas pertinentes (H1–H11). Use su lista de chequeo antes de dar por
+  cerrado un análisis o una diapositiva. Si una decisión se aparta de una
+  heurística, regístrelo en "Decisiones tomadas" con la razón.
+
+### Reproducibilidad y salidas (retroalimentación del Taller 1)
+
+El repositorio del Taller 1 obtuvo 100/100, pero el profesor pidió tres mejoras
+explícitas para este taller. Son obligatorias:
+
+- **`00_main.R` instala y carga todos los paquetes con `pacman`, una sola
+  vez.** No se pide al usuario instalar librerías a mano. La lista única de
+  paquetes del proyecto vive en el `pacman::p_load()` de `00_main.R`:
+
+  ```r
+  if (!require("pacman")) install.packages("pacman")
+  pacman::p_load(tidyverse, ...)
+  ```
+
+  Los scripts de `02_Scripts/` **no** cargan paquetes (ni `library()` ni
+  `p_load()`); en su lugar llevan el comentario
+  `# los paquetes los carga 00_main.R con pacman`. Si un script nuevo
+  necesita otro paquete, se agrega a ese `p_load()` con un comentario de para
+  qué se usa. Para correr un script suelto (p. ej. al depurar), primero se
+  ejecutan las secciones 1 a 3 de `00_main.R`. El README debe decir que basta
+  con correr `00_main.R`.
+- **`00_main.R` verifica las carpetas de salida una sola vez, al comienzo.**
+  Borrar `03_Resultados/` (o cualquiera de sus subcarpetas) y correr
+  `00_main.R` debe regenerar todo sin errores. Para eso, antes de ejecutar
+  cualquier script, `00_main.R` recorre una lista única de carpetas de salida
+  y crea las que falten:
+
+  ```r
+  carpetas_salida <- c(
+    "01_Datos/02_Procesados", "01_Datos/03_Listos",
+    "03_Resultados/Tablas", "03_Resultados/Figuras"
+  )
+  for (carpeta in carpetas_salida) {
+    if (!dir.exists(carpeta)) dir.create(carpeta, recursive = TRUE)
+  }
+  ```
+
+  La verificación vive **solo** en `00_main.R`: las funciones auxiliares
+  (`guardar_figura()`, `guardar_tabla()`) y los scripts de análisis **no**
+  llaman a `dir.create()`. Si un script nuevo escribe en una carpeta que no
+  está en la lista, se agrega la carpeta a `carpetas_salida` en `00_main.R`.
+  `01_Datos/01_Crudos/` no va en la lista: no es una salida y nunca se escribe
+  en ella.
+- **Las tablas se exportan en el formato final de la diapositiva.** En el
+  Taller 1 las tablas de las diapositivas no eran las exportadas (se cambiaron a
+  mano colores de encabezado, decimales, etc.). Ahora la tabla que entra a la
+  presentación sale tal cual del código: encabezados, decimales, etiquetas en
+  español, notas al pie y colores incluidos. No se reformatean tablas fuera de
+  R ni se pegan pantallazos de la consola.
+- **`00_main.R` es el único punto de entrada.** Vive en la raíz del proyecto
+  y sigue la estructura del Taller 1: (1) verifica que el directorio de trabajo
+  es la raíz (`taller_02.Rproj`); (2) carga los paquetes con `pacman`;
+  (3) verifica las carpetas de salida; (4) lista los scripts en el orden de su
+  numeración; (5) ejecuta cada uno con `source(script, local = new.env(),
+  encoding = "UTF-8")`. Regenera todos los datos procesados, tablas y figuras
+  que usa la presentación. Cada script nuevo se agrega a la lista `scripts`
+  en la misma sesión en que se crea. Los scripts de formato
+  (`00_formato_*.R`) no van en la lista: los cargan con `source()` los scripts
+  que los usan.
+
+#### Formato de las tablas
+
+Igual que con las figuras, el formato de las tablas vive en un único lugar:
+`02_Scripts/00_formato_tablas.R` (**pendiente: crearlo**; elegir el paquete,
+p. ej. `gt`, y registrarlo en "Decisiones tomadas"). Ese script no genera
+tablas, solo define el estilo y la función de exportación (p. ej.
+`guardar_tabla()`).
+
+- Todo script que produzca tablas para la presentación empieza con
+  `source("02_Scripts/00_formato_tablas.R")` y exporta con `guardar_tabla()`.
+  No se redefine el estilo dentro de un script de análisis.
+- Estilo coherente con las figuras: encabezados con la paleta del proyecto
+  (`00_formato_graficas.R`), texto en español y sin nombres de variables del
+  código, número de decimales fijo por tipo de cifra, unidades explícitas
+  (dólares, log, %) y una nota que declare la base (experimento u
+  observacional), el `n` y si las cifras son de entrenamiento o de prueba.
+- Se exporta en un formato que se inserta directamente en las diapositivas
+  (p. ej. `.png` de alta resolución o `.html`), y además en `.csv` con las
+  cifras sin formato, para trazabilidad.
+- **Nombres de archivo:** `03_Resultados/Tablas/<base>_<contenido>.<ext>`, con
+  la misma convención que las figuras (p. ej.
+  `observacional_rmse_escalonado.png`, `experimento_balance.png`).
+
+#### README
+
+Se mantiene lo que obtuvo el puntaje completo en el Taller 1: objetivo del
+proyecto, estructura de carpetas, instrucciones de ejecución (solo
+`00_main.R`, con `pacman` instalando lo necesario) y un **mapa completo
+script → tablas/figuras**, de forma que cada elemento de las diapositivas se
+pueda rastrear al script que lo genera. El README se actualiza en la misma
+sesión en que se agrega o renombra un script o un resultado.
+
+### Flujo de versiones: una rama por integrante (obligatorio para los agentes)
+
+Repositorio: `https://github.com/talleres-ECON3785/taller_02`. Cada integrante
+tiene su propia rama, creada desde `main`, con la convención nombre + primer
+apellido + inicial del segundo (la misma de los correos de Uniandes):
+
+| Integrante                | Rama                |
+| ------------------------- | ------------------- |
+| Samuel Escandón           | `SamuelEscandonC`   |
+| Douglas Plazas Guzmán     | `DouglasPlazasG`    |
+| Mateo Olmos Becerra       | `MateoOlmosB`       |
+| Santiago Muñoz Martínez   | `SantiagoMunozM`    |
+
+Reglas que los agentes siguen **siempre**, sin excepción:
+
+1. **Al empezar la sesión, identificar la rama del integrante.** Revisar
+   `git branch --show-current` y `git config user.name`. Si el agente está en
+   `main` o en la rama de otro integrante, cambia a la rama de quien trabaja
+   (`git switch <rama>`) antes de editar cualquier archivo. Si no es inferible
+   con certeza quién trabaja, pregunta; no adivina.
+2. **Sincronizar con `main` al empezar:** `git fetch origin` y, si `main`
+   avanzó, traer sus cambios a la rama del integrante (`git merge origin/main`)
+   antes de trabajar, para reducir conflictos. Si hay conflictos, se muestran al
+   usuario y se resuelven con él.
+3. **Todo el trabajo se hace, se commitea y se empuja en la rama del
+   integrante** (`git push origin <rama>`). La skill `registrar-sesion` hace
+   este commit y push al cerrar cada sesión.
+4. **Nunca commitear ni hacer push directamente a `main`.** Llevar los cambios
+   a `main` es una decisión del integrante, no del agente: se hace solo cuando el
+   usuario lo pide explícitamente, preferiblemente con un pull request desde su
+   rama (`gh pr create --base main --head <rama>`), después de sincronizar la
+   rama con `main` y de comprobar que `00_main.R` corre sin errores.
+5. No crear ramas adicionales por tarea ni trabajar en la rama de otro
+   integrante sin que el usuario lo pida.
 
 ### Registro de sesión de trabajo
 
 - Cada sesión de trabajo debe quedar documentada en un archivo `.md` en
-  `06_Bitacoras/` y sus cambios versionarse en el repositorio de GitHub asociado.
+  `06_Bitacoras/` y sus cambios versionarse en la rama del integrante (ver
+  "Flujo de versiones").
   Nombre: `YYYY-MM-DD_slug-descriptivo.md`.
 - Estructura de cada bitácora:
   - **Resumen:** objetivo y desarrollo de la sesión, al inicio.
@@ -130,22 +294,72 @@ Preguntas:
     siguiente paso.
 - Las bitácoras son el insumo de las sesiones posteriores: deben permitir
   entender qué ya se hizo y qué quedó pendiente, para mantener un desarrollo
-  coherente del taller. Léalas al empezar una sesión.
+  coherente del taller. Consúltelas cuando necesite el detalle de una sesión
+  (el punto de entrada es `HANDOFF.md`).
 - Las decisiones metodológicas relevantes también se registran en las tablas
   "Decisiones tomadas" / "Análisis descartados" de este archivo, y se actualiza
-  "Estado actual".
+  `HANDOFF.md`.
+
+### `HANDOFF.md`: resumen orientado a lo que sigue
+
+`HANDOFF.md` (raíz) resume las bitácoras para retomar el trabajo sin leerlas
+todas. Las bitácoras explican el porqué; el handoff dice dónde estamos y qué
+sigue.
+
+- **Al iniciar una sesión:** después de ubicarse en la rama del integrante (ver
+  "Flujo de versiones"), lea `HANDOFF.md` antes que cualquier otro archivo y
+  proponga trabajar en el primero de sus "Siguientes objetivos" que no esté
+  asignado a otro integrante, salvo que el usuario indique otra cosa.
+- **Al cerrar una sesión** (lo hace la skill `registrar-sesion`), después de
+  escribir la bitácora, actualice las tres secciones:
+  - **Siguientes objetivos:** se reescribe con **dos a tres** tareas concretas,
+    en orden de prioridad. Cada una lleva el archivo que debe producirse, un
+    criterio de terminado verificable y, si aplica, el integrante a cargo.
+    Debajo van los bloqueos o preguntas abiertas para el equipo. Si un objetivo
+    no se terminó, se mantiene y se anota en el registro qué avanzó y qué lo
+    impidió.
+  - **Estado actual:** se reescribe para reflejar qué existe y funciona hoy
+    (datos, scripts, resultados). No es un historial.
+  - **Registro de sesiones:** se agrega una entrada arriba (la más reciente
+    primero), de tres a cinco líneas: quién trabajó y en qué rama, qué se hizo,
+    el enlace a la bitácora y, al final, los **dos a tres siguientes
+    objetivos** que quedaron al cerrar. Las entradas anteriores no se editan.
+- **Plan de implementación:** cuando exista el plan del proyecto completo (se
+  creará más adelante; su ruta se registrará aquí), los "Siguientes objetivos"
+  se derivan automáticamente de los próximos pasos no terminados del plan,
+  citando el número de paso, y el registro de cada sesión indica qué pasos del
+  plan avanzó o cerró. Mientras no exista, se derivan de los "Pendientes" de la
+  última bitácora.
+- **Conflictos entre ramas:** como cada integrante actualiza `HANDOFF.md` en su
+  rama, al traer `main` pueden chocar las entradas del registro. Se resuelven
+  conservando todas las entradas, ordenadas por fecha, y reescribiendo
+  "Siguientes objetivos" y "Estado actual" para que reflejen el trabajo
+  combinado.
 
 ### Skill de Claude Code: `registrar-sesion`
 
 Definida en `.claude/skills/registrar-sesion/SKILL.md`. Se invoca al terminar
 una sesión (pidiendo "cerrar sesión", "registrar la sesión", "escribir la
-bitácora" o "guardar la conversación") y hace dos cosas, en orden:
+bitácora", "actualizar el handoff" o "guardar la conversación") y hace cuatro
+cosas, en orden:
 
 1. Escribe la bitácora de la sesión en `06_Bitacoras/` con la estructura de
    arriba.
-2. Copia el registro crudo (`.jsonl`) de la conversación a
+2. Actualiza `HANDOFF.md`: siguientes objetivos (dos a tres, del plan de
+   implementación cuando exista), estado actual y una entrada nueva en el
+   registro de sesiones (ver "`HANDOFF.md`").
+3. Hace commit de la bitácora y de los cambios de la sesión, y push **a la
+   rama del integrante**, nunca a `main` (ver "Flujo de versiones").
+4. Copia el registro crudo (`.jsonl`) de la conversación a
    `09_Conversaciones/`. Esa carpeta está en `.gitignore`: las conversaciones
    se guardan localmente y **no se suben a GitHub**.
+
+**Cómo se entregan las conversaciones:** cada integrante acumula sus `.jsonl` en
+su copia local de `09_Conversaciones/`. Al final del taller, el equipo las une
+por aparte, fuera del flujo de git, para entregarlas con el material de
+soporte (la rúbrica del Taller 1 asigna puntos por incluir el registro de la
+conversación en `.json`). Los agentes no deben versionar esa carpeta, quitarla
+del `.gitignore` ni intentar unir las conversaciones de otros integrantes.
 
 Si algo no es inferible con certeza (p. ej. quién del equipo trabajó en la
 sesión), la skill pregunta al usuario en vez de adivinar.
@@ -239,7 +453,11 @@ ese script no genera figuras, solo define paleta, tema y exportación.
   taller puede agregarse el contenido (p. ej. `observacional_importancia_variables.png`,
   `experimento_cate_por_grupo.png`).
 - **Exportación:** siempre con `guardar_figura()` (8×6 pulgadas, 300 dpi, fondo
-  blanco explícito).
+  blanco explícito). `guardar_figura()` no crea carpetas: asume que
+  `00_main.R` ya verificó `03_Resultados/Figuras/` (ver "Reproducibilidad y
+  salidas").
+- La figura que entra a la diapositiva es la exportada, sin retoques manuales:
+  si algo debe verse distinto en la presentación, se cambia en el código.
 - Las figuras de árboles (diagramas de particiones) y de importancia de
   variables siguen las mismas reglas de paleta, tema y exportación.
 
@@ -258,7 +476,6 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | Samuel Escandón          | Por definir                              | [s.escandoc@uniandes.edu.co](mailto:s.escandoc@uniandes.edu.co)   |
 | Douglas Plazas Guzmán    | analisis historico                              | [d.plazasg@uniandes.edu.co](mailto:d.plazasg@uniandes.edu.co)     |
 | Mateo Olmos Becerra       | Por definir                              | [m.olmosb@uniandes.edu.co](mailto:m.olmosb@uniandes.edu.co)       |
-| Santiago Martínez López | Por definir                              | [s.martinezl@uniandes.edu.co](mailto:s.martinezl@uniandes.edu.co) |
 | Santiago Muñoz Martínez | Por definir                              | [s.munozm234@uniandes.edu.co](mailto:s.munozm234@uniandes.edu.co) |
 
 <!-- Roles del Taller 2 sin asignar todavía; en el Taller 1 estaban divididos
@@ -274,6 +491,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | (heredada) | `time_spent` está en minutos, en las dos bases.                                                                                                | Confirmado en el Taller 1.                                                                                                                                                     |
 | (heredada) | El estimando central del experimento es el efecto de `easier_signup` sobre el ingreso (ITT); `sign_up` es un mecanismo, no la palanca.         | `easier_signup` es lo que CheMarket puede manipular. En el Taller 1, `sign_up` y `easier_signup` coinciden perfectamente en el experimento (primer estadio = 1, LATE = ITT).      |
 | 2026-10-21 | Variable dependiente de las Partes A y B: `ln(Revenue)`; `Revenue` en nivel se conserva solo para la comparación con el Taller 1.              | Lo exige el enunciado; permite separar el efecto de la transformación del efecto del método.                                                                                  |
+| 2026-10-23 | Las conversaciones con los agentes (`.jsonl`) se guardan localmente en `09_Conversaciones/` (ignorada por git) y al final se unen por aparte.  | Cada integrante trabaja en su máquina; unirlas fuera de git evita conflictos y subir registros crudos al repositorio, y aun así cumple con el registro que pide la rúbrica.      |
 
 ## Análisis descartados
 
@@ -349,36 +567,23 @@ obs., sin pérdidas por NA.
 - Ser explícitos sobre qué recomendación sostiene la evidencia histórica y qué
   agrega el experimento.
 - **No incluir código en la presentación.**
+- Tablas y figuras autocontenidas, exportadas desde el código en su formato
+  final (ver "Reproducibilidad y salidas"); nunca pantallazos del software.
+- Video: todos los integrantes exponen de forma equitativa y la duración no
+  excede los 15 minutos (criterio de la rúbrica del Taller 1).
+- Antes de cerrar la presentación, pase la lista de chequeo de
+  `07_Recursos/heuristicas_retroalimentacion_taller1.md` (estimando declarado,
+  conciliación nivel vs. log, RMSE interpretado en unidades del negocio,
+  balance **y** cumplimiento del experimento, recomendación sí/no coherente con
+  la evidencia).
 
 ## Estado actual
 
-<!-- Punto de avance del proyecto al cierre de la última sesión: qué está
-     hecho, qué sigue, dónde se quedó el trabajo. -->
+El estado de avance (qué existe hoy, qué sigue y el registro de sesiones) se
+lleva en `HANDOFF.md`, no aquí. Ver la sección "`HANDOFF.md`" en "Reglas de
+trabajo".
 
-**Última actualización: 2026-10-21 (rama `main`).**
-
-### Hecho
-
-- Estructura de carpetas creada (igual a la del Taller 1), con `.gitkeep` en las
-  carpetas vacías, `taller_02.Rproj`, `.gitignore` y el enunciado en
-  `07_Recursos/Problem_Set_2.pdf`.
-- Datos crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`,
-  `datos_experimento.Rds`); bases listas regeneradas en `01_Datos/03_Listos/` con
-  `02_Scripts/01_limpieza_observacional.R` y `02_limpieza_experimento.R` (0 obs.
-  perdidas). `02_Scripts/00_formato_graficas.R` copiado del Taller 1.
-- Skill `registrar-sesion` (traída del Laboratorio 9) en `.claude/skills/` y
-  carpeta `09_Conversaciones/` para los `.jsonl`, ignorada por git.
-
-### Pendiente
-
-- Verificar `Revenue > 0` en la base observacional y construir `ln(Revenue)`
-  (convención del Taller 1: `log_revenue`).
-- Crear `README.md` y `00_main.R` (script maestro) cuando haya scripts.
-- Definir roles del equipo y registrar en "Decisiones tomadas" los algoritmos y
-  paquetes de árboles a usar.
-- Parte A (predicción con árboles) y Parte B (HTE con árboles causales).
-
-### Punto de partida: resultados del Taller 1
+## Punto de partida: resultados del Taller 1
 
 Referencia para las comparaciones; ver el repositorio `taller1/` para el detalle.
 
@@ -414,3 +619,5 @@ Referencia para las comparaciones; ver el repositorio `taller1/` para el detalle
   metodológica").
 - No evaluar desempeño predictivo dentro de muestra ni omitir `set.seed(2026)`.
 - No incluir código en la presentación final.
+- No commitear ni hacer push a `main`: todo cambio va a la rama del integrante
+  y llega a `main` solo cuando el integrante lo pide (ver "Flujo de versiones").
