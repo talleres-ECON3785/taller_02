@@ -62,6 +62,18 @@ unique(data_experimento_limpio$device_type)
 #ambas variables tienen como valores los establecidos por la guia
 #todas las variables concuerdan con las descripciones y chequeos
 
+#construimos ln(Revenue), variable dependiente del Taller 2. Requiere
+#Revenue > 0: si alguna observacion no lo cumple el script se detiene, para
+#no perder filas en silencio
+n_antes_log <- nrow(data_experimento_limpio)
+stopifnot(all(data_experimento_limpio$Revenue > 0))
+data_experimento_limpio <- data_experimento_limpio |>
+  mutate(log_revenue = log(Revenue))
+stopifnot(nrow(data_experimento_limpio) == n_antes_log)
+
+#no se pierden observaciones al construir log_revenue, n=10000
+summary(data_experimento_limpio$log_revenue)
+
 #guardamos base como lista
 
 saveRDS(data_experimento_limpio, "01_Datos/03_Listos/experimento_listos.RDS")

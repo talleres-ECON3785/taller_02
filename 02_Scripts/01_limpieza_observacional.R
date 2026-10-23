@@ -266,6 +266,24 @@ embudo <- bind_rows(
   )
 )
 
+# ln(Revenue): variable dependiente del Taller 2. Requiere Revenue > 0; si
+# alguna observacion no lo cumple, el script se detiene en vez de perder filas
+stopifnot(all(obs_final$Revenue > 0))
+obs_final <- obs_final |>
+  mutate(log_revenue = log(Revenue))
+
+cat("\nlog_revenue construida como log(Revenue); Revenue minimo:",
+    round(min(obs_final$Revenue), 3), "\n")
+
+embudo <- bind_rows(
+  embudo,
+  tibble(
+    paso = "04. Construir log_revenue (Revenue > 0, sin perdida de observaciones)",
+    n_obs = nrow(obs_final),
+    n_perdidas = 0L
+  )
+)
+
 cat("\n=== Tabla de embudo de observaciones ===\n")
 print(embudo)
 
