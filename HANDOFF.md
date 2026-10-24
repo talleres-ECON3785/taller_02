@@ -26,32 +26,31 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    *Terminado cuando:* esas figuras y tablas salen de `00_main.R` en las
    subcarpetas de su script y las cifras de las notas de `05_Notas/` (hoy leídas
    de las figuras) remiten a una tabla exportada.
-2. **P2.2 (resto): escalera en `ln(Revenue)` y LASSO.** Ampliar
-   `04_prediccion_lineal_observacional.R` con la misma escalera en
-   `ln(Revenue)` (incluida la prueba de si el tiempo continuo aporta algo más
-   allá del corte de 5 minutos, que en dólares no aporta) y con `cv.glmnet`.
+2. **P2.2 (resto): escalera lineal y LASSO en `ln(Revenue)`.** Ampliar
+   `04_prediccion_lineal_observacional.R` con la misma escalera en `ln(Revenue)`
+   (incluida la prueba de si el tiempo continuo aporta algo más allá del corte de
+   5 minutos, que en dólares no aporta) y `05_lasso_observacional.R` con LASSO sobre
+   `log_revenue` (el de dólares ya está hecho).
    *Terminado cuando:* hay RMSE de CV para cada modelo en las dos escalas, sin
-   tocar `test`, y la nota `A_corte_5_minutos_captura_tiempo.md` dice qué cambia
-   en logaritmo.
-3. **P2.3: CART.** Nuevo script de árboles (`rpart`, `cp = 0`, poda por CV con la
-   regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte de 5
-   minutos y el cruce con las sesiones? Numerar el script sin chocar con
-   `06_forma_funcional_observacional.R`.
+   tocar `test`, y las notas `A_corte_5_minutos_captura_tiempo.md` y
+   `A_lasso_vs_lineal_flexible.md` dicen qué cambia en logaritmo.
+3. **P2.3: CART.** Nuevo `07_arboles_observacional.R` (`rpart`, `cp = 0`, poda por CV
+   con la regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte
+   de 5 minutos y el cruce con las sesiones? Su benchmark lineal es LASSO (RMSE de
+   prueba 1.765), no el lineal del Taller 1.
    *Terminado cuando:* existen la figura del árbol y una nota que compara sus
-   cortes con las descriptivas y con el lineal de `A_lineal_flexible_vs_taller1.md`.
+   cortes con las descriptivas, con el lineal de `A_lineal_flexible_vs_taller1.md` y
+   con LASSO.
 
 **Bloqueos / preguntas abiertas:**
 
-- Correr `00_main.R` completo (no se corrió en las sesiones 3 y 4: se corrieron por
-  separado los scripts 03 y 04 de predicción, y la sección del MCO) y comprobar que
-  `06_forma_funcional_observacional.R` funciona con su carpeta de salida renombrada.
-- Renumerar en `PLAN.md` y en el README los scripts planificados (`05_arboles`,
-  `06_comparacion`, `07_validacion`, …): el 05 ahora es la forma funcional.
+- Opcional: probar LASSO con un diccionario sin el indicador de más de 5 minutos, para ver si lo recupera solo (sería nota nueva).
+- `.claude/worktrees/` quedó como directorio no versionado en el checkout principal (worktree sin rama de esta sesión); quitarlo con `git worktree remove .claude/worktrees/lasso` o ignorarlo en `.gitignore`.
 - El corte de 5 minutos y el cruce se eligieron mirando la base completa (incluye
   `test`); decidir si se redefine el cruce solo con `train` para la comparación con
   árboles.
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
-- Escribir las notas del script 04 en `05_Notas/06_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
+- Escribir las notas del script 06 en `05_Notas/06_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
 - Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
 - Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
@@ -80,7 +79,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
   tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo) y P2.1; P1.2
-  avanzó (falta `sign_up`) y P2.2 y P2.6 avanzaron (escalera lineal en dólares).
+  avanzó (falta `sign_up`) y P2.2 y P2.6 avanzaron (escalera lineal y LASSO en dólares).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
   script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
@@ -94,8 +93,9 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   pasadas y tiempo, dispositivo y sistema operativo, y `B_ols_efecto_registro.md`: ITT
   en dólares con cumplimiento perfecto) y tres notas de la Parte A en
   `05_Notas/04_prediccion_lineal_observacional/` (escalera e importancia lineal; el corte
-  de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), indexadas por
-  script en `05_Notas/README.md`. Todas en dólares; aún no hay notas del script 05
+  de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), una nota de LASSO en
+  `05_Notas/05_lasso_observacional/` (`A_lasso_vs_lineal_flexible.md`), indexadas por
+  script en `05_Notas/README.md`. Todas en dólares; aún no hay notas del script 06
   (`ln(Revenue)`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
@@ -109,9 +109,9 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
   `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
   en nivel, más el MCO del efecto del registro), `04_prediccion_lineal_observacional.R`
-  (escalera lineal en dólares) y `05_forma_funcional_observacional.R` (`ln(Revenue)`);
-  corría completo antes de la sesión 3 (después solo se corrieron por separado el 03,
-  el 04 y el 05). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  (escalera lineal en dólares), `05_lasso_observacional.R` (LASSO en dólares) y
+  `06_forma_funcional_observacional.R` (`ln(Revenue)`); `00_main.R` corre completo
+  sin errores (verificado en la sesión 5, unos 3 minutos). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
   `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
   la lista. Cada script dibuja sus propias figuras.
 - **Resultados:** reportes de calidad de la base observacional en
@@ -122,13 +122,15 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
   con sus cifras y el n en el título del panel; ejes con
   mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
-  `.../05_forma_funcional_observacional/`; la tabla del MCO del registro en
+  `.../06_forma_funcional_observacional/`; la tabla del MCO del registro en
   `03_Resultados/Tablas/03_punto_partida/` (ITT 0.491 dólares, error estándar 0.073); y,
   en `.../{Tablas,Figuras}/04_prediccion_lineal_observacional/`, cuatro tablas (escalera,
   aporte de cada variable con fila del cruce, robustez de la forma del tiempo y RMSE de
   prueba) y dos figuras (escalera y orden de entrada del tiempo y el corte). RMSE de
-  prueba en dólares: 2.716 (ingenuo), 2.314 (lineal del Taller 1) y 1.845 (lineal con
-  corte y cruce).
+  prueba en dólares: 2.716 (ingenuo), 2.314 (lineal del Taller 1), 1.845 (lineal con
+  corte y cruce) y 1.765 (LASSO, 74 términos), con cuatro tablas y una figura de LASSO
+  en `.../05_lasso_observacional/` (la mejora de LASSO viene del diccionario, no de la
+  regularización: MCO con los mismos términos iguala su error de validación).
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -145,6 +147,19 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 5): LASSO como benchmark lineal flexible y renumeración de scripts
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `05_lasso_observacional.R` (solo el modelo
+  final, diccionario de 74 términos, mismos pliegues que el 04): RMSE de prueba 1.765
+  frente a 1.845 del lineal con quiebre y cruce y 2.314 del Taller 1. Chequeo con MCO sin
+  penalización: la mejora viene del diccionario, no de la regularización (nota corregida);
+  se quitaron dos columnas duplicadas (76 a 74). El script de forma funcional pasó a
+  `06_` y los planificados se renumeraron (07 a 11). `00_main.R` completo corre sin
+  errores. P2.2 avanzó (falta `ln(Revenue)`).
+- Bitácora: [2026-10-24_lasso-benchmark-y-renumeracion_5.md](06_Bitacoras/2026-10-24_lasso-benchmark-y-renumeracion_5.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (descriptiva pendiente); (2) P2.2
+  (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `07_arboles_observacional.R`.
 
 ### 2026-10-24 (sesión 4): MCO del efecto del registro y escalera de modelos lineales
 
