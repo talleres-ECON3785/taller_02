@@ -51,8 +51,8 @@ el cruce con las sesiones (de 2.314 a 1.845). El error sigue siendo 44 % de la
 media del ingreso.
 
 La mejora viene de términos que el lineal no incluía: cómo el salto de 5 minutos
-cambia con el usuario recurrente, el sistema operativo y el dispositivo, y que el
-efecto de las sesiones no es una recta (el cuadrado de las sesiones). No viene de
+cambia con el sistema operativo y el dispositivo, y que el efecto de las sesiones
+no es una recta (el cuadrado de las sesiones). No viene de
 la regularización: ajustar esos mismos términos por mínimos cuadrados, sin
 penalización, da el mismo error que LASSO. Con 80,000 observaciones y 74 columnas
 casi no hay sobreajuste que corregir, y por eso el λ elegido es muy pequeño.
@@ -99,6 +99,12 @@ esto es una conclusión causal sobre el registro.
   sesiones, porque los usuarios no recurrentes tienen 0 sesiones anteriores; se
   quitaron y el diccionario tiene 74. Con las 76 columnas el RMSE de prueba de
   LASSO era 1.766 y los términos conservados, 49.
+- "Usuario recurrente" es lo mismo que tener al menos una sesión anterior (ver
+  `03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md`), así que su término
+  (más de 5 minutos × usuario recurrente, −3.237) no se lee solo: compensa el
+  efecto de las sesiones y del cruce para quien tiene una o pocas sesiones. Lo
+  que el modelo usa es la combinación de los tres términos, no cada uno por
+  separado.
 - Solo `Revenue` en dólares; falta la escala logarítmica, y los RMSE de ambas
   escalas no son comparables entre sí.
 
@@ -111,3 +117,4 @@ esto es una conclusión causal sobre el registro.
   diccionario dos columnas duplicadas (76 a 74), lo que movió las cifras de
   LASSO: RMSE de prueba 1.766 a 1.765; términos conservados 49 a 63. La
   conclusión no cambia.
+- 2026-10-24: se retiró la lectura de "más de 5 minutos × usuario recurrente" como factor propio del salto; es colineal con las sesiones anteriores (no hay recurrentes con 0 sesiones).
