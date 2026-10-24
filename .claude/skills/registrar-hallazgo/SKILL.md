@@ -76,9 +76,13 @@ Mientras el usuario no decida:
 
 ## Paso 4: escribir o actualizar la nota
 
-Nombre: `05_Notas/<parte>_<slug>.md` con `<parte>` = `A`, `B` o `X`
-(transversal), slug en minúsculas con guion bajo (p. ej.
-`A_quiebre_time_spent.md`). Una nota por hallazgo, no por sesión ni por script.
+Nombre: `05_Notas/<script>/<parte>_<slug>.md`, en la subcarpeta del script del
+que se deriva el hallazgo (p. ej. `05_Notas/03_punto_partida/`), con `<parte>` =
+`A`, `B` o `X` (transversal), slug en minúsculas con guion bajo (p. ej.
+`A_quiebre_time_spent.md`). Una nota por hallazgo, no por sesión. La nota solo
+habla de lo que se sabe con los resultados de su script; si otro script lo
+matiza, se registra en la subcarpeta de ese script. Declara el "Script de
+origen" bajo "Parte / base".
 
 Estructura:
 

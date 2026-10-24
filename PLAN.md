@@ -70,8 +70,7 @@ bases listas traen `log_revenue`.
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
 Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
-`04_forma_funcional_observacional.R` (`ln(Revenue)`), con funciones compartidas en
-`00_formato_descriptivas.R`.
+`04_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
 - [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.

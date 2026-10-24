@@ -31,17 +31,18 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
 3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
    de `train`), lineal del Taller 1, lineal flexible (con el cruce "más de 5
-   minutos" × sesiones pasadas, ver `A_sesiones_pasadas_interaccion_tiempo.md`) y
+   minutos" × sesiones pasadas, ver `05_Notas/03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md`) y
    LASSO (`cv.glmnet`).
    *Terminado cuando:* hay RMSE de `train`/CV para cada uno en `Revenue` y en
    `ln(Revenue)`, sin tocar `test`.
 
 **Bloqueos / preguntas abiertas:**
 
-- Decidir si las figuras de densidad marcan también la media (además de la mediana): hoy ocultan las diferencias de promedio por la cola alta (p. ej. por sistema operativo).
+- Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
+- Escribir las notas del script 04 en `05_Notas/04_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
-- Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y `00_formato_descriptivas.R`.
-- Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en la figura de interacción; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
+- Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
+- Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
@@ -78,10 +79,12 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
   `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
   sin probar con un resultado real.
-- **Notas:** tres notas de la Parte A en `05_Notas/` (quiebre en 5 minutos,
-  interacción entre sesiones pasadas y tiempo, dispositivo y sistema operativo),
-  indexadas en `05_Notas/README.md`. Sus cifras salen de las figuras; falta la
-  tabla exportada que las respalde.
+- **Notas:** tres notas de la Parte A en `05_Notas/03_punto_partida/` (quiebre en
+  5 minutos, interacción entre sesiones pasadas y tiempo, dispositivo y sistema
+  operativo: medianas parecidas, medias distintas), solo sobre el ingreso en
+  dólares, indexadas por script en `05_Notas/README.md`. Sus cifras salen de las
+  figuras; falta la tabla exportada que las respalde. Aún no hay notas del
+  script 04 (`ln(Revenue)`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
@@ -93,16 +96,18 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
   `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
-  en nivel) y `04_forma_funcional_observacional.R` (`ln(Revenue)`); corre completo
-  sin errores. `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
-  `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) y
-  `00_formato_descriptivas.R` (funciones de las figuras de la descriptiva) no
-  van en la lista.
+  en nivel) y `04_forma_funcional_observacional.R` (`ln(Revenue)`); corría completo
+  antes de la sesión 3 (después solo se corrieron los scripts 03 y 04 por
+  separado). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) no van en
+  la lista. Cada script dibuja sus propias figuras.
 - **Resultados:** reportes de calidad de la base observacional en
   `03_Resultados/Tablas/01_limpieza_observacional/` y 12 figuras descriptivas
   (6 por escala, 9×6 pulgadas: ingreso frente a tiempo en el sitio, sesiones
   pasadas, dispositivo, sistema operativo, usuario recurrente e interacción
-  tiempo × sesiones, esta última en un panel con curvas loess; ejes con
+  tiempo × sesiones y el ingreso frente al tiempo, ambas con curvas loess; las
+  de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
+  con sus cifras y el n en el título del panel; ejes con
   mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
   `.../04_forma_funcional_observacional/`. Ningún modelo estimado.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
@@ -121,6 +126,22 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 3): figuras en cada script, loess del tiempo, categóricas con media y mediana y notas por script
+
+- Santiago Muñoz (`SantiagoMunozM`). Las figuras se construyen ahora dentro de los
+  scripts 03 y 04 (se eliminó `00_formato_descriptivas.R`); el ingreso frente al
+  tiempo usa loess por lado de los 5 minutos, sin banda por memoria; las
+  categóricas muestran media y mediana con sus cifras; las tres notas pasaron a
+  `05_Notas/03_punto_partida/` y se limitaron al script 03 (medianas parecidas,
+  medias distintas, cola derecha como sugerencia). No se corrió `00_main.R`
+  completo.
+- P1.2 sigue abierto (falta `sign_up`); P1.1, P1.3, P2.1 y P2.2 no se trabajaron.
+- Bitácora: [2026-10-24_figuras-categoricas-loess-y-notas-por-script_3.md](06_Bitacoras/2026-10-24_figuras-categoricas-loess-y-notas-por-script_3.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas con percentiles altos);
+  (2) P2.1: partición 80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en
+  las dos escalas.
 
 ### 2026-10-24 (sesión 2): renombre del script 03, ejes y figura continua de interacción
 

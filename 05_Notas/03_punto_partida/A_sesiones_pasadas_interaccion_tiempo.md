@@ -2,23 +2,22 @@
 
 - **Estado:** vigente
 - **Parte / base:** A; observacional; descriptivo
-- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_partida.R` y `02_Scripts/04_forma_funcional_observacional.R`
+- **Script de origen:** `02_Scripts/03_punto_partida.R` (ingreso en dólares)
+- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_partida.R`
 
 ## Evidencia
 - `03_Resultados/Figuras/03_punto_partida/observacional_revenue_sesiones_pasadas.png`
-  y `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_sesiones_pasadas.png`
-  (ingreso promedio por número de sesiones anteriores, 0 a 10 o más; n = 100,000).
+  (ingreso promedio en dólares por número de sesiones anteriores, 0 a 10 o más;
+  n = 100,000).
 - `03_Resultados/Figuras/03_punto_partida/observacional_revenue_tiempo_por_sesiones.png`
-  y `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_tiempo_por_sesiones.png`
   (ingreso promedio frente al tiempo en el sitio, una curva suavizada por tramo
   de sesiones pasadas: 0 a 2, 3, y 4 o más; 42,264 / 22,462 / 35,274 usuarios;
   un solo panel, curvas loess ajustadas por separado a cada lado de los 5
   minutos, bandas del 95 %).
-- Cifras leídas de las figuras (aproximadas): con 0 a 2 sesiones el ingreso
-  promedio es ≈3.15 dólares (≈1.07 en logaritmo) y con 4 o más ≈5.1 (≈1.4). Con
-  menos de 5 minutos, los tres tramos tienen el mismo promedio (≈2.85 dólares;
-  ≈0.98 en logaritmo). Con más de 5 minutos, ≈3.7 / ≈5.2 / ≈9 dólares y
-  ≈1.23 / ≈1.58 / ≈2.12 en logaritmo, de 0 a 2 sesiones a 4 o más.
+- Cifras leídas de las figuras (aproximadas, en dólares): con 0 a 2 sesiones el
+  ingreso promedio es ≈3.15 y con 4 o más ≈5.1. Con menos de 5 minutos, los tres
+  tramos tienen el mismo promedio (≈2.85). Con más de 5 minutos, ≈3.7 / ≈5.2 / ≈9
+  dólares, de 0 a 2 sesiones a 4 o más.
 
 ## Qué dice, en lenguaje intuitivo
 El ingreso promedio es más alto entre los usuarios con 4 o más visitas previas,
@@ -35,10 +34,10 @@ Responde a la Parte A ("¿qué patrones aparecen con los árboles?"). Es una
 conclusión **nueva** respecto al Taller 1, que describió las dos variables por
 separado. Un modelo lineal sin término cruzado impone que el efecto de las
 sesiones pasadas es el mismo para todos los tiempos; un árbol puede dividir
-primero por tiempo y luego por sesiones. La diferencia entre modelos que se
-observe más adelante vendrá del método (interacciones), no de la transformación:
-el patrón se ve igual en dólares y en logaritmo. Para el benchmark lineal
-flexible (P2.2) sugiere incluir el cruce entre "más de 5 minutos" y las sesiones.
+primero por tiempo y luego por sesiones. Para el benchmark lineal flexible
+(P2.2) sugiere incluir el cruce entre "más de 5 minutos" y las sesiones. Esta nota
+cubre solo el ingreso en dólares: si el patrón se mantiene en logaritmo se
+registrará con el script `04_forma_funcional_observacional.R`.
 
 ## Límites e incertidumbre
 - Asociación descriptiva; no hay asignación aleatoria ni evidencia causal.
@@ -57,3 +56,5 @@ flexible (P2.2) sugiere incluir el cruce entre "más de 5 minutos" y las sesione
   grupos por tramo a un solo panel con curvas loess (a pedido del usuario; se
   probó también un promedio móvil y se descartó). Mismo patrón; las cifras
   siguen leídas de las figuras.
+- 2026-10-24: la nota se limita al script 03 (se retiran las cifras en logaritmo)
+  y se mueve a `05_Notas/03_punto_partida/`.

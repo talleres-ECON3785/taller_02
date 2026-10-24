@@ -368,11 +368,17 @@ qué importa**, mientras que las bitácoras (`06_Bitacoras/`) registran **qué s
 hizo en cada sesión**. Quien arme la presentación debe poder leer solo las notas
 y reconstruir los mensajes principales.
 
-- **Una nota por hallazgo principal**, no por sesión ni por script. Un hallazgo
-  es un resultado que sostiene (o matiza, o contradice) una conclusión del
-  taller. Nombre: `<parte>_<slug>.md` (p. ej. `A_quiebre_time_spent.md`,
+- **Una nota por hallazgo principal**, no por sesión. Un hallazgo es un
+  resultado que sostiene (o matiza, o contradice) una conclusión del taller.
+  Nombre: `<parte>_<slug>.md` (p. ej. `A_quiebre_time_spent.md`,
   `B_evidencia_hte.md`), con `<parte>` = `A`, `B` o `X` (transversal, p. ej.
   qué cambia por la transformación vs. por el método).
+- **Las notas se agrupan por el script del que se derivan:**
+  `05_Notas/<script>/<parte>_<slug>.md` (p. ej.
+  `05_Notas/03_punto_partida/A_quiebre_time_spent.md`). Una nota solo habla de lo
+  que se sabe con los resultados de su script; si otro script matiza o cambia el
+  hallazgo (p. ej. el análisis en `ln(Revenue)`), se registra en la subcarpeta de
+  ese script y se enlaza. Cada nota declara su "Script de origen".
 - **Una nota se crea o actualiza en la misma sesión en que el resultado que la
   sostiene se genera o cambia.** No se espera al cierre ni a la presentación.
 - **Estructura de cada nota:**
@@ -382,6 +388,7 @@ y reconstruir los mensajes principales.
 
   - **Estado:** vigente | matizado | reemplazado (con enlace a la nota que lo reemplaza)
   - **Parte / base:** A o B; observacional o experimento; descriptivo, predictivo o causal
+  - **Script de origen:** `02_Scripts/<script>.R`
   - **Última verificación:** YYYY-MM-DD, con el script que lo genera
 
   ## Evidencia
@@ -639,6 +646,8 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Confirmado el 2026-10-24: el Taller 1 también usa `log(Revenue)` sin constante. |
 | 2026-10-24 | Cada script que genera figuras o tablas guarda sus salidas en una subcarpeta propia, con su nombre: `03_Resultados/{Figuras,Tablas}/<script>/`. `guardar_figura()` y `guardar_tabla()` reciben `carpeta`; `00_main.R` crea las subcarpetas en `carpetas_salida`. | La ruta de cada archivo indica qué script lo genera; con decenas de figuras en una sola carpeta, rastrear y regenerar cada resultado se vuelve lento. Se conservan `Figuras/` y `Tablas/` como carpetas de primer nivel para no romper las rutas ya citadas. |
 | 2026-10-24 | La figura de interacción tiempo × sesiones pasadas es un solo panel con una curva loess por tramo de sesiones, ajustada por separado a cada lado de los 5 minutos y con el eje x recortado a 0.1–25 minutos. Se descartan la versión de tres paneles con 20 grupos por tramo y el promedio móvil. `loess` solo se usa como suavizado descriptivo de figuras (ampliación registrada en el catálogo). | La curva continua muestra la interacción sin elegir cuantiles; el promedio móvil se probó y el usuario prefirió el loess. No es un estimador ni un benchmark. |
+| 2026-10-24 | Las figuras se construyen dentro del script que las genera; `02_Scripts/00_formato_*.R` solo define formato (paleta, tema, tablas, guardado). Se elimina `00_formato_descriptivas.R`. El ingreso frente al tiempo en el sitio también usa curva loess por lado de los 5 minutos, sin banda de confianza (límite de memoria). Las densidades por categoría muestran media (línea continua) y mediana (punteada) con sus cifras junto a cada línea y el n en el título del panel. | Quien lee un script debe ver cómo se construye cada figura, sin saltar a un auxiliar; las cifras dentro de la figura evitan consultarlas en la nota al pie. Con ~85,000 observaciones a un lado, loess con errores estándar necesita más de 4 mil millones de celdas. |
+| 2026-10-24 | Las notas de `05_Notas/` se agrupan en una subcarpeta por script de origen (`05_Notas/<script>/`) y solo hablan de lo que se sabe con los resultados de ese script. | Permite atribuir cada hallazgo a su script y registrar por separado qué cambia al pasar a `ln(Revenue)` (script 04). |
 
 ## Análisis descartados
 
