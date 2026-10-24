@@ -292,12 +292,12 @@ tabla_escalera <- escalera |>
     titulo = "Cuánto baja el error de predicción al agregar cada variable",
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
-      "observacional", nrow(train), "entrenamiento",
+      "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
       extra = paste(
         "RMSE de validación cruzada de 5 pliegues, en dólares. La caída es la",
         "diferencia con el paso anterior, calculada pliegue a pliegue; entre",
-        "paréntesis, su error estándar entre pliegues. Es aporte predictivo, no",
-        "efecto causal, y depende del orden de los pasos."
+        "paréntesis, su error estándar entre pliegues. Depende del orden de los",
+        "pasos."
       )
     )
   )
@@ -316,7 +316,7 @@ tabla_robustez <- robustez_tiempo |>
     titulo = "El tiempo en minutos no agrega nada una vez incluido el corte de 5 minutos",
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
-      "observacional", nrow(train), "entrenamiento",
+      "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
       extra = paste(
         "Mismo modelo en todas las filas (sesiones anteriores, dispositivo,",
         "sistema operativo, usuario recurrente, cruce con las sesiones y",
@@ -349,15 +349,14 @@ tabla_importancia <- importancia |>
     titulo = "Aporte predictivo de cada variable, sin depender del orden",
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
-      "observacional", nrow(train), "entrenamiento",
+      "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
       extra = paste(
         "Cambio del RMSE de validación cruzada (5 pliegues) frente a la media",
         "(columna 2) y frente al modelo completo (columna 3); entre paréntesis,",
         "el error estándar entre pliegues. Quitar el tiempo o las sesiones",
         "anteriores quita también el cruce. Para el cruce, la columna 2 compara",
         "el modelo con las dos variables y el cruce frente al modelo con las dos",
-        "variables sin cruce, y la columna 3 es el modelo completo sin el cruce.",
-        "Aporte predictivo, no causal."
+        "variables sin cruce, y la columna 3 es el modelo completo sin el cruce."
       )
     )
   )
@@ -388,12 +387,12 @@ tabla_prueba <- prueba |>
       media_train
     ),
     nota = nota_tabla(
-      "observacional", nrow(test), "prueba",
+      "observacional", nrow(test), "prueba", enfoque = "predictivo",
       extra = paste0(
         "Modelos ajustados con la muestra de entrenamiento (n = ",
         format(nrow(train), big.mark = ","), ") y evaluados una sola vez en la",
         " muestra de prueba. Partición 80/20 con semilla 2026, como en el",
-        " Taller 1. Un menor error no implica efecto causal."
+        " Taller 1."
       )
     )
   )
@@ -416,7 +415,7 @@ grafica_escalera <- ggplot(datos_figura, aes(x = rmse_cv, y = etiqueta)) +
   geom_point(color = paleta_categorica[1], size = 3) +
   labs(
     title = "Error de predicción al agregar cada variable",
-    subtitle = subtitulo_observacional,
+    subtitle = subtitulo_observacional_predictivo,
     x = "RMSE de validación cruzada (dólares)", y = NULL,
     caption = paste(
       sprintf(
@@ -490,7 +489,7 @@ grafica_orden <- ggplot(orden_tiempo, aes(x = paso, y = rmse_cv)) +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0.1))) +
   labs(
     title = "El tiempo en minutos no baja el error una vez incluido el corte de 5 minutos",
-    subtitle = subtitulo_observacional,
+    subtitle = subtitulo_observacional_predictivo,
     x = NULL, y = "RMSE de validación cruzada (dólares)",
     caption = paste(
       sprintf(

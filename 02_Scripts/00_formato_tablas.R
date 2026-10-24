@@ -44,16 +44,21 @@ decimales <- list(
 # (mismo criterio que el subtitulo y la nota de las figuras)
 nota_tabla <- function(base = c("experimento", "observacional"),
                        n, muestra = c("completa", "entrenamiento", "prueba"),
-                       extra = NULL) {
+                       extra = NULL, enfoque = c("descriptivo", "predictivo")) {
   base <- match.arg(base)
   muestra <- match.arg(muestra)
+  enfoque <- match.arg(enfoque)
   texto_base <- switch(
     base,
     experimento   = "Datos del experimento A/B (asignación aleatoria).",
-    observacional = paste(
-      "Datos históricos (sin asignación aleatoria): las diferencias son",
-      "descriptivas, no causales."
-    )
+    observacional = if (enfoque == "predictivo") {
+      "Datos históricos (sin asignación aleatoria). Análisis predictivo, no causal."
+    } else {
+      paste(
+        "Datos históricos (sin asignación aleatoria): las diferencias son",
+        "descriptivas, no causales."
+      )
+    }
   )
   texto_muestra <- switch(
     muestra,

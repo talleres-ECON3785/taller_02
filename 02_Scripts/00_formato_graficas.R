@@ -50,6 +50,11 @@ subtitulo_observacional <- paste(
   "Datos historicos (sin asignacion aleatoria):",
   "las diferencias son descriptivas, no causales."
 )
+# para las figuras de prediccion sobre la base historica, una sola oracion
+subtitulo_observacional_predictivo <- paste(
+  "Datos históricos (sin asignación aleatoria).",
+  "Análisis predictivo, no causal."
+)
 
 # -----------------------------------------------------------------------------
 # 3. Tema
