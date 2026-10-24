@@ -37,7 +37,7 @@ sesiones pasadas es el mismo para todos los tiempos; un árbol puede dividir
 primero por tiempo y luego por sesiones. Para el benchmark lineal flexible
 (P2.2) sugiere incluir el cruce entre "más de 5 minutos" y las sesiones. Esta nota
 cubre solo el ingreso en dólares: si el patrón se mantiene en logaritmo se
-registrará con el script `06_forma_funcional_observacional.R`.
+registrará con el script `07_forma_funcional_observacional.R`.
 
 ## Límites e incertidumbre
 - Asociación descriptiva; no hay asignación aleatoria ni evidencia causal.

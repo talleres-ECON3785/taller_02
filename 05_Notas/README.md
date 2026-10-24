@@ -34,7 +34,6 @@ contradictorio.
 | [A_quiebre_time_spent.md](03_punto_partida/A_quiebre_time_spent.md) | vigente | A / observacional / descriptivo | ¿Qué relaciones aparecen? ¿Qué conclusiones del Taller 1 se mantienen? (quiebre en 5 minutos) |
 | [A_sesiones_pasadas_interaccion_tiempo.md](03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md) | vigente | A / observacional / descriptivo | ¿Qué patrones aparecen con los árboles? (interacción tiempo × sesiones) |
 | [A_dispositivo_y_sistema_operativo.md](03_punto_partida/A_dispositivo_y_sistema_operativo.md) | vigente | A / observacional / descriptivo | ¿Qué variables resultan más útiles para predecir? (medianas parecidas, medias distintas: cola derecha) |
-| [B_ols_efecto_registro.md](03_punto_partida/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares; cumplimiento perfecto) |
 
 ### `05_lasso_observacional/` (`05_lasso_observacional.R`: LASSO en dólares)
 
@@ -42,7 +41,14 @@ contradictorio.
 | --- | --- | --- | --- |
 | [A_lasso_vs_lineal_flexible.md](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con los modelos lineales? (RMSE de prueba 1.765 frente a 1.845 y 2.314) |
 
-### `06_forma_funcional_observacional/` (`06_forma_funcional_observacional.R`: `ln(Revenue)`)
+### `06_ate_experimento_niveles/` (`06_ate_experimento_niveles.R`: ITT en dólares, balance y cumplimiento)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [B_ols_efecto_registro.md](06_ate_experimento_niveles/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares: 0.49 sin controles, 0.45 con controles) |
+| [B_balance_y_cumplimiento.md](06_ate_experimento_niveles/B_balance_y_cumplimiento.md) | vigente | B / experimento / validación del diseño | ¿Se sostiene la lectura causal? (grupos comparables, cumplimiento perfecto) |
+
+### `07_forma_funcional_observacional/` (`07_forma_funcional_observacional.R`: `ln(Revenue)`)
 
 Sin notas todavía. Las figuras ya existen; falta registrar qué cambia frente al
 script 03 y atribuirlo a la transformación.

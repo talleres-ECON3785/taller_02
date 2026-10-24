@@ -19,7 +19,7 @@ octubre de 2026.**
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
-   `03_punto_partida.R` / `06_forma_funcional_observacional.R`
+   `03_punto_partida.R` / `07_forma_funcional_observacional.R`
    la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
    `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
    covariable y escala y la tabla de cifras del Taller 1 (P1.3).
@@ -34,7 +34,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    *Terminado cuando:* hay RMSE de CV para cada modelo en las dos escalas, sin
    tocar `test`, y las notas `A_corte_5_minutos_captura_tiempo.md` y
    `A_lasso_vs_lineal_flexible.md` dicen qué cambia en logaritmo.
-3. **P2.3: CART.** Nuevo `07_arboles_observacional.R` (`rpart`, `cp = 0`, poda por CV
+3. **P2.3: CART.** Nuevo `08_arboles_observacional.R` (`rpart`, `cp = 0`, poda por CV
    con la regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte
    de 5 minutos y el cruce con las sesiones? Su benchmark lineal es LASSO (RMSE de
    prueba 1.765), no el lineal del Taller 1.
@@ -50,7 +50,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `test`); decidir si se redefine el cruce solo con `train` para la comparación con
   árboles.
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
-- Escribir las notas del script 06 en `05_Notas/06_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
+- Escribir las notas del script 07 en `05_Notas/07_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
 - Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
 - Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
@@ -122,8 +122,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
   con sus cifras y el n en el título del panel; ejes con
   mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
-  `.../06_forma_funcional_observacional/`; la tabla del MCO del registro en
-  `03_Resultados/Tablas/03_punto_partida/` (ITT 0.491 dólares, error estándar 0.073); y,
+  `.../07_forma_funcional_observacional/`; las tablas de balance, cumplimiento y MCO del registro en
+  `03_Resultados/Tablas/06_ate_experimento_niveles/` (ITT 0.491 dólares sin controles, 0.454 con ellos); y,
   en `.../{Tablas,Figuras}/04_prediccion_lineal_observacional/`, cuatro tablas (escalera,
   aporte de cada variable con fila del cruce, robustez de la forma del tiempo y RMSE de
   prueba) y dos figuras (escalera y orden de entrada del tiempo y el corte). RMSE de

@@ -46,7 +46,7 @@ Responde a la Parte A ("¿qué variables resultan más útiles para predecir?").
 CheMarket: el registro no mejora la predicción del ingreso una vez que se conocen
 el tiempo y las sesiones, pero esto es predictivo y no dice nada sobre el efecto
 causal de impulsarlo (eso lo da el experimento; ver
-`05_Notas/03_punto_partida/B_ols_efecto_registro.md`). Se **mantiene** del Taller 1
+`05_Notas/06_ate_experimento_niveles/B_ols_efecto_registro.md`). Se **mantiene** del Taller 1
 la lectura de que el tiempo en el sitio es la variable más informativa; **cambia**
 su forma (corte de 5 minutos en lugar de tiempo lineal, ver
 `A_corte_5_minutos_captura_tiempo.md`) y **se agrega** el cruce con las sesiones,

@@ -70,7 +70,7 @@ bases listas traen `log_revenue`.
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
 Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
-`06_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
+`07_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
 - [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
@@ -90,8 +90,8 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
 Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
-`07_arboles_observacional.R`,
-`08_comparacion_prediccion_observacional.R`.
+`08_arboles_observacional.R`,
+`09_comparacion_prediccion_observacional.R`.
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
@@ -121,13 +121,15 @@ figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
 
 ## H3. Parte B: validez del experimento y ATE · Resp.: ____
 
-Scripts: `09_validacion_experimento.R`, `10_ate_experimento.R`.
+Scripts: `06_ate_experimento_niveles.R`, `10_ate_experimento.R`.
 
 - [ ] **P3.1** Validación: tabla de balance, tabla de cumplimiento
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
-  (H7, H9).
+  (H7, H9). *Avance 2026-10-24:* hechos balance y cumplimiento en
+  `06_ate_experimento_niveles.R`; falta la representatividad.
 - [ ] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
-  sin controles) y ATE del bosque causal (`average_treatment_effect`).
+  sin controles; *avance 2026-10-24:* hecho en dólares con `lm` y HC1 en el
+  script 06, falta `ln(Revenue)`) y ATE del bosque causal (`average_treatment_effect`).
   **Decidir y registrar** `W.hat` (0.5 por diseño o la proporción observada).
 - [ ] **P3.3** Conciliación nivel–log (H2): cuantiles de `Revenue` por brazo y
   efecto en nivel sin la cola alta. Sostiene la diapositiva "por qué los dos

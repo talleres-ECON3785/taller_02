@@ -6,21 +6,19 @@
 # del Taller 1: como varia el ingreso con time_spent, past_sessions,
 # device_type, os_type e is_returning_user (heuristica H3). Es el punto de
 # partida del Taller 2; el mismo analisis en logaritmo esta en
-# '06_forma_funcional_observacional.R'.
+# '07_forma_funcional_observacional.R'.
 #
-# Las secciones 1 a 3 (figuras) son puramente descriptivas: asociaciones en
+# Todo el script es puramente descriptivas: asociaciones en
 # datos historicos (sin asignacion aleatoria), no efectos causales. Estimando:
 # ninguno; se describe la media condicional del ingreso dada cada covariable.
-# La ultima seccion si estima un efecto causal, con el experimento: MCO del
-# ingreso sobre el tratamiento solo (ver el encabezado de esa seccion).
+# El efecto causal del registro (ITT, en dolares) se estima con el experimento
+# en '06_ate_experimento_niveles.R'.
 # =============================================================================
 
 # los paquetes los carga 00_main.R con pacman
 
 # paleta, tema, subtitulos por base y funcion de guardado de las figuras
 source("02_Scripts/00_formato_graficas.R")
-# estilo y exportacion de las tablas (guardar_tabla())
-source("02_Scripts/00_formato_tablas.R")
 
 set.seed(2026)
 
@@ -381,71 +379,5 @@ guardar_figura(
   "observacional_revenue_tiempo_por_sesiones.png", grafica_cruce, carpeta_salida
 )
 
-# -----------------------------------------------------------------------------
-# Efecto causal del registro: MCO sencillo con el experimento
-# -----------------------------------------------------------------------------
-
-# Estimando: ITT de easier_signup (registro facilitado) sobre el ingreso en
-# dolares (escala del Taller 1). Estimador: MCO con el tratamiento como unico
-# regresor, sin controles, y errores estandar robustos HC1. Solo el experimento
-# sostiene una lectura causal (asignacion aleatoria); en la base observacional
-# la misma regresion seria una asociacion.
-exp <- readRDS("01_Datos/03_Listos/experimento_listos.RDS")
-
-# cumplimiento perfecto: sign_up coincide con easier_signup en todas las filas
-# (nadie asignado al tratamiento dejo de registrarse y nadie en control se
-# registro), asi que el ITT es tambien el efecto de registrarse (LATE = ITT)
-cumplimiento <- exp |>
-  count(easier_signup, sign_up) |>
-  mutate(easier_signup = factor(easier_signup, c(0, 1),
-                                c("Control", "Registro facilitado")))
-print(cumplimiento)
-stopifnot(
-  all(exp$sign_up == exp$easier_signup),
-  nrow(cumplimiento) == 2 # solo las celdas (0, 0) y (1, 1)
-)
-
-ols_registro <- lm(Revenue ~ easier_signup, data = exp)
-
-tabla_ols <- modelsummary(
-  list("Ingreso (dólares)" = ols_registro),
-  vcov = "HC1",
-  stars = c("*" = 0.1, "**" = 0.05, "***" = 0.01),
-  statistic = "({std.error})",
-  coef_map = c(
-    "easier_signup" = "Registro facilitado (efecto)",
-    "(Intercept)"   = "Promedio del grupo de control"
-  ),
-  gof_map = list(
-    list(raw = "nobs", clean = "Observaciones",
-         fmt = function(x) format(x, big.mark = ",")),
-    list(raw = "r.squared", clean = "R²", fmt = 3)
-  ),
-  fmt = 3,
-  output = "gt"
-) |>
-  estilo_tabla(
-    titulo = "Efecto del registro facilitado sobre el ingreso",
-    subtitulo = "MCO con el tratamiento como único regresor (dólares)",
-    nota = nota_tabla(
-      "experimento", nrow(exp),
-      extra = c(
-        paste(
-          "Errores estándar robustos (HC1) entre paréntesis. El efecto es la",
-          "diferencia de medias entre grupos, en dólares. Sin controles."
-        ),
-        paste(
-          "Cumplimiento perfecto: todos los usuarios asignados al registro",
-          "facilitado se registraron y ninguno del control lo hizo."
-        )
-      )
-    )
-  )
-
-guardar_tabla(
-  "experimento_ols_registro", tabla_ols,
-  get_estimates(ols_registro, vcov = "HC1"), carpeta_salida
-)
-
-cat("\nListo. Figuras y tablas guardadas en 03_Resultados/{Figuras,Tablas}/03_punto_partida/.\n")
-cat("Recordatorio: las figuras son asociaciones descriptivas; solo la tabla del MCO viene del experimento.\n")
+cat("\nListo. Figuras guardadas en 03_Resultados/Figuras/03_punto_partida/.\n")
+cat("Recordatorio: las figuras son asociaciones descriptivas, no efectos causales.\n")

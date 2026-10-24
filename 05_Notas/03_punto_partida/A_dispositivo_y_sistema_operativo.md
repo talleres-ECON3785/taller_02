@@ -49,7 +49,7 @@ aporte al promedio vendría de la cola alta. Conecta con el Taller 1, donde el
 efecto promedio en nivel también venía de pocos usuarios de gasto alto, y es una
 pista para la conciliación entre nivel y logaritmo (el promedio en dólares es
 sensible a la cola). Esa comparación se hará con el script
-`06_forma_funcional_observacional.R`; esta nota cubre solo el ingreso en dólares.
+`07_forma_funcional_observacional.R`; esta nota cubre solo el ingreso en dólares.
 Aquí no hay tratamiento: es una descripción.
 
 ## Límites e incertidumbre
