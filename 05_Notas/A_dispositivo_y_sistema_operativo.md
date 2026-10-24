@@ -2,10 +2,10 @@
 
 - **Estado:** vigente
 - **Parte / base:** A; observacional; descriptivo
-- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_de_partida_observacional.R` y `02_Scripts/04_forma_funcional_observacional.R`
+- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_partida.R` y `02_Scripts/04_forma_funcional_observacional.R`
 
 ## Evidencia
-- `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_dispositivo.png`
+- `03_Resultados/Figuras/03_punto_partida/observacional_revenue_dispositivo.png`
   y `.../observacional_revenue_sistema_operativo.png` (densidades del ingreso en
   dólares por grupo, escala log; n = 100,000).
 - `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_dispositivo.png`

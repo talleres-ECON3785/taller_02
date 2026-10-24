@@ -2,16 +2,18 @@
 
 - **Estado:** vigente
 - **Parte / base:** A; observacional; descriptivo
-- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_de_partida_observacional.R` y `02_Scripts/04_forma_funcional_observacional.R`
+- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_partida.R` y `02_Scripts/04_forma_funcional_observacional.R`
 
 ## Evidencia
-- `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_sesiones_pasadas.png`
+- `03_Resultados/Figuras/03_punto_partida/observacional_revenue_sesiones_pasadas.png`
   y `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_sesiones_pasadas.png`
   (ingreso promedio por número de sesiones anteriores, 0 a 10 o más; n = 100,000).
-- `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_tiempo_por_sesiones.png`
+- `03_Resultados/Figuras/03_punto_partida/observacional_revenue_tiempo_por_sesiones.png`
   y `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_tiempo_por_sesiones.png`
-  (ingreso promedio frente al tiempo en el sitio, en tres tramos de sesiones
-  pasadas: 0 a 2, 3, y 4 o más; 42,264 / 22,462 / 35,274 usuarios).
+  (ingreso promedio frente al tiempo en el sitio, una curva suavizada por tramo
+  de sesiones pasadas: 0 a 2, 3, y 4 o más; 42,264 / 22,462 / 35,274 usuarios;
+  un solo panel, curvas loess ajustadas por separado a cada lado de los 5
+  minutos, bandas del 95 %).
 - Cifras leídas de las figuras (aproximadas): con 0 a 2 sesiones el ingreso
   promedio es ≈3.15 dólares (≈1.07 en logaritmo) y con 4 o más ≈5.1 (≈1.4). Con
   menos de 5 minutos, los tres tramos tienen el mismo promedio (≈2.85 dólares;
@@ -43,9 +45,15 @@ flexible (P2.2) sugiere incluir el cruce entre "más de 5 minutos" y las sesione
 - Los tramos de sesiones se eligieron mirando la figura de sesiones pasadas (0 a
   2 | 3 | 4 o más), así que son una descripción del patrón, no un contraste
   decidido de antemano. Con 3 sesiones el promedio queda en un nivel intermedio.
-- Los intervalos de los grupos de 20 cuantiles no se ven en las figuras porque
-  son más pequeños que los puntos.
+- Las curvas son suavizados (loess, `span = 0.5`) de las observaciones, no
+  estimaciones de un modelo; el tramo de más de 25 minutos no se muestra porque
+  tiene pocos usuarios y bandas muy anchas. El ajuste por separado a cada lado
+  de los 5 minutos supone el quiebre que se quiere mostrar.
 - Cifras leídas de las figuras; falta la tabla exportada.
 
 ## Historial
 - 2026-10-24: nota creada. Resultado nuevo, sin contraparte en el Taller 1.
+- 2026-10-24: la figura `_tiempo_por_sesiones` pasa de tres paneles con 20
+  grupos por tramo a un solo panel con curvas loess (a pedido del usuario; se
+  probó también un promedio móvil y se descartó). Mismo patrón; las cifras
+  siguen leídas de las figuras.

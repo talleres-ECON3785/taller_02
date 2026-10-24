@@ -69,7 +69,7 @@ taller_02/
 ├── 02_Scripts/             scripts de R
 ├── 03_Resultados/
 │   ├── Tablas/             tablas exportadas (.png de la diapositiva y .csv sin formato), en una subcarpeta por script
-│   └── Figuras/            figuras exportadas (.png, 8×6 pulgadas, 300 dpi), en una subcarpeta por script
+│   └── Figuras/            figuras exportadas (.png, 9×6 pulgadas, 300 dpi), en una subcarpeta por script
 ├── 04_Presentaciones/      borradores de la presentación
 ├── 05_Notas/               una nota por hallazgo principal (índice en su README)
 ├── 06_Bitacoras/           documentación de cada sesión de trabajo
@@ -116,7 +116,7 @@ esta tabla en la misma sesión en que se crean.
 | Script | Hito | Resultados esperados |
 | --- | --- | --- |
 | `00_formato_descriptivas.R` | H1 | No genera resultados: define las funciones que dibujan las figuras de la descriptiva en las dos escalas (lo cargan los scripts 03 y 04 con `source()`) |
-| `03_punto_de_partida_observacional.R` | H1 | `Revenue` en nivel (dólares) frente a cada covariable: `03_Resultados/Figuras/03_punto_de_partida_observacional/`: `observacional_revenue_tiempo_sesion`, `_sesiones_pasadas`, `_dispositivo`, `_sistema_operativo`, `_recurrente` y `_tiempo_por_sesiones` (`.png`) |
+| `03_punto_partida.R` | H1 | `Revenue` en nivel (dólares) frente a cada covariable: `03_Resultados/Figuras/03_punto_partida/`: `observacional_revenue_tiempo_sesion`, `_sesiones_pasadas`, `_dispositivo`, `_sistema_operativo`, `_recurrente` y `_tiempo_por_sesiones` (un solo panel, curvas loess; `.png`) |
 | `04_forma_funcional_observacional.R` | H1 | Las mismas seis figuras con `ln(Revenue)` en `03_Resultados/Figuras/04_forma_funcional_observacional/`: `observacional_lnrevenue_*` (`.png`). Pendiente: densidad de `Revenue` frente a `ln(Revenue)` y tabla con las cifras del Taller 1 |
 | `04_prediccion_lineal_observacional.R` | H2 | Benchmarks lineales (referencia ingenua, lineal, LASSO) |
 | `05_arboles_observacional.R` | H2 | CART podado, bosque aleatorio, importancia de variables |

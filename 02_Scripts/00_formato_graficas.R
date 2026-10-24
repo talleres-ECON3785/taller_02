@@ -91,12 +91,12 @@ tema_paneles <- theme(
 # sobre el fondo de una diapositiva.
 # Cada script guarda sus figuras en su propia subcarpeta:
 # 03_Resultados/Figuras/<script>/<base>_<contenido>.png, donde <script> es el
-# nombre del script sin '.R' (p. ej. '03_punto_de_partida_observacional') y
+# nombre del script sin '.R' (p. ej. '03_punto_partida') y
 # <base> es 'experimento' u 'observacional', para saber de un vistazo que
 # base sostiene cada figura. `carpeta` es ese <script>; la subcarpeta debe
 # estar en `carpetas_salida` de 00_main.R (esta funcion no crea carpetas).
 guardar_figura <- function(nombre_archivo, grafica, carpeta,
-                           width = 8, height = 6, dpi = 300) {
+                           width = 9, height = 6, dpi = 300) {
   ggsave(
     file.path("03_Resultados/Figuras", carpeta, nombre_archivo),
     grafica,

@@ -193,7 +193,7 @@ explícitas para este taller. Son obligatorias:
   una figura o tabla guarda sus salidas en su propia subcarpeta, con el nombre
   del script sin `.R`: `03_Resultados/Figuras/<script>/` y
   `03_Resultados/Tablas/<script>/` (p. ej.
-  `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_tiempo_sesion.png`).
+  `03_Resultados/Figuras/03_punto_partida/observacional_revenue_tiempo_sesion.png`).
   Así cada archivo se rastrea a su script por la ruta. Reglas:
   - El script define `carpeta_salida <- "<nombre_del_script>"` al comienzo y
     la pasa a `guardar_figura(nombre, grafica, carpeta)` y
@@ -587,7 +587,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
   `<base>` es `experimento` u `observacional`. Para distinguir partes del
   taller puede agregarse el contenido (p. ej. `observacional_importancia_variables.png`,
   `experimento_cate_por_grupo.png`).
-- **Exportación:** siempre con `guardar_figura()` (8×6 pulgadas, 300 dpi, fondo
+- **Exportación:** siempre con `guardar_figura()` (9×6 pulgadas, 300 dpi, fondo
   blanco explícito). `guardar_figura()` no crea carpetas: asume que
   `00_main.R` ya verificó `03_Resultados/Figuras/` (ver "Reproducibilidad y
   salidas").
@@ -638,6 +638,7 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-23 | Las tablas se formatean con `gt`, con `modelsummary(..., output = "gt")` para las tablas de regresión; el `.png` se genera con Chrome/Chromium en modo headless (sin `webshot2`, cuya dependencia `websocket` no compila en todas las máquinas); el estilo y `guardar_tabla()` viven en `02_Scripts/00_formato_tablas.R`. Se descartan `flextable`, `kableExtra` y el dibujo de tablas con `ggplot2`. | `gt` da control total de encabezados, decimales, etiquetas y notas al pie desde el código, y `modelsummary` evita rehacer a mano las tablas con errores robustos. El equipo ya tiene Chrome/Chromium; `guardar_tabla()` lo localiza o usa `CHROME_PATH`. Registrado en el "Registro de ampliaciones" del catálogo. |
 | 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Confirmado el 2026-10-24: el Taller 1 también usa `log(Revenue)` sin constante. |
 | 2026-10-24 | Cada script que genera figuras o tablas guarda sus salidas en una subcarpeta propia, con su nombre: `03_Resultados/{Figuras,Tablas}/<script>/`. `guardar_figura()` y `guardar_tabla()` reciben `carpeta`; `00_main.R` crea las subcarpetas en `carpetas_salida`. | La ruta de cada archivo indica qué script lo genera; con decenas de figuras en una sola carpeta, rastrear y regenerar cada resultado se vuelve lento. Se conservan `Figuras/` y `Tablas/` como carpetas de primer nivel para no romper las rutas ya citadas. |
+| 2026-10-24 | La figura de interacción tiempo × sesiones pasadas es un solo panel con una curva loess por tramo de sesiones, ajustada por separado a cada lado de los 5 minutos y con el eje x recortado a 0.1–25 minutos. Se descartan la versión de tres paneles con 20 grupos por tramo y el promedio móvil. `loess` solo se usa como suavizado descriptivo de figuras (ampliación registrada en el catálogo). | La curva continua muestra la interacción sin elegir cuantiles; el promedio móvil se probó y el usuario prefirió el loess. No es un estimador ni un benchmark. |
 
 ## Análisis descartados
 

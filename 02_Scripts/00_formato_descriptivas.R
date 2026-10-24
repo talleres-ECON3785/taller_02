@@ -3,7 +3,7 @@
 # Taller 2 - ECON-3785
 #
 # Este script NO genera figuras por si mismo: define las funciones que usan
-# '03_punto_de_partida_observacional.R' (Revenue en nivel) y
+# '03_punto_partida.R' (Revenue en nivel) y
 # '04_forma_funcional_observacional.R' (ln(Revenue)) para dibujar exactamente
 # las mismas figuras en las dos escalas. Asi las dos partes solo difieren en la
 # variable de resultado y la comparacion es limpia.
@@ -45,7 +45,7 @@ resumir_resultado <- function(datos, y) {
 # llevan el eje x en escala logaritmica por su cola larga (convencion del
 # proyecto); ln(Revenue) ya esta en logaritmo y va en escala lineal
 graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
-                                 eje_log = FALSE) {
+                                 eje_log = FALSE, etiqueta_x = NULL) {
   n_obs <- nrow(obs)
   media_global <- mean(obs[[y]])
   nota_referencia <- sprintf(
@@ -60,7 +60,11 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
   } else {
     scale_x_continuous()
   }
-  etiqueta_x <- if (eje_log) paste(etiqueta_y, "(escala log)") else etiqueta_y
+  # los ejes empiezan con mayuscula y llevan un solo parentesis (unidad, escala)
+  if (is.null(etiqueta_x)) {
+    etiqueta_x <- if (eje_log) sub("\\)$", ", escala log)", etiqueta_y) else etiqueta_y
+    etiqueta_x <- paste0(toupper(substr(etiqueta_x, 1, 1)), substring(etiqueta_x, 2))
+  }
 
   # --- Tiempo en el sitio ----------------------------------------------------
 
@@ -103,7 +107,7 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
     labs(
       title = "Ingreso promedio según el tiempo en el sitio",
       subtitle = subtitulo_observacional,
-      x = "Tiempo en el sitio en minutos (mediana de cada grupo, escala log)",
+      x = "Tiempo en el sitio (minutos, mediana del grupo, escala log)",
       y = nombre_eje,
       caption = paste(
         sprintf(
@@ -285,25 +289,11 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
 
   # las figuras anteriores muestran que tiempo y sesiones pasadas tienen un
   # escalon cada una (5 minutos; entre 2 y 4 sesiones). Aqui se cruzan: la
-  # media frente al tiempo, en un panel por tramo de sesiones. Si las lineas
+  # media frente al tiempo, con una curva por tramo de sesiones. Si las curvas
   # fueran paralelas, los efectos serian aditivos; si la diferencia entre
-  # paneles aparece solo despues de los 5 minutos, hay una interaccion que un
+  # curvas aparece solo despues de los 5 minutos, hay una interaccion que un
   # arbol puede capturar y un modelo lineal sin cruce no. Los tramos de
   # sesiones salen de la figura anterior (0 a 2 | 3 | 4 o mas)
-  n_grupos_cruce <- 20
-
-  por_cruce <- obs |>
-    mutate(tramo = cut(
-      past_sessions, breaks = c(-Inf, 2, 3, Inf),
-      labels = c("0 a 2 sesiones", "3 sesiones", "4 o más sesiones")
-    )) |>
-    group_by(tramo) |>
-    mutate(grupo = ntile(time_spent, n_grupos_cruce)) |>
-    group_by(tramo, grupo) |>
-    mutate(tiempo_mediano = median(time_spent)) |>
-    group_by(tramo, grupo, tiempo_mediano) |>
-    resumir_resultado(y)
-
   colores_tramo <- c(
     "0 a 2 sesiones" = paleta_categorica[1],
     "3 sesiones" = paleta_categorica[3],
@@ -315,9 +305,23 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
       labels = names(colores_tramo)
     ))
 
+  # sin agrupar a los usuarios: una curva suavizada (loess) por tramo de sesiones, sobre todas las
+  # observaciones. El quiebre de los 5 minutos es un salto, y un suavizador
+  # lo redondearia; por eso la curva se ajusta por separado a cada lado de los
+  # 5 minutos. La banda es el IC del 95% de la curva
+  datos_cruce <- obs |>
+    mutate(
+      tramo = cut(
+        past_sessions, breaks = c(-Inf, 2, 3, Inf),
+        labels = names(colores_tramo)
+      ),
+      lado = time_spent >= 5
+    )
+
   grafica_cruce <- ggplot(
-    por_cruce,
-    aes(x = tiempo_mediano, y = media, color = tramo)
+    datos_cruce,
+    aes(x = time_spent, y = .data[[y]], color = tramo, fill = tramo,
+        group = interaction(tramo, lado))
   ) +
     geom_hline(
       yintercept = media_global, linetype = "dashed",
@@ -327,18 +331,22 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
       xintercept = 5, linetype = "dotted",
       color = gris_nota, linewidth = 0.8
     ) +
-    geom_linerange(aes(ymin = inferior, ymax = superior), linewidth = 0.6) +
-    geom_point(size = 2, show.legend = FALSE) +
-    scale_color_manual(values = colores_tramo, guide = "none") +
+    geom_smooth(
+      method = "loess", formula = y ~ x, span = 0.5, level = 0.95,
+      linewidth = 1, alpha = 0.2
+    ) +
+    scale_color_manual(values = colores_tramo) +
+    scale_fill_manual(values = colores_tramo) +
     scale_x_log10(
       breaks = c(0.1, 1, 5, 50), labels = c("0.1", "1", "5", "50")
     ) +
-    facet_wrap(vars(tramo), ncol = 1) +
+    coord_cartesian(xlim = c(0.1, 25)) +
     labs(
       title = "Ingreso promedio según tiempo en el sitio y sesiones anteriores",
       subtitle = subtitulo_observacional,
-      x = "Tiempo en el sitio en minutos (mediana de cada grupo, escala log)",
+      x = "Tiempo en el sitio (minutos, escala log)",
       y = nombre_eje,
+      color = NULL, fill = NULL,
       caption = paste(
         sprintf(
           "Nota: n = %s usuarios (%s).",
@@ -347,12 +355,9 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
                  format(n_tramo$n, big.mark = ",", trim = TRUE),
                  collapse = ", ")
         ),
-        sprintf(
-          paste(
-            "%d grupos de igual tamano por tramo segun su tiempo en el sitio.",
-            "Barras: IC del 95%% de la media del grupo."
-          ),
-          n_grupos_cruce
+        paste(
+            "Curvas suavizadas (loess) ajustadas por separado a cada lado de los",
+          "5 minutos; bandas: IC del 95%."
         ),
         paste(
           nota_referencia,
@@ -362,10 +367,10 @@ graficar_covariables <- function(obs, y, prefijo, etiqueta_y, carpeta,
       )
     ) +
     tema_presentacion +
-    tema_paneles
+    theme(legend.position = "top")
 
   guardar_figura(
     paste0("observacional_", prefijo, "_tiempo_por_sesiones.png"),
-    grafica_cruce, carpeta, height = 8
+    grafica_cruce, carpeta
   )
 }

@@ -3,7 +3,7 @@
 # Taller 2 - ECON-3785
 #
 # Descriptiva de la base observacional con ln(Revenue) = log(Revenue), la escala
-# del Taller 2: las mismas figuras de '03_punto_de_partida_observacional.R'
+# del Taller 2: las mismas figuras de '03_punto_partida.R'
 # pero con el logaritmo del ingreso. Las diferencias se leen como cambios
 # proporcionales aproximados, no como dolares. Comparar ambos scripts muestra
 # que cambia por la forma funcional (aqui no hay metodo: solo medias
@@ -36,6 +36,7 @@ stopifnot(all((obs$is_returning_user == 1) == (obs$past_sessions > 0)))
 
 graficar_covariables(
   obs, y = "log_revenue", prefijo = "lnrevenue", etiqueta_y = "ln(ingreso)",
+  etiqueta_x = "Logaritmo natural del ingreso",
   carpeta = carpeta_salida
 )
 

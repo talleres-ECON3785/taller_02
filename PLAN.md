@@ -69,7 +69,7 @@ bases listas traen `log_revenue`.
 
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
-Scripts: `03_punto_de_partida_observacional.R` (`Revenue` en nivel) y
+Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 `04_forma_funcional_observacional.R` (`ln(Revenue)`), con funciones compartidas en
 `00_formato_descriptivas.R`.
 

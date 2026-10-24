@@ -2,10 +2,10 @@
 
 - **Estado:** vigente
 - **Parte / base:** A; observacional; descriptivo
-- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_de_partida_observacional.R` y `02_Scripts/04_forma_funcional_observacional.R`
+- **Última verificación:** 2026-10-24, con `02_Scripts/03_punto_partida.R` y `02_Scripts/04_forma_funcional_observacional.R`
 
 ## Evidencia
-- `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_tiempo_sesion.png`
+- `03_Resultados/Figuras/03_punto_partida/observacional_revenue_tiempo_sesion.png`
   (ingreso en dólares, media de 50 grupos de 2,000 usuarios cada uno, n = 100,000).
 - `03_Resultados/Figuras/04_forma_funcional_observacional/observacional_lnrevenue_tiempo_sesion.png`
   (el mismo análisis en `ln(Revenue)`).

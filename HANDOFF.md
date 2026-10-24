@@ -19,7 +19,7 @@ octubre de 2026.**
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
-   `03_punto_de_partida_observacional.R` / `04_forma_funcional_observacional.R`
+   `03_punto_partida.R` / `04_forma_funcional_observacional.R`
    la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
    `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
    covariable y escala y la tabla de cifras del Taller 1 (P1.3).
@@ -40,7 +40,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - Decidir si las figuras de densidad marcan también la media (además de la mediana): hoy ocultan las diferencias de promedio por la cola alta (p. ej. por sistema operativo).
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
-- Corregir los subtítulos sin tilde en `00_formato_graficas.R` ("historicos", "asignacion").
+- Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y `00_formato_descriptivas.R`.
+- Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en la figura de interacción; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
@@ -91,7 +92,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
   paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
-  `02_limpieza_experimento.R`, `03_punto_de_partida_observacional.R` (`Revenue`
+  `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
   en nivel) y `04_forma_funcional_observacional.R` (`ln(Revenue)`); corre completo
   sin errores. `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
   `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) y
@@ -99,9 +100,10 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   van en la lista.
 - **Resultados:** reportes de calidad de la base observacional en
   `03_Resultados/Tablas/01_limpieza_observacional/` y 12 figuras descriptivas
-  (6 por escala, ingreso frente a tiempo en el sitio, sesiones pasadas,
-  dispositivo, sistema operativo, usuario recurrente e interacción tiempo ×
-  sesiones) en `03_Resultados/Figuras/03_punto_de_partida_observacional/` y
+  (6 por escala, 9×6 pulgadas: ingreso frente a tiempo en el sitio, sesiones
+  pasadas, dispositivo, sistema operativo, usuario recurrente e interacción
+  tiempo × sesiones, esta última en un panel con curvas loess; ejes con
+  mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
   `.../04_forma_funcional_observacional/`. Ningún modelo estimado.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
@@ -119,6 +121,19 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 2): renombre del script 03, ejes y figura continua de interacción
+
+- Santiago Muñoz (`SantiagoMunozM`). Se renombró `03_punto_de_partida_observacional.R`
+  a `03_punto_partida.R` (con su carpeta de figuras y todas las referencias), las
+  figuras pasaron a 9×6 y los ejes a mayúscula inicial con un solo paréntesis. La
+  figura de interacción tiempo × sesiones pasó a un panel con curvas loess (se
+  probó y descartó el promedio móvil); se regeneró todo con `00_main.R`.
+- P1.2 sigue abierto (falta `sign_up`); P1.1, P1.3, P2.1 y P2.2 no se trabajaron.
+- Bitácora: [2026-10-24_ajustes-figuras-y-renombre-script_2.md](06_Bitacoras/2026-10-24_ajustes-figuras-y-renombre-script_2.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas); (2) P2.1: partición
+  80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en las dos escalas.
 
 ### 2026-10-24: descriptiva del ingreso frente a las covariables y carpeta de resultados por script
 
