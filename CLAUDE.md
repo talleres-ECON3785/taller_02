@@ -98,7 +98,7 @@ Preguntas:
 - `01_Datos/02_Procesados/`  datos limpios o transformados
 - `01_Datos/03_Listos/`      bases finales que ingresan al análisis
 - `02_Scripts/`              scripts de R
-- `03_Resultados/`           Tablas/ y Figuras/ generadas
+- `03_Resultados/`           Tablas/ y Figuras/ generadas, cada una con una subcarpeta por script (ver "Una carpeta de resultados por script")
 - `04_Presentaciones/`       borradores de la presentación
 - `05_Notas/`                notas de hallazgos: un `.md` por hallazgo principal, con
   referencia a sus tablas/figuras (ver "Notas de hallazgos")
@@ -189,6 +189,26 @@ explícitas para este taller. Son obligatorias:
   está en la lista, se agrega la carpeta a `carpetas_salida` en `00_main.R`.
   `01_Datos/01_Crudos/` no va en la lista: no es una salida y nunca se escribe
   en ella.
+- **Una carpeta de resultados por script.** Todo script que genere al menos
+  una figura o tabla guarda sus salidas en su propia subcarpeta, con el nombre
+  del script sin `.R`: `03_Resultados/Figuras/<script>/` y
+  `03_Resultados/Tablas/<script>/` (p. ej.
+  `03_Resultados/Figuras/03_punto_de_partida_observacional/observacional_revenue_tiempo_sesion.png`).
+  Así cada archivo se rastrea a su script por la ruta. Reglas:
+  - El script define `carpeta_salida <- "<nombre_del_script>"` al comienzo y
+    la pasa a `guardar_figura(nombre, grafica, carpeta)` y
+    `guardar_tabla(nombre, tabla, datos, carpeta)`; no escribe en la raíz de
+    `Figuras/` ni de `Tablas/`. Lo mismo vale para los `.csv` que se escriben
+    con `write_csv()` (p. ej. los reportes de calidad de `01_`).
+  - Cada subcarpeta se agrega a `carpetas_salida` en `00_main.R` en la misma
+    sesión en que se crea el script (las funciones y los scripts no llaman a
+    `dir.create()`).
+  - Si se renombra un script, se renombra su subcarpeta (con `git mv`) y se
+    actualizan `00_main.R`, el README y las notas de `05_Notas/` que citen sus
+    rutas. Los scripts de formato (`00_formato_*.R`) no tienen subcarpeta: no
+    generan resultados.
+  - Si dos scripts producen una misma figura o tabla, solo uno la genera; el
+    otro la lee.
 - **Las tablas se exportan en el formato final de la diapositiva.** En el
   Taller 1 las tablas de las diapositivas no eran las exportadas (se cambiaron a
   mano colores de encabezado, decimales, etc.). Ahora la tabla que entra a la
@@ -225,7 +245,8 @@ tablas, solo define el estilo y la función de exportación (p. ej.
 - Se exporta en un formato que se inserta directamente en las diapositivas
   (p. ej. `.png` de alta resolución o `.html`), y además en `.csv` con las
   cifras sin formato, para trazabilidad.
-- **Nombres de archivo:** `03_Resultados/Tablas/<base>_<contenido>.<ext>`, con
+- **Nombres de archivo:** `03_Resultados/Tablas/<script>/<base>_<contenido>.<ext>`
+  (la subcarpeta `<script>` es la de "Una carpeta de resultados por script"), con
   la misma convención que las figuras (p. ej.
   `observacional_rmse_escalonado.png`, `experimento_balance.png`).
 
@@ -561,7 +582,8 @@ ese script no genera figuras, solo define paleta, tema y exportación.
   (`geom_density`, `alpha = 0.55`, `linewidth = 0.8`), nunca histograma, con la
   mediana de cada grupo en línea punteada gris; `Revenue` y `time_spent` van en
   escala logarítmica en el eje x.
-- **Nombres de archivo:** `03_Resultados/Figuras/<base>_<contenido>.png`, donde
+- **Nombres de archivo:** `03_Resultados/Figuras/<script>/<base>_<contenido>.png`
+  (la subcarpeta `<script>` es la de "Una carpeta de resultados por script"), donde
   `<base>` es `experimento` u `observacional`. Para distinguir partes del
   taller puede agregarse el contenido (p. ej. `observacional_importancia_variables.png`,
   `experimento_cate_por_grupo.png`).
@@ -614,7 +636,8 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-23 | El cierre de sesión se divide en `bitacora-sesion` (bitácora, notas y handoff; modelo de la sesión) y `cerrar-sesion` (commit, push y copia del `.jsonl`; `model: haiku`). Se descarta `context: fork` para la bitácora. | Reduce el uso de tokens delegando a un modelo más barato solo la parte mecánica; la bitácora requiere juicio y el historial de la conversación, que un subagente no ve. |
 | 2026-10-23 | `time_spent` se trata como covariable pre-tratamiento (moderador) en el bosque causal, con una prueba de robustez sin ella.                                          | En el Taller 1, `easier_signup` no afectó significativamente a `time_spent`; la robustez cubre la posibilidad de que se mida en la misma sesión que el gasto.                         |
 | 2026-10-23 | Las tablas se formatean con `gt`, con `modelsummary(..., output = "gt")` para las tablas de regresión; el `.png` se genera con Chrome/Chromium en modo headless (sin `webshot2`, cuya dependencia `websocket` no compila en todas las máquinas); el estilo y `guardar_tabla()` viven en `02_Scripts/00_formato_tablas.R`. Se descartan `flextable`, `kableExtra` y el dibujo de tablas con `ggplot2`. | `gt` da control total de encabezados, decimales, etiquetas y notas al pie desde el código, y `modelsummary` evita rehacer a mano las tablas con errores robustos. El equipo ya tiene Chrome/Chromium; `guardar_tabla()` lo localiza o usa `CHROME_PATH`. Registrado en el "Registro de ampliaciones" del catálogo. |
-| 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Pendiente confirmar que coincide con la convención del Taller 1. |
+| 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Confirmado el 2026-10-24: el Taller 1 también usa `log(Revenue)` sin constante. |
+| 2026-10-24 | Cada script que genera figuras o tablas guarda sus salidas en una subcarpeta propia, con su nombre: `03_Resultados/{Figuras,Tablas}/<script>/`. `guardar_figura()` y `guardar_tabla()` reciben `carpeta`; `00_main.R` crea las subcarpetas en `carpetas_salida`. | La ruta de cada archivo indica qué script lo genera; con decenas de figuras en una sola carpeta, rastrear y regenerar cada resultado se vuelve lento. Se conservan `Figuras/` y `Tablas/` como carpetas de primer nivel para no romper las rutas ya citadas. |
 
 ## Análisis descartados
 

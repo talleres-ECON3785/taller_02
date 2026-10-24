@@ -49,7 +49,11 @@ pacman::p_load(
 # 01_Datos/01_Crudos/ no va aqui: no es una salida y nunca se escribe en ella
 carpetas_salida <- c(
   "01_Datos/02_Procesados", "01_Datos/03_Listos",
-  "03_Resultados/Tablas", "03_Resultados/Figuras"
+  "03_Resultados/Tablas", "03_Resultados/Figuras",
+  # una subcarpeta por script que genera tablas o figuras (nombre del script)
+  "03_Resultados/Tablas/01_limpieza_observacional",
+  "03_Resultados/Figuras/03_punto_de_partida_observacional",
+  "03_Resultados/Figuras/04_forma_funcional_observacional"
 )
 for (carpeta in carpetas_salida) {
   if (!dir.exists(carpeta)) dir.create(carpeta, recursive = TRUE)
@@ -61,7 +65,9 @@ for (carpeta in carpetas_salida) {
 
 scripts <- c(
   "02_Scripts/01_limpieza_observacional.R",
-  "02_Scripts/02_limpieza_experimento.R"
+  "02_Scripts/02_limpieza_experimento.R",
+  "02_Scripts/03_punto_de_partida_observacional.R",
+  "02_Scripts/04_forma_funcional_observacional.R"
 )
 
 # nota: '00_formato_graficas.R' no aparece en esta lista porque no produce

@@ -18,23 +18,29 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P1.1–P1.3: descriptiva de la Parte A.** Script
-   `02_Scripts/03_descriptivas_observacional.R`: densidad de `Revenue` frente a
-   `ln(Revenue)`, `ln(Revenue)` frente a cada covariable (con el quiebre en
-   5 min) y la tabla de cifras del Taller 1.
-   *Terminado cuando:* el script está en la lista de `00_main.R` y exporta sus
-   figuras y su tabla con `guardar_figura()` / `guardar_tabla()`.
+1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
+   `03_punto_de_partida_observacional.R` / `04_forma_funcional_observacional.R`
+   la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
+   `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
+   covariable y escala y la tabla de cifras del Taller 1 (P1.3).
+   *Terminado cuando:* esas figuras y tablas salen de `00_main.R` en las
+   subcarpetas de su script y las cifras de las notas de `05_Notas/` (hoy leídas
+   de las figuras) remiten a una tabla exportada.
 2. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
-   (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
+   (`05_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
    *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
 3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
-   de `train`), lineal del Taller 1, lineal flexible y LASSO (`cv.glmnet`).
+   de `train`), lineal del Taller 1, lineal flexible (con el cruce "más de 5
+   minutos" × sesiones pasadas, ver `A_sesiones_pasadas_interaccion_tiempo.md`) y
+   LASSO (`cv.glmnet`).
    *Terminado cuando:* hay RMSE de `train`/CV para cada uno en `Revenue` y en
    `ln(Revenue)`, sin tocar `test`.
 
 **Bloqueos / preguntas abiertas:**
 
-- Confirmar que la convención de `log_revenue` (`log()` natural, sin constante) coincide con la del Taller 1; el repositorio `taller1/` no estaba en esta máquina.
+- Decidir si las figuras de densidad marcan también la media (además de la mediana): hoy ocultan las diferencias de promedio por la cola alta (p. ej. por sistema operativo).
+- Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
+- Corregir los subtítulos sin tilde en `00_formato_graficas.R` ("historicos", "asignacion").
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
@@ -61,7 +67,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo).
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo); P1.2
+  avanzó (falta `sign_up`).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
   script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
@@ -70,24 +77,32 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
   `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
   sin probar con un resultado real.
-- **Notas:** `05_Notas/README.md` con el índice vacío; todavía no hay notas de
-  hallazgos porque no hay resultados.
+- **Notas:** tres notas de la Parte A en `05_Notas/` (quiebre en 5 minutos,
+  interacción entre sesiones pasadas y tiempo, dispositivo y sistema operativo),
+  indexadas en `05_Notas/README.md`. Sus cifras salen de las figuras; falta la
+  tabla exportada que las respalde.
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
   `experimento_listos.RDS`), sin pérdidas. `Revenue` > 0 en las dos bases, así
-  que `ln(Revenue)` no pierde observaciones, pero todavía no está construido en
-  las bases. Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
+  que `ln(Revenue)` no pierde observaciones y ya está construido como
+  `log_revenue` en las dos bases (convención `log(Revenue)` confirmada con el
+  Taller 1). Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
-  paquetes con `pacman` (`tidyverse`, `gt`, `modelsummary`, `sandwich`, `fixest`, `caret`, `glmnet`, `rpart`, `rpart.plot`, `ranger`, `grf`), crea las carpetas de salida que
-  falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R` (ambos construyen `log_revenue`); `00_main.R` corre completo sin errores.
-  `00_formato_graficas.R` define paleta, tema y `guardar_figura()`.
-  `00_formato_tablas.R` define decimales por tipo de cifra, `nota_tabla()`,
-  `estilo_tabla()` y `guardar_tabla()` (`.png` con `gt` + Chrome headless, y
-  `.csv`); aún no lo usa ningún script de análisis.
-- **Resultados:** solo los reportes de calidad de la base observacional
-  (`03_Resultados/Tablas/reporte_calidad_observacional*.csv`). Ningún modelo
-  estimado.
+  paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
+  script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
+  `02_limpieza_experimento.R`, `03_punto_de_partida_observacional.R` (`Revenue`
+  en nivel) y `04_forma_funcional_observacional.R` (`ln(Revenue)`); corre completo
+  sin errores. `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) y
+  `00_formato_descriptivas.R` (funciones de las figuras de la descriptiva) no
+  van en la lista.
+- **Resultados:** reportes de calidad de la base observacional en
+  `03_Resultados/Tablas/01_limpieza_observacional/` y 12 figuras descriptivas
+  (6 por escala, ingreso frente a tiempo en el sitio, sesiones pasadas,
+  dispositivo, sistema operativo, usuario recurrente e interacción tiempo ×
+  sesiones) en `03_Resultados/Figuras/03_punto_de_partida_observacional/` y
+  `.../04_forma_funcional_observacional/`. Ningún modelo estimado.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -104,6 +119,23 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24: descriptiva del ingreso frente a las covariables y carpeta de resultados por script
+
+- Santiago Muñoz (`SantiagoMunozM`). Se hicieron las figuras de P1.2 de la base
+  observacional en dos escalas (primero `Revenue` en nivel y luego `ln(Revenue)`)
+  con el formato de densidades del Taller 1: tiempo en el sitio (escalón en 5
+  minutos), sesiones pasadas, dispositivo, sistema operativo, usuario recurrente
+  y la interacción tiempo × sesiones. Tres notas nuevas en `05_Notas/`.
+- Se separó el script en `03_punto_de_partida_observacional.R` y
+  `04_forma_funcional_observacional.R` (funciones en `00_formato_descriptivas.R`),
+  y se fijó la regla de una subcarpeta de resultados por script (en `CLAUDE.md`).
+- P1.2 avanzó pero no se cerró (falta `sign_up`); P1.1, P1.3 y P2.1 no se
+  trabajaron y se mantienen.
+- Bitácora: [2026-10-24_descriptiva-covariables-observacional.md](06_Bitacoras/2026-10-24_descriptiva-covariables-observacional.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas); (2) P2.1: partición
+  80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en las dos escalas.
 
 ### 2026-10-23: README inicial
 

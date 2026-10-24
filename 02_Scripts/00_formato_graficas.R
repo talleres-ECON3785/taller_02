@@ -89,13 +89,16 @@ tema_paneles <- theme(
 # vean homogeneas al insertarlas en la presentacion. El fondo blanco es
 # explicito porque ggplot lo deja transparente por defecto y eso se ve mal
 # sobre el fondo de una diapositiva.
-# Convencion de nombres: 03_Resultados/Figuras/<base>_<contenido>.png, donde
+# Cada script guarda sus figuras en su propia subcarpeta:
+# 03_Resultados/Figuras/<script>/<base>_<contenido>.png, donde <script> es el
+# nombre del script sin '.R' (p. ej. '03_punto_de_partida_observacional') y
 # <base> es 'experimento' u 'observacional', para saber de un vistazo que
-# base sostiene cada figura.
-guardar_figura <- function(nombre_archivo, grafica,
+# base sostiene cada figura. `carpeta` es ese <script>; la subcarpeta debe
+# estar en `carpetas_salida` de 00_main.R (esta funcion no crea carpetas).
+guardar_figura <- function(nombre_archivo, grafica, carpeta,
                            width = 8, height = 6, dpi = 300) {
   ggsave(
-    file.path("03_Resultados/Figuras", nombre_archivo),
+    file.path("03_Resultados/Figuras", carpeta, nombre_archivo),
     grafica,
     width = width, height = height, dpi = dpi, bg = "white"
   )

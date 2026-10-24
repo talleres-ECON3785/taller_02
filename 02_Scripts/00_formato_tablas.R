@@ -151,12 +151,14 @@ ruta_chrome <- function() {
 #     compila en todas las maquinas): `gt` escribe un HTML, Chrome en modo
 #     headless mide la tabla y la fotografia con ese tamano exacto
 #   - .csv con las cifras sin formato, para trazabilidad
-# Convencion de nombres: 03_Resultados/Tablas/<base>_<contenido>.<ext>, donde
-# <base> es 'experimento' u 'observacional' (p. ej. 'experimento_balance').
-# `nombre` va sin extension; `datos` son las cifras sin formato (un data frame).
+# Cada script guarda sus tablas en su propia subcarpeta:
+# 03_Resultados/Tablas/<script>/<base>_<contenido>.<ext>, donde <script> es el
+# nombre del script sin '.R' y <base> es 'experimento' u 'observacional'
+# (p. ej. 'experimento_balance'). `carpeta` es ese <script>; `nombre` va sin
+# extension; `datos` son las cifras sin formato (un data frame).
 # Como `guardar_figura()`, no crea carpetas: asume que 00_main.R ya verifico
-# 03_Resultados/Tablas/.
-guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
+# 03_Resultados/Tablas/<script>/.
+guardar_tabla <- function(nombre, tabla, datos, carpeta, zoom = 2, margen = 20) {
   chrome <- ruta_chrome()
   html <- tempfile(fileext = ".html")
   on.exit(unlink(html), add = TRUE)
@@ -185,7 +187,7 @@ guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
   ancho <- as.integer(medidas[2]) + 2 * margen
   alto  <- as.integer(medidas[3]) + 2 * margen + 40 # holgura para el pie
 
-  png <- file.path("03_Resultados/Tablas", paste0(nombre, ".png"))
+  png <- file.path("03_Resultados/Tablas", carpeta, paste0(nombre, ".png"))
   system2(chrome, c(opciones, paste0("--force-device-scale-factor=", zoom),
                     "--default-background-color=FFFFFFFF",
                     paste0("--window-size=", ancho, ",", alto),
@@ -194,5 +196,5 @@ guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
           stdout = FALSE, stderr = FALSE)
   if (!file.exists(png)) stop("Chrome no genero el .png de ", nombre)
 
-  write_csv(datos, file.path("03_Resultados/Tablas", paste0(nombre, ".csv")))
+  write_csv(datos, file.path("03_Resultados/Tablas", carpeta, paste0(nombre, ".csv")))
 }

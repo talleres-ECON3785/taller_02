@@ -315,8 +315,8 @@ reporte_hallazgos <- hallazgos |>
     `Decision aplicada` = decision_aplicada
   )
 
-write_csv(reporte_embudo, "03_Resultados/Tablas/reporte_calidad_observacional_embudo.csv")
-write_csv(reporte_hallazgos, "03_Resultados/Tablas/reporte_calidad_observacional.csv")
+write_csv(reporte_embudo, "03_Resultados/Tablas/01_limpieza_observacional/reporte_calidad_observacional_embudo.csv")
+write_csv(reporte_hallazgos, "03_Resultados/Tablas/01_limpieza_observacional/reporte_calidad_observacional.csv")
 
 cat("\nListo. Base limpia guardada en 01_Datos/03_Listos/observacional_limpio.Rds\n")
-cat("Reportes guardados en 03_Resultados/Tablas/reporte_calidad_observacional*.csv\n")
+cat("Reportes guardados en 03_Resultados/Tablas/01_limpieza_observacional/\n")

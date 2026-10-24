@@ -68,8 +68,8 @@ taller_02/
 │   └── 03_Listos/          bases finales que ingresan al análisis
 ├── 02_Scripts/             scripts de R
 ├── 03_Resultados/
-│   ├── Tablas/             tablas exportadas (.png de la diapositiva y .csv sin formato)
-│   └── Figuras/            figuras exportadas (.png, 8×6 pulgadas, 300 dpi)
+│   ├── Tablas/             tablas exportadas (.png de la diapositiva y .csv sin formato), en una subcarpeta por script
+│   └── Figuras/            figuras exportadas (.png, 8×6 pulgadas, 300 dpi), en una subcarpeta por script
 ├── 04_Presentaciones/      borradores de la presentación
 ├── 05_Notas/               una nota por hallazgo principal (índice en su README)
 ├── 06_Bitacoras/           documentación de cada sesión de trabajo
@@ -94,8 +94,10 @@ semilla 2026 y la métrica es el RMSE fuera de muestra. El RMSE en `Revenue` y e
 ## Mapa script → resultados
 
 Cada tabla o figura de la presentación se rastrea al script que la genera.
-Convención de nombres: `03_Resultados/{Tablas,Figuras}/<base>_<contenido>.<ext>`,
-con `<base>` = `observacional` o `experimento`.
+Convención de nombres: `03_Resultados/{Tablas,Figuras}/<script>/<base>_<contenido>.<ext>`,
+con `<script>` = nombre del script que lo genera (sin `.R`) y `<base>` =
+`observacional` o `experimento`. Cada script que genera resultados tiene su
+subcarpeta, creada por `00_main.R`.
 
 ### Scripts existentes
 
@@ -103,7 +105,7 @@ con `<base>` = `observacional` o `experimento`.
 | --- | --- | --- | --- |
 | `00_formato_graficas.R` | Define paleta, tema y `guardar_figura()`. No genera figuras ni va en `00_main.R`; lo cargan con `source()` los scripts que grafican. | — | — |
 | `00_formato_tablas.R` | Define estilo de tablas y `guardar_tabla()`. No genera tablas ni va en `00_main.R`; lo cargan con `source()` los scripts que exportan tablas. | — | — |
-| `01_limpieza_observacional.R` | Limpia la base observacional y construye `log_revenue` (se detiene si algún `Revenue <= 0`). | `01_Datos/01_Crudos/datos_historicos.Rds` | `01_Datos/03_Listos/observacional_limpio.Rds`; `03_Resultados/Tablas/reporte_calidad_observacional_embudo.csv`; `03_Resultados/Tablas/reporte_calidad_observacional.csv` |
+| `01_limpieza_observacional.R` | Limpia la base observacional y construye `log_revenue` (se detiene si algún `Revenue <= 0`). | `01_Datos/01_Crudos/datos_historicos.Rds` | `01_Datos/03_Listos/observacional_limpio.Rds`; `03_Resultados/Tablas/01_limpieza_observacional/reporte_calidad_observacional_embudo.csv`; `03_Resultados/Tablas/01_limpieza_observacional/reporte_calidad_observacional.csv` |
 | `02_limpieza_experimento.R` | Limpia la base del experimento y construye `log_revenue`. | `01_Datos/01_Crudos/datos_experimento.Rds` | `01_Datos/03_Listos/experimento_listos.RDS` |
 
 ### Scripts previstos (por llenar)
@@ -113,7 +115,9 @@ esta tabla en la misma sesión en que se crean.
 
 | Script | Hito | Resultados esperados |
 | --- | --- | --- |
-| `03_descriptivas_observacional.R` | H1 | Densidades de `Revenue` y `ln(Revenue)`, relación con cada covariable, tabla con las cifras del Taller 1 |
+| `00_formato_descriptivas.R` | H1 | No genera resultados: define las funciones que dibujan las figuras de la descriptiva en las dos escalas (lo cargan los scripts 03 y 04 con `source()`) |
+| `03_punto_de_partida_observacional.R` | H1 | `Revenue` en nivel (dólares) frente a cada covariable: `03_Resultados/Figuras/03_punto_de_partida_observacional/`: `observacional_revenue_tiempo_sesion`, `_sesiones_pasadas`, `_dispositivo`, `_sistema_operativo`, `_recurrente` y `_tiempo_por_sesiones` (`.png`) |
+| `04_forma_funcional_observacional.R` | H1 | Las mismas seis figuras con `ln(Revenue)` en `03_Resultados/Figuras/04_forma_funcional_observacional/`: `observacional_lnrevenue_*` (`.png`). Pendiente: densidad de `Revenue` frente a `ln(Revenue)` y tabla con las cifras del Taller 1 |
 | `04_prediccion_lineal_observacional.R` | H2 | Benchmarks lineales (referencia ingenua, lineal, LASSO) |
 | `05_arboles_observacional.R` | H2 | CART podado, bosque aleatorio, importancia de variables |
 | `06_comparacion_prediccion_observacional.R` | H2 | Tabla 2×2 de RMSE (método × forma funcional) y escalera de RMSE |

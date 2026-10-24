@@ -24,7 +24,9 @@ contradictorio.
 
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
-| (aún no hay notas) | | | |
+| [A_quiebre_time_spent.md](A_quiebre_time_spent.md) | vigente | A / observacional / descriptivo | ¿Qué relaciones aparecen? ¿Qué conclusiones del Taller 1 se mantienen? (quiebre en 5 minutos) |
+| [A_sesiones_pasadas_interaccion_tiempo.md](A_sesiones_pasadas_interaccion_tiempo.md) | vigente | A / observacional / descriptivo | ¿Qué patrones aparecen con los árboles? (interacción tiempo × sesiones) |
+| [A_dispositivo_y_sistema_operativo.md](A_dispositivo_y_sistema_operativo.md) | vigente | A / observacional / descriptivo | ¿Qué variables resultan más útiles para predecir? ¿Qué cambia con `ln(Revenue)`? |
 
 ## Pendientes de conciliar
 
