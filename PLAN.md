@@ -96,7 +96,9 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
 - [ ] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
-  interacciones de la descriptiva) y LASSO (`cv.glmnet`).
+  interacciones de la descriptiva) y LASSO (`cv.glmnet`). *Avance 2026-10-24:* hechos ingenuo, lineal del Taller 1 y lineal flexible
+  en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); faltan
+  `ln(Revenue)` y LASSO.
 - [ ] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
   ¿Qué interacciones aparecen?
@@ -109,7 +111,8 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
   se retransforman a dólares (*smearing*) o si solo se comparan mejoras
   relativas.
 - [ ] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
-  junto con la importancia del bosque, para responder qué variables predicen.
+  junto con la importancia del bosque, para responder qué variables predicen. *Avance 2026-10-24:* escalera lineal en dólares hecha;
+  falta la escala logarítmica y la importancia del bosque.
 
 *Terminado cuando:* existen la tabla 2×2 de RMSE de prueba, la escalera, la
 figura del árbol y la de importancia, y la decisión de P2.5 está registrada.

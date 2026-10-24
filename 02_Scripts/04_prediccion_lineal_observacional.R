@@ -94,10 +94,10 @@ escalones <- tribble(
   NA,                          "Ninguna (media del entrenamiento)",
   "mas_5_min",                 "Más de 5 minutos en el sitio",
   "past_sessions",             "Sesiones anteriores",
+  "mas_5_min:past_sessions",   "Más de 5 minutos × sesiones anteriores",
   "device_type",               "Dispositivo",
   "os_type",                   "Sistema operativo",
   "is_returning_user",         "Usuario recurrente",
-  "mas_5_min:past_sessions",   "Más de 5 minutos × sesiones anteriores",
   "sign_up",                   "Registro"
 )
 

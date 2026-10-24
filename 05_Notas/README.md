@@ -34,6 +34,7 @@ contradictorio.
 | [A_quiebre_time_spent.md](03_punto_partida/A_quiebre_time_spent.md) | vigente | A / observacional / descriptivo | ¿Qué relaciones aparecen? ¿Qué conclusiones del Taller 1 se mantienen? (quiebre en 5 minutos) |
 | [A_sesiones_pasadas_interaccion_tiempo.md](03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md) | vigente | A / observacional / descriptivo | ¿Qué patrones aparecen con los árboles? (interacción tiempo × sesiones) |
 | [A_dispositivo_y_sistema_operativo.md](03_punto_partida/A_dispositivo_y_sistema_operativo.md) | vigente | A / observacional / descriptivo | ¿Qué variables resultan más útiles para predecir? (medianas parecidas, medias distintas: cola derecha) |
+| [B_ols_efecto_registro.md](03_punto_partida/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares; cumplimiento perfecto) |
 
 ### `05_forma_funcional_observacional/` (`05_forma_funcional_observacional.R`: `ln(Revenue)`)
 
@@ -45,6 +46,8 @@ script 03 y atribuirlo a la transformación.
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
 | [A_escalera_importancia_lineal.md](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md) | vigente | A / observacional / predictivo | ¿Qué variables resultan más útiles para predecir? ¿Cómo se compara con el lineal del Taller 1? |
+| [A_corte_5_minutos_captura_tiempo.md](04_prediccion_lineal_observacional/A_corte_5_minutos_captura_tiempo.md) | vigente | A / observacional / predictivo | ¿Qué relaciones aparecen? ¿Qué cambia respecto al Taller 1? (el corte de 5 minutos reemplaza al tiempo lineal) |
+| [A_lineal_flexible_vs_taller1.md](04_prediccion_lineal_observacional/A_lineal_flexible_vs_taller1.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con el lineal del Taller 1? (RMSE de prueba 1.845 frente a 2.314) |
 
 ## Pendientes de conciliar
 

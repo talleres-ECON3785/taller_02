@@ -47,3 +47,4 @@ en logaritmo se registrará con el script `05_forma_funcional_observacional.R`.
 - 2026-10-24: la figura pasa de 50 grupos con intervalos a una curva loess por
   lado de los 5 minutos; mismo patrón. La nota se limita al script 03 y se mueve a
   `05_Notas/03_punto_partida/`.
+- 2026-10-24: el corte de 5 minutos se usa como predictor en el modelo lineal (ver `05_Notas/04_prediccion_lineal_observacional/A_corte_5_minutos_captura_tiempo.md`): el tiempo exacto no agrega predicción una vez incluido el corte.

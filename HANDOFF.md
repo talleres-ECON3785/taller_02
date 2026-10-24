@@ -26,18 +26,30 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    *Terminado cuando:* esas figuras y tablas salen de `00_main.R` en las
    subcarpetas de su script y las cifras de las notas de `05_Notas/` (hoy leídas
    de las figuras) remiten a una tabla exportada.
-2. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
-   (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
-   *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
-3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
-   de `train`), lineal del Taller 1, lineal flexible (con el cruce "más de 5
-   minutos" × sesiones pasadas, ver `05_Notas/03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md`) y
-   LASSO (`cv.glmnet`).
-   *Terminado cuando:* hay RMSE de `train`/CV para cada uno en `Revenue` y en
-   `ln(Revenue)`, sin tocar `test`.
+2. **P2.2 (resto): escalera en `ln(Revenue)` y LASSO.** Ampliar
+   `04_prediccion_lineal_observacional.R` con la misma escalera en
+   `ln(Revenue)` (incluida la prueba de si el tiempo continuo aporta algo más
+   allá del corte de 5 minutos, que en dólares no aporta) y con `cv.glmnet`.
+   *Terminado cuando:* hay RMSE de CV para cada modelo en las dos escalas, sin
+   tocar `test`, y la nota `A_corte_5_minutos_captura_tiempo.md` dice qué cambia
+   en logaritmo.
+3. **P2.3: CART.** Nuevo script de árboles (`rpart`, `cp = 0`, poda por CV con la
+   regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte de 5
+   minutos y el cruce con las sesiones? Numerar el script sin chocar con
+   `05_forma_funcional_observacional.R`.
+   *Terminado cuando:* existen la figura del árbol y una nota que compara sus
+   cortes con las descriptivas y con el lineal de `A_lineal_flexible_vs_taller1.md`.
 
 **Bloqueos / preguntas abiertas:**
 
+- Correr `00_main.R` completo (no se corrió en las sesiones 3 y 4: se corrieron por
+  separado los scripts 03 y 04 de predicción, y la sección del MCO) y comprobar que
+  `05_forma_funcional_observacional.R` funciona con su carpeta de salida renombrada.
+- Renumerar en `PLAN.md` y en el README los scripts planificados (`05_arboles`,
+  `06_comparacion`, `07_validacion`, …): el 05 ahora es la forma funcional.
+- El corte de 5 minutos y el cruce se eligieron mirando la base completa (incluye
+  `test`); decidir si se redefine el cruce solo con `train` para la comparación con
+  árboles.
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
 - Escribir las notas del script 04 en `05_Notas/05_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
@@ -52,9 +64,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
-- Escribir la primera nota de `05_Notas/` con `registrar-hallazgo` apenas exista
-  el primer resultado (H1) y comprobar que `model: haiku` de `cerrar-sesion`
-  se aplica.
+- Comprobar que `model: haiku` de `cerrar-sesion` se aplica.
 - `guardar_tabla()` (Chrome headless, sin `webshot2`) solo se probó en la máquina
   de Santiago Muñoz (macOS). Un segundo integrante debe probarlo antes del 25 de
   octubre; si Chrome está en otra ruta, definir `CHROME_PATH`. Decidir si se fija
@@ -69,8 +79,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo); P1.2
-  avanzó (falta `sign_up`).
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo) y P2.1; P1.2
+  avanzó (falta `sign_up`) y P2.2 y P2.6 avanzaron (escalera lineal en dólares).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
   script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
@@ -79,12 +89,14 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
   `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
   sin probar con un resultado real.
-- **Notas:** tres notas de la Parte A en `05_Notas/03_punto_partida/` (quiebre en
-  5 minutos, interacción entre sesiones pasadas y tiempo, dispositivo y sistema
-  operativo: medianas parecidas, medias distintas), solo sobre el ingreso en
-  dólares, indexadas por script en `05_Notas/README.md`. Sus cifras salen de las
-  figuras; falta la tabla exportada que las respalde. Aún no hay notas del
-  script 04 (`ln(Revenue)`).
+- **Notas:** cuatro notas descriptivas y de punto de partida en
+  `05_Notas/03_punto_partida/` (quiebre en 5 minutos, interacción entre sesiones
+  pasadas y tiempo, dispositivo y sistema operativo, y `B_ols_efecto_registro.md`: ITT
+  en dólares con cumplimiento perfecto) y tres notas de la Parte A en
+  `05_Notas/04_prediccion_lineal_observacional/` (escalera e importancia lineal; el corte
+  de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), indexadas por
+  script en `05_Notas/README.md`. Todas en dólares; aún no hay notas del script 05
+  (`ln(Revenue)`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
@@ -96,10 +108,11 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
   `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
-  en nivel) y `05_forma_funcional_observacional.R` (`ln(Revenue)`); corría completo
-  antes de la sesión 3 (después solo se corrieron los scripts 03 y 04 por
-  separado). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
-  `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) no van en
+  en nivel, más el MCO del efecto del registro), `04_prediccion_lineal_observacional.R`
+  (escalera lineal en dólares) y `05_forma_funcional_observacional.R` (`ln(Revenue)`);
+  corría completo antes de la sesión 3 (después solo se corrieron por separado el 03,
+  el 04 y el 05). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
   la lista. Cada script dibuja sus propias figuras.
 - **Resultados:** reportes de calidad de la base observacional en
   `03_Resultados/Tablas/01_limpieza_observacional/` y 12 figuras descriptivas
@@ -109,7 +122,13 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
   con sus cifras y el n en el título del panel; ejes con
   mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
-  `.../05_forma_funcional_observacional/`. Ningún modelo estimado.
+  `.../05_forma_funcional_observacional/`; la tabla del MCO del registro en
+  `03_Resultados/Tablas/03_punto_partida/` (ITT 0.491 dólares, error estándar 0.073); y,
+  en `.../{Tablas,Figuras}/04_prediccion_lineal_observacional/`, cuatro tablas (escalera,
+  aporte de cada variable con fila del cruce, robustez de la forma del tiempo y RMSE de
+  prueba) y dos figuras (escalera y orden de entrada del tiempo y el corte). RMSE de
+  prueba en dólares: 2.716 (ingenuo), 2.314 (lineal del Taller 1) y 1.845 (lineal con
+  corte y cruce).
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -126,6 +145,20 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 4): MCO del efecto del registro y escalera de modelos lineales
+
+- Santiago Muñoz (`SantiagoMunozM`). MCO del efecto del registro en el experimento (0.491
+  dólares, cumplimiento perfecto) en `03_punto_partida.R`; nuevo
+  `04_prediccion_lineal_observacional.R` con la escalera lineal en dólares (corte de 5
+  minutos, sesiones, cruce, dispositivo, sistema operativo, recurrente y `sign_up` al
+  final), validación cruzada en `train` y prueba única (1.845 frente a 2.314 del Taller 1).
+  El tiempo continuo sale de la escalera por redundante con el corte. Notas al pie en
+  párrafos; scripts 04 y 05 intercambiaron numeración. P2.1 cerrado; P2.2 y P2.6 avanzaron.
+  No se corrió `00_main.R` completo.
+- Bitácora: [2026-10-24_ols-registro-y-escalera-lineal_4.md](06_Bitacoras/2026-10-24_ols-registro-y-escalera-lineal_4.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (descriptiva pendiente); (2) P2.2
+  (resto): escalera en `ln(Revenue)` y LASSO; (3) P2.3: CART.
 
 ### 2026-10-24 (sesión 3): figuras en cada script, loess del tiempo, categóricas con media y mediana y notas por script
 
