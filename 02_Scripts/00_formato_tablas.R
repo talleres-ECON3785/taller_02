@@ -50,28 +50,39 @@ nota_tabla <- function(base = c("experimento", "observacional"),
   enfoque <- match.arg(enfoque)
   texto_base <- switch(
     base,
-    experimento   = "Datos del experimento A/B (asignación aleatoria).",
-    observacional = if (enfoque == "predictivo") {
-      "Datos históricos (sin asignación aleatoria). Análisis predictivo, no causal."
-    } else {
-      paste(
-        "Datos históricos (sin asignación aleatoria): las diferencias son",
-        "descriptivas, no causales."
-      )
-    }
+    experimento   = "Datos del experimento A/B (asignación aleatoria)",
+    observacional = "Datos históricos"
   )
   texto_muestra <- switch(
     muestra,
-    completa      = "Cifras de la muestra completa",
-    entrenamiento = "Cifras de la muestra de entrenamiento",
-    prueba        = "Cifras de la muestra de prueba"
+    completa      = "muestra completa",
+    entrenamiento = "muestra de entrenamiento",
+    prueba        = "muestra de prueba"
   )
-  # un vector: el primer elemento declara base, enfoque y n; cada elemento de
-  # `extra` es un parrafo aparte (la nota se lee mejor en parrafos cortos)
+  # el experimento identifica efectos causales; en los datos historicos se
+  # declara el alcance del analisis
+  texto_enfoque <- if (base == "observacional") {
+    if (enfoque == "predictivo") {
+      "Análisis predictivo, no causal."
+    } else {
+      "Las diferencias son descriptivas, no causales."
+    }
+  } else {
+    NULL
+  }
+  # un vector: el primer elemento declara base, muestra, n y alcance; cada
+  # elemento de `extra` es un parrafo aparte (la nota se lee mejor en parrafos
+  # cortos)
   c(
-    paste0(
-      texto_base, " ", texto_muestra, " (n = ",
-      format(n, big.mark = ",", scientific = FALSE), ")."
+    paste(
+      c(
+        paste0(
+          texto_base, ", ", texto_muestra, " (n = ",
+          format(n, big.mark = ",", scientific = FALSE), ")."
+        ),
+        texto_enfoque
+      ),
+      collapse = " "
     ),
     extra
   )
