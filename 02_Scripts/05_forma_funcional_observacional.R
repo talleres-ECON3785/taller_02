@@ -20,7 +20,7 @@ source("02_Scripts/00_formato_graficas.R")
 set.seed(2026)
 
 # subcarpeta de 03_Resultados/Figuras/ de este script (nombre del script)
-carpeta_salida <- "04_forma_funcional_observacional"
+carpeta_salida <- "05_forma_funcional_observacional"
 
 obs <- readRDS("01_Datos/03_Listos/observacional_limpio.Rds")
 
@@ -376,5 +376,5 @@ guardar_figura(
   "observacional_lnrevenue_tiempo_por_sesiones.png", grafica_cruce, carpeta_salida
 )
 
-cat("\nListo. Figuras guardadas en 03_Resultados/Figuras/04_forma_funcional_observacional/.\n")
+cat("\nListo. Figuras guardadas en 03_Resultados/Figuras/05_forma_funcional_observacional/.\n")
 cat("Recordatorio: son asociaciones descriptivas, no efectos causales.\n")

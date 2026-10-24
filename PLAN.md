@@ -70,7 +70,7 @@ bases listas traen `log_revenue`.
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
 Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
-`04_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
+`05_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
 - [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
@@ -89,7 +89,7 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
-Scripts: `05_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
+Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
 `06_comparacion_prediccion_observacional.R`.
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del

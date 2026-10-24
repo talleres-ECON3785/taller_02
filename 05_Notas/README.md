@@ -35,16 +35,16 @@ contradictorio.
 | [A_sesiones_pasadas_interaccion_tiempo.md](03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md) | vigente | A / observacional / descriptivo | ¿Qué patrones aparecen con los árboles? (interacción tiempo × sesiones) |
 | [A_dispositivo_y_sistema_operativo.md](03_punto_partida/A_dispositivo_y_sistema_operativo.md) | vigente | A / observacional / descriptivo | ¿Qué variables resultan más útiles para predecir? (medianas parecidas, medias distintas: cola derecha) |
 
-### `04_forma_funcional_observacional/` (`04_forma_funcional_observacional.R`: `ln(Revenue)`)
+### `05_forma_funcional_observacional/` (`05_forma_funcional_observacional.R`: `ln(Revenue)`)
 
 Sin notas todavía. Las figuras ya existen; falta registrar qué cambia frente al
 script 03 y atribuirlo a la transformación.
 
-### `05_prediccion_lineal_observacional/` (`05_prediccion_lineal_observacional.R`: escalera lineal en dólares)
+### `04_prediccion_lineal_observacional/` (`04_prediccion_lineal_observacional.R`: escalera lineal en dólares)
 
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
-| [A_escalera_importancia_lineal.md](05_prediccion_lineal_observacional/A_escalera_importancia_lineal.md) | vigente | A / observacional / predictivo | ¿Qué variables resultan más útiles para predecir? ¿Cómo se compara con el lineal del Taller 1? |
+| [A_escalera_importancia_lineal.md](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md) | vigente | A / observacional / predictivo | ¿Qué variables resultan más útiles para predecir? ¿Cómo se compara con el lineal del Taller 1? |
 
 ## Pendientes de conciliar
 

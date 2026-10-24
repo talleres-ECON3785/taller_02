@@ -19,7 +19,7 @@ octubre de 2026.**
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
-   `03_punto_partida.R` / `04_forma_funcional_observacional.R`
+   `03_punto_partida.R` / `05_forma_funcional_observacional.R`
    la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
    `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
    covariable y escala y la tabla de cifras del Taller 1 (P1.3).
@@ -27,7 +27,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    subcarpetas de su script y las cifras de las notas de `05_Notas/` (hoy leídas
    de las figuras) remiten a una tabla exportada.
 2. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
-   (`05_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
+   (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
    *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
 3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
    de `train`), lineal del Taller 1, lineal flexible (con el cruce "más de 5
@@ -39,7 +39,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 **Bloqueos / preguntas abiertas:**
 
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
-- Escribir las notas del script 04 en `05_Notas/04_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
+- Escribir las notas del script 04 en `05_Notas/05_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
 - Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
 - Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
@@ -96,7 +96,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
   `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
-  en nivel) y `04_forma_funcional_observacional.R` (`ln(Revenue)`); corría completo
+  en nivel) y `05_forma_funcional_observacional.R` (`ln(Revenue)`); corría completo
   antes de la sesión 3 (después solo se corrieron los scripts 03 y 04 por
   separado). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
   `00_formato_tablas.R` (`guardar_tabla()`, aún sin uso en análisis) no van en
@@ -109,7 +109,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
   con sus cifras y el n en el título del panel; ejes con
   mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
-  `.../04_forma_funcional_observacional/`. Ningún modelo estimado.
+  `.../05_forma_funcional_observacional/`. Ningún modelo estimado.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza

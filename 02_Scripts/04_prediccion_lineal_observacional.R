@@ -15,6 +15,13 @@
 #   - Cada escalon agrega algo que mostro la descriptiva (03_punto_partida.R):
 #     quiebre en 5 minutos, diferencias por dispositivo, sistema operativo y
 #     usuario recurrente, e interaccion entre el quiebre y las sesiones pasadas.
+#   - El tiempo entra solo como indicador de mas de 5 minutos: el ingreso es
+#     plano a cada lado del corte (pendientes cercanas a cero, el salto es de
+#     ~3 dolares), asi que time_spent continuo no agrega nada una vez que esta
+#     el indicador (el RMSE de CV es igual con indicador, con tiempo lineal o
+#     con ambos). Si se incluyera como primer escalon, "inflaria" la importancia
+#     del tiempo al hacer de aproximacion del salto. time_spent continuo solo
+#     aparece en el lineal del Taller 1, que es la referencia.
 #   - Solo Revenue en nivel. La escala logaritmica queda para otro script.
 # =============================================================================
 
@@ -25,7 +32,7 @@ source("02_Scripts/00_formato_graficas.R")
 source("02_Scripts/00_formato_tablas.R")
 
 # subcarpeta de 03_Resultados/{Figuras,Tablas}/ de este script (nombre del script)
-carpeta_salida <- "05_prediccion_lineal_observacional"
+carpeta_salida <- "04_prediccion_lineal_observacional"
 
 rmse <- function(y, prediccion) sqrt(mean((y - prediccion)^2))
 
@@ -81,11 +88,10 @@ resumir_cv <- function(x) c(media = mean(x), ee = sd(x) / sqrt(length(x)))
 # -----------------------------------------------------------------------------
 
 # un termino por escalon, en el orden de la descriptiva: de lo mas fuerte a lo
-# mas especifico; 'sign_up' va al final para medir cuanto agrega a lo demas
+# mas especifico (el cruce lleva tambien el efecto principal del indicador); 'sign_up' va al final para medir cuanto agrega a lo demas
 escalones <- tribble(
   ~termino,                    ~variable,
   NA,                          "Ninguna (media del entrenamiento)",
-  "time_spent",                "Tiempo en el sitio (minutos)",
   "mas_5_min",                 "Más de 5 minutos en el sitio",
   "past_sessions",             "Sesiones anteriores",
   "device_type",               "Dispositivo",
@@ -130,11 +136,11 @@ print(escalera, n = Inf)
 # el aporte de una variable en la escalera depende de en que orden entra; por
 # eso se calcula tambien (a) la variable sola frente a la media y (b) el modelo
 # completo sin ella. Una "variable" agrupa todos sus terminos: quitar el tiempo
-# quita time_spent, el indicador de 5 minutos y su interaccion
+# quita el indicador de 5 minutos y su interaccion con las sesiones
 terminos_completo <- na.omit(escalones$termino)
 grupos <- tribble(
   ~variable,             ~sola,                         ~quita,
-  "Tiempo en el sitio",  c("time_spent", "mas_5_min"),  c("time_spent", "mas_5_min", "mas_5_min:past_sessions"),
+  "Más de 5 minutos",    "mas_5_min",                   c("mas_5_min", "mas_5_min:past_sessions"),
   "Sesiones anteriores", "past_sessions",               c("past_sessions", "mas_5_min:past_sessions"),
   "Usuario recurrente",  "is_returning_user",           "is_returning_user",
   "Dispositivo",         "device_type",                 "device_type",
@@ -162,18 +168,47 @@ importancia <- pmap_dfr(grupos, function(variable, sola, quita) {
 print(importancia)
 
 # -----------------------------------------------------------------------------
+# 4b. Por que el tiempo entra solo como indicador de 5 minutos
+# -----------------------------------------------------------------------------
+
+# el resto del modelo completo se deja igual y solo cambia como entra el tiempo:
+# solo el indicador, solo el tiempo lineal, ambos, o el indicador con una
+# pendiente a cada lado del corte. Si el RMSE no cambia, el tiempo continuo no
+# agrega nada una vez que esta el indicador
+train <- train |>
+  mutate(t_bajo = pmin(time_spent, 5), t_alto = pmax(time_spent - 5, 0))
+resto <- setdiff(terminos_completo, c("mas_5_min", "time_spent"))
+
+forma_tiempo <- tribble(
+  ~especificacion,                                  ~terminos,
+  "Solo el indicador de más de 5 minutos",          "mas_5_min",
+  "Solo el tiempo en minutos (lineal)",             "time_spent",
+  "Indicador y tiempo en minutos",                  c("mas_5_min", "time_spent"),
+  "Indicador y una pendiente a cada lado del corte", c("mas_5_min", "t_bajo", "t_alto")
+)
+robustez_tiempo <- pmap_dfr(forma_tiempo, function(especificacion, terminos) {
+  r <- cv_rmse(reformulate(c(terminos, resto), response = "Revenue"))
+  tibble(especificacion = especificacion, rmse_cv = mean(r), ee_rmse_cv = sd(r) / sqrt(5))
+})
+print(robustez_tiempo)
+
+# salto y pendientes por lado (ajustado con todo 'train', solo descriptivo)
+ajuste_salto <- lm(Revenue ~ mas_5_min + t_bajo + t_alto, data = train)
+print(summary(ajuste_salto)$coefficients)
+
+# -----------------------------------------------------------------------------
 # 5. Evaluacion en 'test' (una sola vez)
 # -----------------------------------------------------------------------------
 
 # modelos: ingenuo, el lineal del Taller 1 (todo lineal, con sign_up) y el
-# modelo completo de la escalera
+# modelo completo de la escalera (sin time_spent continuo)
 f_taller1 <- Revenue ~ sign_up + time_spent + past_sessions + device_type +
   is_returning_user + os_type
 f_completo <- formula_hasta(nrow(escalones))
 
 modelos_prueba <- list(
   "Referencia ingenua (media del entrenamiento)" = Revenue ~ 1,
-  "Lineal del Taller 1 (variables en forma lineal)" = f_taller1,
+  "Lineal del Taller 1 (con tiempo lineal)" = f_taller1,
   "Lineal con quiebre, interacción y registro" = f_completo
 )
 
@@ -243,6 +278,32 @@ tabla_escalera <- escalera |>
   )
 
 guardar_tabla("observacional_escalera_rmse", tabla_escalera, escalera, carpeta_salida)
+
+tabla_robustez <- robustez_tiempo |>
+  gt() |>
+  cols_label(
+    especificacion = "Forma del tiempo en el modelo",
+    rmse_cv = "RMSE (dólares)", ee_rmse_cv = "Error estándar entre pliegues"
+  ) |>
+  fmt_number(c(rmse_cv, ee_rmse_cv), decimals = decimales$rmse) |>
+  cols_align("center", -especificacion) |>
+  estilo_tabla(
+    titulo = "El tiempo en minutos no agrega nada una vez incluido el corte de 5 minutos",
+    subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
+    nota = nota_tabla(
+      "observacional", nrow(train), "entrenamiento",
+      extra = paste(
+        "Mismo modelo en todas las filas (sesiones anteriores, dispositivo,",
+        "sistema operativo, usuario recurrente, cruce con las sesiones y",
+        "registro); solo cambia cómo entra el tiempo. RMSE de validación",
+        "cruzada de 5 pliegues."
+      )
+    )
+  )
+
+guardar_tabla(
+  "observacional_robustez_forma_tiempo", tabla_robustez, robustez_tiempo, carpeta_salida
+)
 
 tabla_importancia <- importancia |>
   transmute(
@@ -346,5 +407,5 @@ guardar_figura(
   "observacional_escalera_rmse.png", grafica_escalera, carpeta_salida
 )
 
-cat("\nListo. Tablas y figura en 03_Resultados/{Tablas,Figuras}/05_prediccion_lineal_observacional/.\n")
+cat("\nListo. Tablas y figura en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.\n")
 cat("Recordatorio: aporte predictivo en datos historicos, no efecto causal.\n")
