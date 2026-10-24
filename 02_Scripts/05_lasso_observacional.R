@@ -222,7 +222,9 @@ print(prueba)
 # 6. Tablas
 # -----------------------------------------------------------------------------
 
-tabla_prueba <- prueba |>
+# la misma tabla se exporta dos veces, con titulo distinto: una centrada en LASSO
+# y otra como comparacion de todos los modelos lineales
+tabla_modelos <- function(titulo) prueba |>
   gt() |>
   cols_label(
     modelo = "Modelo",
@@ -238,7 +240,7 @@ tabla_prueba <- prueba |>
              decimals = decimales$porcentaje) |>
   cols_align("center", -modelo) |>
   estilo_tabla(
-    titulo = "Error de predicción fuera de muestra de LASSO frente a los modelos lineales",
+    titulo = titulo,
     subtitulo = sprintf(
       "Ingreso en dólares; media del ingreso en entrenamiento: %.2f dólares",
       media_train
@@ -272,7 +274,17 @@ tabla_prueba <- prueba |>
     )
   )
 
-guardar_tabla("observacional_rmse_prueba_lasso", tabla_prueba, prueba, carpeta_salida)
+guardar_tabla(
+  "observacional_rmse_prueba_lasso",
+  tabla_modelos("Error de predicción fuera de muestra de LASSO frente a los modelos lineales"),
+  prueba, carpeta_salida
+)
+
+guardar_tabla(
+  "observacional_rmse_prueba_comparacion_lineales",
+  tabla_modelos("Comparación de los modelos lineales"),
+  prueba, carpeta_salida
+)
 
 # los 20 terminos con mayor coeficiente estandarizado en el λ de menor error
 tabla_coef <- coeficientes |>
