@@ -89,10 +89,10 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
-Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
+Scripts: `05_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
 `06_comparacion_prediccion_observacional.R`.
 
-- [ ] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
+- [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
 - [ ] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
