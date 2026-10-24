@@ -36,7 +36,13 @@ contradictorio.
 | [A_dispositivo_y_sistema_operativo.md](03_punto_partida/A_dispositivo_y_sistema_operativo.md) | vigente | A / observacional / descriptivo | ¿Qué variables resultan más útiles para predecir? (medianas parecidas, medias distintas: cola derecha) |
 | [B_ols_efecto_registro.md](03_punto_partida/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares; cumplimiento perfecto) |
 
-### `05_forma_funcional_observacional/` (`05_forma_funcional_observacional.R`: `ln(Revenue)`)
+### `05_lasso_observacional/` (`05_lasso_observacional.R`: LASSO en dólares)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [A_lasso_vs_lineal_flexible.md](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con los modelos lineales? (RMSE de prueba 1.766 frente a 1.845 y 2.314) |
+
+### `06_forma_funcional_observacional/` (`06_forma_funcional_observacional.R`: `ln(Revenue)`)
 
 Sin notas todavía. Las figuras ya existen; falta registrar qué cambia frente al
 script 03 y atribuirlo a la transformación.

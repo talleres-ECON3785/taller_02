@@ -6,7 +6,7 @@
 # del Taller 1: como varia el ingreso con time_spent, past_sessions,
 # device_type, os_type e is_returning_user (heuristica H3). Es el punto de
 # partida del Taller 2; el mismo analisis en logaritmo esta en
-# '05_forma_funcional_observacional.R'.
+# '06_forma_funcional_observacional.R'.
 #
 # Las secciones 1 a 3 (figuras) son puramente descriptivas: asociaciones en
 # datos historicos (sin asignacion aleatoria), no efectos causales. Estimando:

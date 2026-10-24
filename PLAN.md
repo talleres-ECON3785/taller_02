@@ -70,7 +70,7 @@ bases listas traen `log_revenue`.
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
 Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
-`05_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
+`06_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
 - [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
@@ -89,16 +89,18 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
-Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
-`06_comparacion_prediccion_observacional.R`.
+Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
+`07_arboles_observacional.R`,
+`08_comparacion_prediccion_observacional.R`.
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
 - [ ] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
   interacciones de la descriptiva) y LASSO (`cv.glmnet`). *Avance 2026-10-24:* hechos ingenuo, lineal del Taller 1 y lineal flexible
-  en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); faltan
-  `ln(Revenue)` y LASSO.
+  en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); LASSO en dólares
+  hecho (`05_lasso_observacional.R`, RMSE de prueba 1.766); falta la escala
+  `ln(Revenue)` de todos los benchmarks.
 - [ ] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
   ¿Qué interacciones aparecen?
@@ -119,7 +121,7 @@ figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
 
 ## H3. Parte B: validez del experimento y ATE · Resp.: ____
 
-Scripts: `07_validacion_experimento.R`, `08_ate_experimento.R`.
+Scripts: `09_validacion_experimento.R`, `10_ate_experimento.R`.
 
 - [ ] **P3.1** Validación: tabla de balance, tabla de cumplimiento
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
@@ -136,7 +138,7 @@ las de validación salen desde `00_main.R`.
 
 ## H4. Parte B: ¿el efecto es igual para todos? · Resp.: ____
 
-Script: `09_heterogeneidad_experimento.R`.
+Script: `11_heterogeneidad_experimento.R`.
 
 - [ ] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
   `seed = 2026`, las 5 covariables pre-tratamiento con `time_spent`), con los

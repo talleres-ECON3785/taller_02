@@ -30,7 +30,7 @@ observacional frente a ≈3 leído aquí; el Taller 1 lo estimó con otro
 procedimiento, así que las cifras no son idénticas). Es la hipótesis que un árbol
 de regresión debería recuperar como primera partición; un modelo lineal en el
 tiempo no la representa. Esta nota cubre solo el ingreso en dólares: la lectura
-en logaritmo se registrará con el script `05_forma_funcional_observacional.R`.
+en logaritmo se registrará con el script `06_forma_funcional_observacional.R`.
 
 ## Límites e incertidumbre
 - Asociación, no efecto. El tiempo y el gasto se miden en la misma sesión (posible

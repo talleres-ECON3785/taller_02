@@ -116,13 +116,14 @@ esta tabla en la misma sesión en que se crean.
 | Script | Hito | Resultados esperados |
 | --- | --- | --- |
 | `03_punto_partida.R` | H1 | `Revenue` en nivel (dólares) frente a cada covariable: `03_Resultados/Figuras/03_punto_partida/`: `observacional_revenue_tiempo_sesion`, `_sesiones_pasadas`, `_dispositivo`, `_sistema_operativo`, `_recurrente` y `_tiempo_por_sesiones` (un solo panel, curvas loess; `.png`); y `03_Resultados/Tablas/03_punto_partida/`: `experimento_ols_registro` (MCO de `Revenue` sobre el tratamiento solo, con verificación de cumplimiento perfecto; `.png` y `.csv`) |
-| `05_forma_funcional_observacional.R` | H1 | Las mismas seis figuras con `ln(Revenue)` en `03_Resultados/Figuras/05_forma_funcional_observacional/`: `observacional_lnrevenue_*` (`.png`). Pendiente: densidad de `Revenue` frente a `ln(Revenue)` y tabla con las cifras del Taller 1 |
+| `05_lasso_observacional.R` | H2 | LASSO (`cv.glmnet`) de `Revenue` (dólares) con un diccionario de 76 términos, mismos pliegues que el script 04 y evaluación única en `test`: `03_Resultados/Tablas/05_lasso_observacional/`: `observacional_rmse_prueba_lasso` y `observacional_lasso_coeficientes` (`.png` y `.csv`); y `03_Resultados/Figuras/05_lasso_observacional/`: `observacional_lasso_cv_lambda` (`.png`) |
+| `06_forma_funcional_observacional.R` | H1 | Las mismas seis figuras con `ln(Revenue)` en `03_Resultados/Figuras/06_forma_funcional_observacional/`: `observacional_lnrevenue_*` (`.png`). Pendiente: densidad de `Revenue` frente a `ln(Revenue)` y tabla con las cifras del Taller 1 |
 | `04_prediccion_lineal_observacional.R` | H2 | Escalera de modelos lineales de `Revenue` (dólares) con RMSE de validación cruzada en `train`, aporte de cada variable y evaluación única en `test`: `03_Resultados/Tablas/04_prediccion_lineal_observacional/`: `observacional_escalera_rmse`, `observacional_importancia_variables`, `observacional_rmse_prueba_lineal`, `observacional_robustez_forma_tiempo` (`.png` y `.csv`); y `03_Resultados/Figuras/04_prediccion_lineal_observacional/`: `observacional_escalera_rmse` y `observacional_orden_tiempo_corte` (`.png`) |
-| `05_arboles_observacional.R` | H2 | CART podado, bosque aleatorio, importancia de variables |
-| `06_comparacion_prediccion_observacional.R` | H2 | Tabla 2×2 de RMSE (método × forma funcional) y escalera de RMSE |
-| `07_validacion_experimento.R` | H3 | Balance y cumplimiento del experimento |
-| `08_ate_experimento.R` | H3 | ATE en nivel y en logaritmo, conciliación nivel–log |
-| `09_heterogeneidad_experimento.R` | H4 | Bosque causal: calibración, CATE, ATE por subgrupo |
+| `07_arboles_observacional.R` | H2 | CART podado, bosque aleatorio, importancia de variables |
+| `08_comparacion_prediccion_observacional.R` | H2 | Tabla 2×2 de RMSE (método × forma funcional) y escalera de RMSE |
+| `09_validacion_experimento.R` | H3 | Balance y cumplimiento del experimento |
+| `10_ate_experimento.R` | H3 | ATE en nivel y en logaritmo, conciliación nivel–log |
+| `11_heterogeneidad_experimento.R` | H4 | Bosque causal: calibración, CATE, ATE por subgrupo |
 
 ## Documentación del trabajo
 

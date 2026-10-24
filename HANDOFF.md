@@ -19,7 +19,7 @@ octubre de 2026.**
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
-   `03_punto_partida.R` / `05_forma_funcional_observacional.R`
+   `03_punto_partida.R` / `06_forma_funcional_observacional.R`
    la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
    `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
    covariable y escala y la tabla de cifras del Taller 1 (P1.3).
@@ -36,7 +36,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 3. **P2.3: CART.** Nuevo script de árboles (`rpart`, `cp = 0`, poda por CV con la
    regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte de 5
    minutos y el cruce con las sesiones? Numerar el script sin chocar con
-   `05_forma_funcional_observacional.R`.
+   `06_forma_funcional_observacional.R`.
    *Terminado cuando:* existen la figura del árbol y una nota que compara sus
    cortes con las descriptivas y con el lineal de `A_lineal_flexible_vs_taller1.md`.
 
@@ -44,14 +44,14 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - Correr `00_main.R` completo (no se corrió en las sesiones 3 y 4: se corrieron por
   separado los scripts 03 y 04 de predicción, y la sección del MCO) y comprobar que
-  `05_forma_funcional_observacional.R` funciona con su carpeta de salida renombrada.
+  `06_forma_funcional_observacional.R` funciona con su carpeta de salida renombrada.
 - Renumerar en `PLAN.md` y en el README los scripts planificados (`05_arboles`,
   `06_comparacion`, `07_validacion`, …): el 05 ahora es la forma funcional.
 - El corte de 5 minutos y el cruce se eligieron mirando la base completa (incluye
   `test`); decidir si se redefine el cruce solo con `train` para la comparación con
   árboles.
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
-- Escribir las notas del script 04 en `05_Notas/05_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
+- Escribir las notas del script 04 en `05_Notas/06_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
 - Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
 - Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
