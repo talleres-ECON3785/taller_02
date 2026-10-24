@@ -23,6 +23,12 @@
   indicador, 1.869 con indicador y tiempo, 1.869 con indicador y una pendiente por
   lado, y 1.873 con solo el tiempo lineal (errores estándar entre pliegues de
   0.008).
+  La figura
+  `03_Resultados/Figuras/04_prediccion_lineal_observacional/observacional_orden_tiempo_corte.png`
+  lo muestra con modelos solo de tiempo (n = 80,000, CV): con el corte primero
+  (media 2.741, corte 2.305), agregar el tiempo en minutos baja el RMSE 0.000
+  dólares (error estándar 0.000); con el tiempo primero (2.500), agregar el corte
+  lo baja 0.195 dólares (error estándar 0.002).
 - Al quitar una variable del modelo completo, el RMSE sube: más de 5 minutos 0.724,
   sesiones 0.394 (ambas incluyen el cruce), dispositivo 0.030, sistema operativo 0.011, usuario
   recurrente 0.005, registro 0.000 (dólares; errores estándar entre pliegues de

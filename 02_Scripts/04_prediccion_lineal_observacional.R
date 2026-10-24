@@ -407,5 +407,85 @@ guardar_figura(
   "observacional_escalera_rmse.png", grafica_escalera, carpeta_salida
 )
 
-cat("\nListo. Tablas y figura en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.\n")
+# -----------------------------------------------------------------------------
+# 8. Figura: el orden de entrada del tiempo (corte de 5 minutos y tiempo lineal)
+# -----------------------------------------------------------------------------
+
+# modelos solo con terminos de tiempo, para ver el efecto sin otras variables:
+# si se agrega primero el corte de 5 minutos, el tiempo en minutos ya no baja el
+# RMSE; si se agrega primero el tiempo, el corte todavia baja el RMSE. En ambos
+# ordenes se llega al mismo modelo (indicador + tiempo)
+formula_tiempo <- function(terminos) {
+  reformulate(if (length(terminos) == 0) "1" else terminos, response = "Revenue")
+}
+rmse_tiempo <- list(
+  media        = cv_rmse(formula_tiempo(character(0))),
+  indicador    = cv_rmse(formula_tiempo("mas_5_min")),
+  tiempo       = cv_rmse(formula_tiempo("time_spent")),
+  ambos        = cv_rmse(formula_tiempo(c("mas_5_min", "time_spent")))
+)
+
+orden_tiempo <- tribble(
+  ~orden,                                          ~paso, ~etiqueta,                      ~modelo,
+  "Primero el corte de 5 minutos, luego el tiempo", 0,    "Media",                        "media",
+  "Primero el corte de 5 minutos, luego el tiempo", 1,    "+ Más de 5 minutos",           "indicador",
+  "Primero el corte de 5 minutos, luego el tiempo", 2,    "+ Tiempo en minutos",          "ambos",
+  "Primero el tiempo, luego el corte de 5 minutos", 0,    "Media",                        "media",
+  "Primero el tiempo, luego el corte de 5 minutos", 1,    "+ Tiempo en minutos",          "tiempo",
+  "Primero el tiempo, luego el corte de 5 minutos", 2,    "+ Más de 5 minutos",           "ambos"
+) |>
+  mutate(
+    rmse_cv = map_dbl(modelo, ~ mean(rmse_tiempo[[.x]])),
+    orden = factor(orden, levels = unique(orden))
+  )
+
+# caida del ultimo paso de cada orden, pareada por pliegue (dolares)
+caida_corte_luego_tiempo <- resumir_cv(rmse_tiempo$indicador - rmse_tiempo$ambos)
+caida_tiempo_luego_corte <- resumir_cv(rmse_tiempo$tiempo - rmse_tiempo$ambos)
+cat(sprintf(
+  "Ultimo paso: tiempo despues del corte baja %.4f (ee %.4f); corte despues del tiempo baja %.4f (ee %.4f)\n",
+  caida_corte_luego_tiempo[["media"]], caida_corte_luego_tiempo[["ee"]],
+  caida_tiempo_luego_corte[["media"]], caida_tiempo_luego_corte[["ee"]]
+))
+
+grafica_orden <- ggplot(orden_tiempo, aes(x = paso, y = rmse_cv)) +
+  geom_line(color = paleta_categorica[1], linewidth = 0.8) +
+  geom_point(color = paleta_categorica[1], size = 3) +
+  geom_text(aes(label = sprintf("%.3f", rmse_cv)), hjust = 0, nudge_x = 0.06,
+            nudge_y = 0.025, color = gris_texto, size = 3.6) +
+  facet_wrap(~ orden) +
+  scale_x_continuous(
+    breaks = 0:2, labels = NULL, expand = expansion(add = 0.45)
+  ) +
+  geom_text(aes(y = min(rmse_cv) - 0.09, label = etiqueta),
+            color = gris_secundario, size = 3.4, lineheight = 0.9) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.1))) +
+  labs(
+    title = "El tiempo en minutos no baja el error una vez incluido el corte de 5 minutos",
+    subtitle = subtitulo_observacional,
+    x = NULL, y = "RMSE de validación cruzada (dólares)",
+    caption = paste(
+      sprintf(
+        "Nota: n = %s usuarios de entrenamiento; validación cruzada de 5 pliegues.",
+        format(nrow(train), big.mark = ",")
+      ),
+      sprintf(
+        paste(
+          "Último paso, caída pareada del RMSE (error estándar entre pliegues):",
+          "tiempo tras el corte, %.3f (%.3f); corte tras el tiempo, %.3f (%.3f) dólares."
+        ),
+        caida_corte_luego_tiempo[["media"]], caida_corte_luego_tiempo[["ee"]],
+        caida_tiempo_luego_corte[["media"]], caida_tiempo_luego_corte[["ee"]]
+      ),
+      "Modelos solo con términos de tiempo; ambos órdenes terminan en el mismo modelo.",
+      sep = "\n"
+    )
+  ) +
+  tema_presentacion + tema_paneles
+
+guardar_figura(
+  "observacional_orden_tiempo_corte.png", grafica_orden, carpeta_salida
+)
+
+cat("\nListo. Tablas y figuras en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.\n")
 cat("Recordatorio: aporte predictivo en datos historicos, no efecto causal.\n")
