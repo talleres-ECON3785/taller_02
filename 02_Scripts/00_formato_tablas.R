@@ -66,10 +66,14 @@ nota_tabla <- function(base = c("experimento", "observacional"),
     entrenamiento = "Cifras de la muestra de entrenamiento",
     prueba        = "Cifras de la muestra de prueba"
   )
-  paste0(
-    texto_base, " ", texto_muestra, " (n = ",
-    format(n, big.mark = ",", scientific = FALSE), ").",
-    if (!is.null(extra)) paste0(" ", extra) else ""
+  # un vector: el primer elemento declara base, enfoque y n; cada elemento de
+  # `extra` es un parrafo aparte (la nota se lee mejor en parrafos cortos)
+  c(
+    paste0(
+      texto_base, " ", texto_muestra, " (n = ",
+      format(n, big.mark = ",", scientific = FALSE), ")."
+    ),
+    extra
   )
 }
 
@@ -86,8 +90,9 @@ estilo_tabla <- function(tabla, titulo = NULL, subtitulo = NULL, nota = NULL) {
   if (!is.null(titulo)) {
     tabla <- tab_header(tabla, title = titulo, subtitle = subtitulo)
   }
-  if (!is.null(nota)) {
-    tabla <- tab_source_note(tabla, source_note = nota)
+  # cada elemento de `nota` se agrega como un parrafo aparte
+  for (parrafo in nota) {
+    tabla <- tab_source_note(tabla, source_note = parrafo)
   }
   tabla |>
     opt_table_font(font = list(google_font("Inter"), default_fonts())) |>

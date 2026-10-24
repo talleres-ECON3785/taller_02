@@ -293,11 +293,13 @@ tabla_escalera <- escalera |>
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
       "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
-      extra = paste(
-        "RMSE de validación cruzada de 5 pliegues, en dólares. La caída es la",
-        "diferencia con el paso anterior, calculada pliegue a pliegue; entre",
-        "paréntesis, su error estándar entre pliegues. Depende del orden de los",
-        "pasos."
+      extra = c(
+        "RMSE de validación cruzada de 5 pliegues, en dólares.",
+        paste(
+          "Caída: diferencia con el paso anterior, calculada pliegue a pliegue.",
+          "Error estándar entre paréntesis, calculado entre los pliegues."
+        ),
+        "El aporte de cada variable depende del orden de los pasos."
       )
     )
   )
@@ -317,11 +319,13 @@ tabla_robustez <- robustez_tiempo |>
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
       "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
-      extra = paste(
-        "Mismo modelo en todas las filas (sesiones anteriores, dispositivo,",
-        "sistema operativo, usuario recurrente, cruce con las sesiones y",
-        "registro); solo cambia cómo entra el tiempo. RMSE de validación",
-        "cruzada de 5 pliegues."
+      extra = c(
+        paste(
+          "Mismo modelo en todas las filas (sesiones anteriores, dispositivo,",
+          "sistema operativo, usuario recurrente, cruce con las sesiones y",
+          "registro); solo cambia cómo entra el tiempo."
+        ),
+        "RMSE de validación cruzada de 5 pliegues, en dólares."
       )
     )
   )
@@ -332,7 +336,8 @@ guardar_tabla(
 
 tabla_importancia <- importancia |>
   transmute(
-    variable,
+    # el asterisco remite a la nota: el cruce tiene una interpretacion especial
+    variable = if_else(startsWith(variable, "Cruce"), paste0(variable, "*"), variable),
     sola_txt = sprintf("%.*f (%.*f)", decimales$rmse, round(mejora_sola, decimales$rmse) + 0,
                        decimales$rmse, ee_mejora_sola),
     sin_txt = sprintf("%.*f (%.*f)", decimales$rmse, round(aumento_sin, decimales$rmse) + 0,
@@ -350,13 +355,18 @@ tabla_importancia <- importancia |>
     subtitulo = "Regresión lineal; ingreso en dólares; validación cruzada",
     nota = nota_tabla(
       "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
-      extra = paste(
-        "Cambio del RMSE de validación cruzada (5 pliegues) frente a la media",
-        "(columna 2) y frente al modelo completo (columna 3); entre paréntesis,",
-        "el error estándar entre pliegues. Quitar el tiempo o las sesiones",
-        "anteriores quita también el cruce. Para el cruce, la columna 2 compara",
-        "el modelo con las dos variables y el cruce frente al modelo con las dos",
-        "variables sin cruce, y la columna 3 es el modelo completo sin el cruce."
+      extra = c(
+        paste(
+          "Cambio del RMSE de validación cruzada (5 pliegues), en dólares, frente",
+          "a la media (columna 2) y frente al modelo completo (columna 3).",
+          "Error estándar entre paréntesis, calculado entre los pliegues."
+        ),
+        "Quitar el tiempo o las sesiones anteriores quita también el cruce.",
+        paste(
+          "* Interpretación especial del cruce: la columna 2 compara el modelo",
+          "con las dos variables y el cruce frente al modelo con las dos",
+          "variables sin cruce, y la columna 3 es el modelo completo sin el cruce."
+        )
       )
     )
   )
@@ -388,11 +398,13 @@ tabla_prueba <- prueba |>
     ),
     nota = nota_tabla(
       "observacional", nrow(test), "prueba", enfoque = "predictivo",
-      extra = paste0(
-        "Modelos ajustados con la muestra de entrenamiento (n = ",
-        format(nrow(train), big.mark = ","), ") y evaluados una sola vez en la",
-        " muestra de prueba. Partición 80/20 con semilla 2026, como en el",
-        " Taller 1."
+      extra = c(
+        paste0(
+          "Modelos ajustados con la muestra de entrenamiento (n = ",
+          format(nrow(train), big.mark = ","), ") y evaluados una sola vez en la",
+          " muestra de prueba."
+        ),
+        "Partición 80/20 con semilla 2026, como en el Taller 1."
       )
     )
   )

@@ -429,11 +429,15 @@ tabla_ols <- modelsummary(
     subtitulo = "MCO con el tratamiento como único regresor (dólares)",
     nota = nota_tabla(
       "experimento", nrow(exp),
-      extra = paste(
-        "Errores estándar robustos (HC1) entre paréntesis. El efecto es la",
-        "diferencia de medias entre grupos, en dólares. Cumplimiento perfecto:",
-        "todos los usuarios asignados al registro facilitado se registraron y",
-        "ninguno del control lo hizo. Sin controles."
+      extra = c(
+        paste(
+          "Errores estándar robustos (HC1) entre paréntesis. El efecto es la",
+          "diferencia de medias entre grupos, en dólares. Sin controles."
+        ),
+        paste(
+          "Cumplimiento perfecto: todos los usuarios asignados al registro",
+          "facilitado se registraron y ninguno del control lo hizo."
+        )
       )
     )
   )
