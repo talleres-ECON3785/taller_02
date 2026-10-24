@@ -40,7 +40,7 @@ contradictorio.
 
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
-| [A_lasso_vs_lineal_flexible.md](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con los modelos lineales? (RMSE de prueba 1.766 frente a 1.845 y 2.314) |
+| [A_lasso_vs_lineal_flexible.md](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con los modelos lineales? (RMSE de prueba 1.765 frente a 1.845 y 2.314) |
 
 ### `06_forma_funcional_observacional/` (`06_forma_funcional_observacional.R`: `ln(Revenue)`)
 

@@ -86,6 +86,16 @@ diccionario <- ~ (mas_5_min + time_spent + I(time_spent^2) + log(time_spent) +
 X_train <- model.matrix(diccionario, train)[, -1]
 X_test  <- model.matrix(diccionario, test)[, -1]
 y_train <- train$Revenue
+
+# los usuarios no recurrentes tienen 0 sesiones anteriores, asi que el cruce de las
+# sesiones (y de su cuadrado) con 'is_returning_user' repite exactamente la
+# columna de las sesiones. Se quitan las columnas duplicadas para que cada
+# termino cuente una sola vez y MCO sin penalizacion tenga solucion unica
+stopifnot(all(train$past_sessions[train$is_returning_user == 0] == 0))
+columnas_repetidas <- duplicated(t(X_train))
+cat("Columnas duplicadas que se quitan:", colnames(X_train)[columnas_repetidas], "\n")
+X_train <- X_train[, !columnas_repetidas]
+X_test  <- X_test[, !columnas_repetidas]
 stopifnot(
   nrow(X_train) == length(y_train),
   identical(colnames(X_train), colnames(X_test))
@@ -183,6 +193,56 @@ cat(sprintf(
   cruce$coef_min, cruce$coef_1se
 ))
 print(head(coeficientes, 15))
+
+# -----------------------------------------------------------------------------
+# 4b. Chequeo: cuanto aporta la regularizacion y cuanto el diccionario
+# -----------------------------------------------------------------------------
+
+# LASSO mejora al lineal final por dos razones posibles: (a) ofrece mas terminos
+# o (b) los achica (regularizacion). Para separarlas se ajusta MCO sin
+# penalizacion (i) con todos los terminos y (ii) solo con los que LASSO conserva,
+# en los mismos pliegues. Si MCO iguala a LASSO, la ganancia viene del
+# diccionario y no de la regularizacion. Solo validacion cruzada en 'train':
+# 'test' no se toca
+rango_x <- qr(X_train)$rank
+cat(sprintf("Rango de X: %d de %d columnas\n", rango_x, ncol(X_train)))
+stopifnot(rango_x == ncol(X_train))
+
+datos_mco <- as.data.frame(X_train)
+names(datos_mco) <- make.names(names(datos_mco), unique = TRUE)
+datos_mco$y <- y_train
+terminos_lasso <- make.names(colnames(X_train))[coef_min != 0]
+
+cv_mco <- function(terminos) {
+  map_dbl(pliegues, function(idx) {
+    ajuste <- lm(reformulate(paste0("`", terminos, "`"), response = "y"),
+                 data = datos_mco[-idx, ])
+    rmse(y_train[idx], predict(ajuste, newdata = datos_mco[idx, ]))
+  })
+}
+rmse_mco_todos <- cv_mco(setdiff(names(datos_mco), "y"))
+rmse_mco_lasso <- cv_mco(terminos_lasso)
+
+# una fila por modelo: RMSE de CV y diferencias pareadas por pliegue
+# (positiva = el modelo de la fila tiene menos error que la referencia)
+modelos_cv <- list(
+  "Lineal con quiebre, cruce y registro" = list(rmse = rmse_lineal_cv, terminos = ncol(model.matrix(f_completo, train)) - 1),
+  "MCO con todos los términos del diccionario, sin penalización" = list(rmse = rmse_mco_todos, terminos = ncol(X_train)),
+  "MCO solo con los términos que conserva LASSO" = list(rmse = rmse_mco_lasso, terminos = n_min),
+  "LASSO (λ de menor error de validación)" = list(rmse = rmse_lasso_cv$lambda.min, terminos = n_min),
+  "LASSO (λ más regularizado a un error estándar)" = list(rmse = rmse_lasso_cv$lambda.1se, terminos = n_1se)
+)
+comparacion_cv <- imap_dfr(modelos_cv, function(m, nombre) {
+  vs_lineal <- resumir_cv(rmse_lineal_cv - m$rmse)
+  vs_lasso  <- resumir_cv(m$rmse - rmse_lasso_cv$lambda.min)
+  tibble(
+    modelo = nombre, terminos = m$terminos,
+    rmse_cv = mean(m$rmse), ee_rmse_cv = sd(m$rmse) / sqrt(length(m$rmse)),
+    caida_vs_lineal = vs_lineal[["media"]], ee_caida_vs_lineal = vs_lineal[["ee"]],
+    dif_vs_lasso = vs_lasso[["media"]], ee_dif_vs_lasso = vs_lasso[["ee"]]
+  )
+})
+print(comparacion_cv)
 
 # -----------------------------------------------------------------------------
 # 5. Evaluacion en 'test' (una sola vez)
@@ -324,6 +384,57 @@ tabla_coef <- coeficientes |>
 
 guardar_tabla(
   "observacional_lasso_coeficientes", tabla_coef, coeficientes, carpeta_salida
+)
+
+# diferencias pareadas con su error estandar entre parentesis (cero si no hay
+# diferencia); la fila de la referencia queda en blanco
+diferencia_txt <- function(media, ee, referencia) {
+  if_else(referencia, "",
+          sprintf("%.*f (%.*f)", decimales$rmse, round(media, decimales$rmse) + 0,
+                  decimales$rmse, ee))
+}
+tabla_cv <- comparacion_cv |>
+  mutate(
+    caida_txt = diferencia_txt(caida_vs_lineal, ee_caida_vs_lineal, row_number() == 1),
+    dif_txt   = diferencia_txt(dif_vs_lasso, ee_dif_vs_lasso, row_number() == 4)
+  ) |>
+  select(modelo, terminos, rmse_cv, ee_rmse_cv, caida_txt, dif_txt) |>
+  gt() |>
+  cols_label(
+    modelo = "Modelo", terminos = "Términos",
+    rmse_cv = "RMSE (dólares)", ee_rmse_cv = "Error estándar entre pliegues",
+    caida_txt = "Caída frente al lineal con quiebre y cruce (dólares)",
+    dif_txt = "Diferencia con LASSO de menor error (dólares)"
+  ) |>
+  fmt_number(c(rmse_cv, ee_rmse_cv), decimals = decimales$rmse) |>
+  fmt_number(terminos, decimals = decimales$conteo) |>
+  cols_align("center", -modelo) |>
+  estilo_tabla(
+    titulo = "La mejora de LASSO viene de los términos que se le ofrecen, no de la regularización",
+    subtitulo = "Ingreso en dólares; validación cruzada",
+    nota = nota_tabla(
+      "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
+      extra = c(
+        paste(
+          "RMSE de validación cruzada de 5 pliegues, en dólares, con los mismos pliegues",
+          "en todas las filas. No usa la muestra de prueba."
+        ),
+        paste(
+          "Caída: RMSE del lineal con quiebre y cruce menos el de cada modelo (positiva",
+          "= menos error). Diferencia: RMSE de la fila menos el de LASSO de menor error.",
+          "Ambas se calculan pliegue a pliegue, con el error estándar entre paréntesis."
+        ),
+        paste(
+          sprintf("MCO sin penalización con los %d términos y MCO solo con los términos que", ncol(X_train)),
+          "conserva LASSO tienen un error igual al de LASSO: la regularización no aporta",
+          "de forma apreciable con esta muestra."
+        )
+      )
+    )
+  )
+
+guardar_tabla(
+  "observacional_lasso_vs_mco_validacion", tabla_cv, comparacion_cv, carpeta_salida
 )
 
 # -----------------------------------------------------------------------------

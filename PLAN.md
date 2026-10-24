@@ -99,7 +99,7 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
   interacciones de la descriptiva) y LASSO (`cv.glmnet`). *Avance 2026-10-24:* hechos ingenuo, lineal del Taller 1 y lineal flexible
   en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); LASSO en dólares
-  hecho (`05_lasso_observacional.R`, RMSE de prueba 1.766); falta la escala
+  hecho (`05_lasso_observacional.R`, RMSE de prueba 1.765); falta la escala
   `ln(Revenue)` de todos los benchmarks.
 - [ ] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
