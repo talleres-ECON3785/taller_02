@@ -165,6 +165,31 @@ importancia <- pmap_dfr(grupos, function(variable, sola, quita) {
   )
 })
 
+# fila del cruce (mas de 5 minutos x sesiones anteriores). No puede entrar "sola"
+# sin sus dos variables, asi que su aporte se mide (a) frente al modelo que ya
+# tiene las dos variables sin cruce y (b) quitandolo del modelo completo, dejando
+# las dos variables. Es lo que el cruce agrega a lo que las dos explican por
+# separado
+sin_cruce_cv <- cv_rmse(reformulate(
+  setdiff(terminos_completo, "mas_5_min:past_sessions"), response = "Revenue"
+))
+dos_variables_cv <- cv_rmse(reformulate(c("mas_5_min", "past_sessions"), response = "Revenue"))
+con_dos_y_cruce_cv <- cv_rmse(reformulate(
+  c("mas_5_min", "past_sessions", "mas_5_min:past_sessions"), response = "Revenue"
+))
+mejora_cruce  <- resumir_cv(dos_variables_cv - con_dos_y_cruce_cv)
+perdida_cruce <- resumir_cv(sin_cruce_cv - rmse_completo)
+
+importancia <- importancia |>
+  add_row(
+    variable = "Cruce: más de 5 minutos × sesiones anteriores",
+    mejora_sola = mejora_cruce[["media"]],
+    ee_mejora_sola = mejora_cruce[["ee"]],
+    aumento_sin = perdida_cruce[["media"]],
+    ee_aumento_sin = perdida_cruce[["ee"]],
+    .after = 2
+  )
+
 print(importancia)
 
 # -----------------------------------------------------------------------------
@@ -329,7 +354,10 @@ tabla_importancia <- importancia |>
         "Cambio del RMSE de validación cruzada (5 pliegues) frente a la media",
         "(columna 2) y frente al modelo completo (columna 3); entre paréntesis,",
         "el error estándar entre pliegues. Quitar el tiempo o las sesiones",
-        "anteriores quita también su interacción. Aporte predictivo, no causal."
+        "anteriores quita también el cruce. Para el cruce, la columna 2 compara",
+        "el modelo con las dos variables y el cruce frente al modelo con las dos",
+        "variables sin cruce, y la columna 3 es el modelo completo sin el cruce.",
+        "Aporte predictivo, no causal."
       )
     )
   )

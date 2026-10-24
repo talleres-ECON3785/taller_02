@@ -33,6 +33,10 @@
   sesiones 0.394 (ambas incluyen el cruce), dispositivo 0.030, sistema operativo 0.011, usuario
   recurrente 0.005, registro 0.000 (dólares; errores estándar entre pliegues de
   0.0001 a 0.006).
+- El cruce aislado (fila propia de `observacional_importancia_variables.png`):
+  agregarlo al modelo que ya tiene las dos variables baja el RMSE 0.257 dólares
+  (error estándar 0.004), y quitarlo del modelo completo lo sube 0.263 (0.005).
+  Coincide con la caída del paso 6 de la escalera (0.263).
 - Prueba (dólares): ingenuo 2.716; lineal del Taller 1 2.314 (mejora 14.8 %);
   lineal con quiebre, cruce y registro 1.845 (mejora 32.1 %; elimina 53.9 % del
   error cuadrático del ingenuo; RMSE = 46.4 % de la media de 3.98). Brecha prueba
@@ -88,6 +92,7 @@ sobre el efecto causal de impulsarlo (eso lo da el experimento).
   de la variabilidad.
 
 ## Historial
+- 2026-10-24: se agrega la fila del cruce a la tabla de aporte de cada variable.
 - 2026-10-24: el tiempo continuo sale de la escalera (queda el indicador de más de
   5 minutos) por ser redundante con él; cifras de la escalera actualizadas; el
   RMSE de prueba no cambia (1.845). Los scripts 04 y 05 intercambiaron número
