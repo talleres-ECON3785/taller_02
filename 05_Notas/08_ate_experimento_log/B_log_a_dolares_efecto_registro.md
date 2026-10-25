@@ -31,3 +31,4 @@ Responde "¿cambia el ATE y su interpretación en `ln(Revenue)`?" y concilia las
 
 ## Historial
 - 2026-10-24: primera versión (P3.2 en logaritmo, P3.3 parcial: cuantiles y cola).
+- 2026-10-25: el bosque causal del script 12 confirma con evidencia formal el patrón por dispositivo y sistema operativo que aquí era exploratorio (ver `05_Notas/12_heterogeneidad_experimento/B_cate_por_grupo.md` y `B_evidencia_hte.md`). Las cifras de esta nota no cambian.

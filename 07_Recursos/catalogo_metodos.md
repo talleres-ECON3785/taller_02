@@ -293,7 +293,10 @@ cf <- causal_forest(X_mat, Y, W,
   `cor(tau_ent, X)`).
 - `W.hat`: en el Lab 10 se fijó en 0.5 porque la probabilidad de asignación era
   conocida. En CheMarket se fija en la probabilidad del diseño si se conoce;
-  si no, se deja que `grf` la estime y se registra la decisión.
+  si no, se deja que `grf` la estime y se registra la decisión. *Decisión
+  2026-10-25:* el enunciado no da la probabilidad del diseño, así que `grf` la
+  estima (script 12; ver "Decisiones tomadas" de `CLAUDE.md`). Se fija
+  `num.threads = 4` para reproducir las cifras entre máquinas.
 - El Lab 10 usa `clusters = colegio`; en CheMarket **no** se usa `clusters`
   (asignación individual).
 

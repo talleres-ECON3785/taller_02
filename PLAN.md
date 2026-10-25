@@ -130,10 +130,13 @@ Scripts: `06_ate_experimento_niveles.R`, `08_ate_experimento_log.R`.
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
   (H7, H9). *Avance 2026-10-24:* hechos balance y cumplimiento en
   `06_ate_experimento_niveles.R`; falta la representatividad.
-- [ ] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
+- [x] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
   sin controles; *avance 2026-10-24:* hecho en dólares con `lm` y HC1 en el
   script 06 y en `ln(Revenue)` en `08_ate_experimento_log.R`, con retransformación a dólares) y ATE del bosque causal (`average_treatment_effect`).
   **Decidir y registrar** `W.hat` (0.5 por diseño o la proporción observada).
+  *Cerrado 2026-10-25:* ATE del bosque en `12_heterogeneidad_experimento.R`
+  (tabla MCO frente a bosque); `W.hat` lo estima `grf` (con 0.5 el ATE en
+  dólares no cambia: 0.414).
 - [ ] **P3.3** Conciliación nivel–log (H2): cuantiles de `Revenue` por brazo y
   efecto en nivel sin la cola alta (*avance 2026-10-24:* cuantiles, efecto con ingreso limitado y descomposición hechos en `08_ate_experimento_log.R`; faltan intervalos de los cuantiles). Sostiene la diapositiva "por qué los dos
   números no se contradicen".
@@ -145,22 +148,26 @@ las de validación salen desde `00_main.R`.
 
 Script: `12_heterogeneidad_experimento.R`.
 
-- [ ] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
+- [x] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
   `seed = 2026`, las 5 covariables pre-tratamiento con `time_spent`), con los
   CATE fuera de bolsa y su varianza (`estimate.variance = TRUE`).
-- [ ] **P4.2** Evidencia formal de HTE: `test_calibration()` y TOC/AUTOC con
+- [x] **P4.2** Evidencia formal de HTE: `test_calibration()` y TOC/AUTOC con
   muestra dividida (bosque de entrenamiento para priorizar y bosque de
   evaluación independiente).
-- [ ] **P4.3** ATE por subgrupo con IC (`subset`): dispositivo, sistema
+- [x] **P4.3** ATE por subgrupo con IC (`subset`): dispositivo, sistema
   operativo, usuario recurrente, `time_spent` < 5 / ≥ 5 min y terciles de
   `past_sessions`, cada uno con su tamaño y su peso en la base histórica (H8,
-  H9). Advertencia de multiplicidad.
-- [ ] **P4.4** `variable_importance()` del bosque causal, leída como "dónde
+  H9). Advertencia de multiplicidad. (Sesiones en tramos 0–2, 3–4 y 5 o más,
+  los cuantiles 1/3 y 2/3 del experimento.)
+- [x] **P4.4** `variable_importance()` del bosque causal, leída como "dónde
   mira el bosque", no como efecto.
-- [ ] **P4.5** Bosque causal sobre `Revenue` en nivel, para probar la
+- [x] **P4.5** Bosque causal sobre `Revenue` en nivel, para probar la
   hipótesis de la cola alta: ¿hay heterogeneidad en nivel que no aparece en
   log?
-- [ ] **P4.6** Robustez: bosque sin `time_spent`.
+- [x] **P4.6** Robustez: bosque sin `time_spent`.
+
+*Cerrado 2026-10-25* en `12_heterogeneidad_experimento.R` (todo con
+`num.threads = 4`; ver `05_Notas/12_heterogeneidad_experimento/`).
 
 *Terminado cuando:* existen la prueba de calibración, la figura TOC, la tabla de
 CATE por grupo con IC y la comparación nivel–log de la heterogeneidad.

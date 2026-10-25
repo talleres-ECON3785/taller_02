@@ -1,0 +1,7 @@
+especificacion,termino,coeficiente,error_estandar,p_valor
+Logaritmo del ingreso,Promedio del bosque,1.0389955403499334,2.012603049749617,0.30284748586284627
+Logaritmo del ingreso,Diferencias entre usuarios,1.0129080167030644,0.03060568074165123,2.5640536385447875e-228
+"Logaritmo del ingreso, sin tiempo en el sitio",Promedio del bosque,0.9846011295277364,1.3605654915012244,0.23464248497199652
+"Logaritmo del ingreso, sin tiempo en el sitio",Diferencias entre usuarios,0.9650410644912445,0.0496955876329085,8.708863119287459e-83
+Ingreso en dólares,Promedio del bosque,1.0004276650014103,0.09411644307453713,1.496841434699723e-26
+Ingreso en dólares,Diferencias entre usuarios,1.058613308009255,0.06445752879126122,3.934489651744082e-60

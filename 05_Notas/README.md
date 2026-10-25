@@ -89,6 +89,14 @@ Faltan las notas que comparan, figura por figura, qué cambia frente al script 0
 | --- | --- | --- | --- |
 | [X_rmse_metodo_por_escala.md](11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md) | vigente | A / observacional / predictivo | ¿Cómo se comparan árboles y lineales? ¿Qué cambia con `ln(Revenue)`? (árbol 1.627 frente a LASSO 1.765 dólares; ganancia del método, no de la transformación) |
 
+### `12_heterogeneidad_experimento/` (`12_heterogeneidad_experimento.R`: bosque causal, ATE, CATE y evidencia de HTE)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [B_evidencia_hte.md](12_heterogeneidad_experimento/B_evidencia_hte.md) | vigente | B / experimento / causal | ¿Existe evidencia de HTE? (calibración 1.01, AUTOC 0.20 en log; el ATE ≈ 0 esconde efectos de signo opuesto) |
+| [B_cate_por_grupo.md](12_heterogeneidad_experimento/B_cate_por_grupo.md) | vigente | B / experimento / causal | ¿Cómo varían los CATE y qué grupos difieren? (computador, osx y más sesiones positivos; celular, Windows y usuarios nuevos negativos) |
+| [X_hte_nivel_vs_log.md](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) | vigente | B / experimento / causal | ¿Cómo se relaciona con el ATE del Taller 1? ¿Qué cambia en log? (heterogeneidad en las dos escalas; en dólares se agranda en los usuarios de mayor gasto) |
+
 ## Pendientes de conciliar
 
 Contradicciones detectadas y aún sin decisión del equipo (nota afectada, resultado

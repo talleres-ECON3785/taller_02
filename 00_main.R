@@ -68,7 +68,9 @@ carpetas_salida <- c(
   "03_Resultados/Tablas/10_bosque_observacional",
   "03_Resultados/Figuras/10_bosque_observacional",
   "03_Resultados/Tablas/11_comparacion_prediccion_observacional",
-  "03_Resultados/Figuras/11_comparacion_prediccion_observacional"
+  "03_Resultados/Figuras/11_comparacion_prediccion_observacional",
+  "03_Resultados/Tablas/12_heterogeneidad_experimento",
+  "03_Resultados/Figuras/12_heterogeneidad_experimento"
 )
 for (carpeta in carpetas_salida) {
   if (!dir.exists(carpeta)) dir.create(carpeta, recursive = TRUE)
@@ -89,7 +91,8 @@ scripts <- c(
   "02_Scripts/08_ate_experimento_log.R",
   "02_Scripts/09_arboles_observacional.R",
   "02_Scripts/10_bosque_observacional.R",
-  "02_Scripts/11_comparacion_prediccion_observacional.R"
+  "02_Scripts/11_comparacion_prediccion_observacional.R",
+  "02_Scripts/12_heterogeneidad_experimento.R"
 )
 
 # nota: '00_formato_graficas.R' no aparece en esta lista porque no produce
