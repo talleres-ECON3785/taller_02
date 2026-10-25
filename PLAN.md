@@ -74,14 +74,13 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 
 - [x] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
-- [ ] **P1.2** Cómo varía `ln(Revenue)` con cada covariable (`time_spent` y su
+- [x] **P1.2** Cómo varía `ln(Revenue)` con cada covariable (`time_spent` y su
   quiebre en 5 min, `past_sessions`, dispositivo, sistema operativo, usuario
   recurrente, registro), más una interacción candidata. Son las hipótesis que
   deben confirmar o matizar los árboles. *Avance 2026-10-24:* hechas las
   figuras de tiempo, sesiones pasadas, dispositivo, sistema operativo, usuario
-  recurrente y la interacción tiempo × sesiones, en las dos escalas; falta la
-  relación con el registro.
-- [ ] **P1.3** Tabla con las cifras clave del Taller 1 (RMSE, ITT en nivel y
+  recurrente y la interacción tiempo × sesiones, en las dos escalas, y el registro (densidades por grupo).
+- [x] **P1.3** Tabla con las cifras clave del Taller 1 (RMSE, ITT en nivel y
   en log, quiebre en 5 min) como punto de partida de la presentación.
 
 *Terminado cuando:* las figuras y la tabla salen con `guardar_figura()` /

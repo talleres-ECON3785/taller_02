@@ -291,6 +291,21 @@ graficar_categorica(
   "sistema_operativo"
 )
 
+# registro: la asociacion entre sign_up y ln(Revenue) que el Taller 1 midio con
+# MCO (0.102 sin controles) aqui se ve como dos distribuciones. Es una
+# asociacion en datos historicos: los usuarios que se registran pueden diferir
+# en otras caracteristicas (por eso el experimento, y no esta figura, es lo que
+# identifica el efecto de facilitar el registro)
+graficar_categorica(
+  obs |> mutate(Registro = factor(
+    sign_up, levels = c(0, 1), labels = c("No registrado", "Registrado")
+  )),
+  "Registro",
+  c("No registrado" = paleta_categorica[1], "Registrado" = paleta_categorica[2]),
+  "Distribución del ingreso de usuarios registrados y no registrados",
+  "registro"
+)
+
 # -----------------------------------------------------------------------------
 # 5. Interaccion: tiempo en el sitio segun sesiones pasadas
 # -----------------------------------------------------------------------------
@@ -569,6 +584,98 @@ tabla_puente <- puente |>
 
 guardar_tabla(
   "observacional_puente_media_dolares", tabla_puente, puente, carpeta_salida
+)
+
+# -----------------------------------------------------------------------------
+# 9. Punto de partida: cifras clave del Taller 1
+# -----------------------------------------------------------------------------
+
+# Cierra el punto de partida. La columna del Taller 1 son las cifras reportadas
+# alla (el repositorio taller1/ no esta en este proyecto, asi que se transcriben
+# de CLAUDE.md, "Punto de partida"); la del Taller 2 es lo que reproduce este
+# proyecto con las mismas bases y la misma particion (80/20, semilla 2026). El
+# RMSE sale del script 04 (corre antes); lo demas se calcula aqui, para que la
+# tabla no dependa de scripts posteriores
+rmse_t2 <- read_csv(
+  "03_Resultados/Tablas/04_prediccion_lineal_observacional/observacional_rmse_prueba_lineal.csv",
+  show_col_types = FALSE
+)
+rmse_lineal <- rmse_t2 |> filter(str_detect(modelo, "^Lineal del Taller 1"))
+rmse_ingenuo <- rmse_t2 |> filter(str_detect(modelo, "^Referencia ingenua"))
+
+exp_datos <- readRDS("01_Datos/03_Listos/experimento_listos.RDS")
+n_exp <- nrow(exp_datos)
+
+# ITT sin controles = diferencia de medias entre tratados y controles
+itt <- function(y) {
+  unname(coef(lm(reformulate("easier_signup", y), data = exp_datos))["easier_signup"])
+}
+# salto de nivel del ingreso en dolares entre usuarios con 5 minutos o mas y con
+# menos de 5 (diferencia de medias simple, sin controles)
+salto_5 <- function(datos) {
+  m <- tapply(datos$Revenue, datos$time_spent >= 5, mean)
+  unname(m["TRUE"] - m["FALSE"])
+}
+
+punto_partida <- tribble(
+  ~tema, ~cifra, ~escala, ~base, ~taller1, ~taller2,
+  "Predicción", "RMSE de la referencia ingenua", "Dólares", "Histórica",
+    2.716, rmse_ingenuo$rmse_prueba,
+  "Predicción", "RMSE del lineal del Taller 1", "Dólares", "Histórica",
+    2.314, rmse_lineal$rmse_prueba,
+  "Predicción", "Mejora del lineal frente a la ingenua (%)", "Porcentaje",
+    "Histórica", 14.8, rmse_lineal$mejora_ingenuo_pct,
+  "Efecto del registro", "ITT sin controles", "Dólares", "Experimento",
+    0.49, itt("Revenue"),
+  "Efecto del registro", "ITT sin controles", "Logaritmo", "Experimento",
+    0.0134, itt("log_revenue"),
+  "Efecto del registro", "ITT con controles", "Logaritmo", "Experimento",
+    0.0042, NA_real_,
+  "Quiebre en 5 minutos", "Salto del ingreso promedio", "Dólares", "Histórica",
+    3.13, salto_5(obs),
+  "Quiebre en 5 minutos", "Salto del ingreso promedio", "Dólares", "Experimento",
+    3.42, salto_5(exp_datos)
+)
+
+tabla_punto_partida <- punto_partida |>
+  gt(groupname_col = "tema") |>
+  cols_label(
+    cifra = "Cifra", escala = "Escala", base = "Base",
+    taller1 = "Taller 1", taller2 = "Reproducido en el Taller 2"
+  ) |>
+  fmt_number(c(taller1, taller2), rows = escala == "Porcentaje", decimals = decimales$porcentaje) |>
+  fmt_number(c(taller1, taller2), rows = escala == "Dólares", decimals = decimales$dolares) |>
+  # el RMSE va con los decimales de RMSE, aunque este en dolares
+  fmt_number(c(taller1, taller2), rows = str_detect(cifra, "^RMSE"), decimals = decimales$rmse) |>
+  fmt_number(c(taller1, taller2), rows = escala == "Logaritmo", decimals = 4) |>
+  sub_missing(missing_text = "—") |>
+  estilo_tabla(
+    titulo = "El Taller 1 deja tres resultados como punto de partida",
+    subtitulo = "Error de predicción, efecto del registro y quiebre en 5 minutos",
+    nota = nota_tabla(
+      "observacional", n_obs,
+      extra = c(
+        sprintf(
+          "Experimento A/B: n = %s. ITT: efecto de la asignación a registro facilitado.",
+          format(n_exp, big.mark = ",")
+        ),
+        paste(
+          "RMSE de la muestra de prueba (20%); en dólares, no comparable con",
+          "un RMSE en logaritmo. Las cifras del Taller 1 son las reportadas allá."
+        ),
+        paste(
+          "El salto del Taller 2 es la diferencia simple de medias entre 5",
+          "minutos o más y menos de 5; el Taller 1 lo estimó con otro",
+          "procedimiento. El ITT con controles no se reproduce aquí porque los",
+          "controles del Taller 2 son otros (ver el script 08)."
+        )
+      )
+    )
+  )
+
+guardar_tabla(
+  "observacional_punto_partida_taller1", tabla_punto_partida, punto_partida,
+  carpeta_salida
 )
 
 cat("\nListo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/07_forma_funcional_observacional/.\n")
