@@ -1,0 +1,18 @@
+escala,nodo,profundidad,variable,condicion_izquierda,observaciones
+Dólares,1,0,Tiempo en el sitio (min),< 5.001,80000
+Dólares,2,1,Dispositivo,= móvil,50679
+Dólares,3,1,Sesiones anteriores,< 3.5,29321
+Dólares,6,2,Sesiones anteriores,< 2.5,18959
+Dólares,7,2,Sistema operativo,"= otro, Windows",10362
+Dólares,12,3,Dispositivo,= móvil,12398
+Dólares,14,3,Dispositivo,"= móvil, tableta",7227
+Dólares,15,3,Dispositivo,= móvil,3135
+Logaritmo,1,0,Tiempo en el sitio (min),< 5.001,80000
+Logaritmo,2,1,Dispositivo,= móvil,50679
+Logaritmo,3,1,Sesiones anteriores,< 3.5,29321
+Logaritmo,5,2,Dispositivo,= tableta,25131
+Logaritmo,6,2,Sesiones anteriores,< 2.5,18959
+Logaritmo,7,2,Sistema operativo,"= otro, Windows",10362
+Logaritmo,12,3,Dispositivo,= móvil,12398
+Logaritmo,13,3,Dispositivo,= móvil,6561
+Logaritmo,14,3,Dispositivo,"= móvil, tableta",7227

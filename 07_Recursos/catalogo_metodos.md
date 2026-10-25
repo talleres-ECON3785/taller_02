@@ -293,7 +293,10 @@ cf <- causal_forest(X_mat, Y, W,
   `cor(tau_ent, X)`).
 - `W.hat`: en el Lab 10 se fijó en 0.5 porque la probabilidad de asignación era
   conocida. En CheMarket se fija en la probabilidad del diseño si se conoce;
-  si no, se deja que `grf` la estime y se registra la decisión.
+  si no, se deja que `grf` la estime y se registra la decisión. *Decisión
+  2026-10-25:* el enunciado no da la probabilidad del diseño, así que `grf` la
+  estima (script 12; ver "Decisiones tomadas" de `CLAUDE.md`). Se fija
+  `num.threads = 4` para reproducir las cifras entre máquinas.
 - El Lab 10 usa `clusters = colegio`; en CheMarket **no** se usa `clusters`
   (asignación individual).
 
@@ -335,3 +338,4 @@ Cada método, paquete o función que se agregue al catálogo se anota aquí
 | 2026-10-23 | Varianza de los CATE: `predict(cf, estimate.variance = TRUE)` en `grf` | Parte B: intervalos de cada CATE, que exige `CLAUDE.md` | Documentación de `grf` (Athey, Tibshirani y Wager 2019) | Equipo (Santiago Muñoz, sesión del plan de implementación) |
 | 2026-10-23 | ATE por subgrupo: `average_treatment_effect(cf, subset = ...)` en `grf` | Parte B: efecto por grupo de usuarios con su error estándar ("¿hay grupos con efecto mayor, menor o cercano a cero?") | Documentación de `grf` | Equipo (Santiago Muñoz, sesión del plan de implementación) |
 | 2026-10-23 | Paquetes de formato de tablas: `gt` (estilo y HTML), `modelsummary` con `output = "gt"` (tablas de regresión con `vcov = "HC1"`). El `.png` se genera con Chrome o Chromium en modo headless desde `guardar_tabla()`, sin `webshot2`. Son herramientas de presentación, no estiman nada | Entregar las tablas en su formato final directamente desde el código (`guardar_tabla()` en `02_Scripts/00_formato_tablas.R`), como pide el profesor | Documentación de `gt`, `modelsummary` y `webshot2` | Equipo (Santiago Muñoz, sesión del formato de tablas) |
+| 2026-10-24 | Suavizado descriptivo `geom_smooth(method = "loess")` de `ggplot2` (`stats::loess`), solo en figuras | Parte A: mostrar la interacción tiempo × sesiones pasadas con una curva por tramo, sin agrupar usuarios (`_tiempo_por_sesiones.png`) y el ingreso frente al tiempo (`_tiempo_sesion.png`, sin errores estándar: con unas 85,000 observaciones por lado `loess` agota la memoria). No es un estimador ni un benchmark | Documentación de `ggplot2` y `stats::loess` | Usuario (Santiago Muñoz), a pedido en la sesión de la descriptiva |

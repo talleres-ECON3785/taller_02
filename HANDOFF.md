@@ -18,35 +18,58 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P1.1–P1.3: descriptiva de la Parte A.** Script
-   `02_Scripts/03_descriptivas_observacional.R`: densidad de `Revenue` frente a
-   `ln(Revenue)`, `ln(Revenue)` frente a cada covariable (con el quiebre en
-   5 min) y la tabla de cifras del Taller 1.
-   *Terminado cuando:* el script está en la lista de `00_main.R` y exporta sus
-   figuras y su tabla con `guardar_figura()` / `guardar_tabla()`.
-2. **P2.1: partición 80/20 del lineal.** Primer script de la Parte A
-   (`04_prediccion_lineal_observacional.R`) con `set.seed(2026)`.
-   *Terminado cuando:* reproduce el RMSE 2.314 del lineal en nivel del Taller 1.
-3. **P2.2: benchmarks en las dos escalas.** En el mismo script: ingenuo (media
-   de `train`), lineal del Taller 1, lineal flexible y LASSO (`cv.glmnet`).
-   *Terminado cuando:* hay RMSE de `train`/CV para cada uno en `Revenue` y en
-   `ln(Revenue)`, sin tocar `test`.
+1. **P2.2 (resto) y P2.6: escalera lineal y LASSO en `ln(Revenue)`** (en curso en
+   una sesión paralela). Ampliar `04_prediccion_lineal_observacional.R` y
+   `05_lasso_observacional.R` a `log_revenue`.
+   *Terminado cuando:* hay RMSE de CV para cada modelo en las dos escalas, sin tocar
+   `test`, y sus cifras se contrastan con la celda lineal × logaritmo de
+   `05_Notas/11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md`
+   (lineal con corte y cruce 0.369, LASSO 0.361 en prueba).
+2. **P3.1: representatividad del experimento.** Comparar las características
+   compartidas del experimento con la base histórica (diferencias de medias y
+   prueba conjunta, como el F = 0.65, p = 0.712 del Taller 1), en
+   `06_ate_experimento_niveles.R`.
+   *Terminado cuando:* la tabla sale de `00_main.R` y hay una nota en
+   `05_Notas/06_ate_experimento_niveles/`.
+3. **P5.1 y P5.2: síntesis y recomendación.** `05_Notas/sintesis.md` con qué se
+   mantiene, qué se matiza y qué cambia (transformación, método o ambos), y una
+   recomendación sí/no que incorpore la heterogeneidad (focalizar por dispositivo
+   queda como implicación por evaluar).
+   *Terminado cuando:* existe `sintesis.md` con cada conclusión enlazada a su nota
+   y la recomendación en una frase.
 
 **Bloqueos / preguntas abiertas:**
 
-- Confirmar que la convención de `log_revenue` (`log()` natural, sin constante) coincide con la del Taller 1; el repositorio `taller1/` no estaba en esta máquina.
+- Autorizar (o no) ampliar el catálogo con remuestreo para dar intervalos a los cuantiles por grupo (P3.3); hoy son descriptivos sin intervalos.
+- Opcional: probar LASSO con un diccionario sin el indicador de más de 5 minutos, para ver si lo recupera solo (sería nota nueva).
+- `.claude/worktrees/` quedó como directorio no versionado en el checkout principal (worktree sin rama de esta sesión); quitarlo con `git worktree remove .claude/worktrees/lasso` o ignorarlo en `.gitignore`.
+- El corte de 5 minutos y el cruce de los lineales se eligieron mirando la base
+  completa (incluye `test`). El árbol del script 09 encuentra el mismo corte (5.0007
+  min) solo con `train`, así que el sesgo, si lo hay, favorece a los lineales.
+- Al traer la sesión de `ln(Revenue)` (04 y 05) pueden chocar `00_main.R`,
+  `README.md`, `PLAN.md` y `CLAUDE.md`; contrastar sus cifras con el script 11.
+- Bosque (script 10): el tamaño de nodo elegido (100) es el borde de la rejilla
+  (rango menor que 0.007 dólares); `ranger` usa todos los núcleos, así que las cifras
+  pueden moverse en el tercer decimal entre máquinas (fijar `num.threads` si se exige
+  igualdad exacta).
+- En Linux, correr R con `LC_ALL=C.UTF-8` (si no, `source(..., encoding = "UTF-8")`
+  falla con los acentos) y definir `CHROME_PATH` para `guardar_tabla()`.
+- Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
+- Faltan las notas del script 07 que comparan, figura por figura, qué cambia frente al script 03 (hoy solo está la de distribución).
+- Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
+- Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
+- Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
-- Decisiones pendientes dentro del plan: retransformar a dólares con
-  *smearing* o comparar solo mejoras relativas (P2.5); `W.hat` igual a 0.5 o a
-  la proporción observada, 4,957 / 10,000 (P3.2).
+- Heterogeneidad (script 12): no se estimó el ingreso de una regla de
+  focalización (p. ej. registro facilitado solo en computador y tableta) frente
+  a darlo a todos; decidir si se hace antes de recomendar focalizar. Revisar las
+  14 advertencias de la corrida completa de `00_main.R`.
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
-- Escribir la primera nota de `05_Notas/` con `registrar-hallazgo` apenas exista
-  el primer resultado (H1) y comprobar que `model: haiku` de `cerrar-sesion`
-  se aplica.
+- Comprobar que `model: haiku` de `cerrar-sesion` se aplica.
 - `guardar_tabla()` (Chrome headless, sin `webshot2`) solo se probó en la máquina
   de Santiago Muñoz (macOS). Un segundo integrante debe probarlo antes del 25 de
   octubre; si Chrome está en otra ruta, definir `CHROME_PATH`. Decidir si se fija
@@ -61,7 +84,10 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo).
+  tabla pregunta del enunciado → paso. Hecho: H0 completo, H1 completo (P1.1 a P1.3),
+  P2.1, P2.3, P2.4 y P2.5; P2.2 y P2.6 avanzaron (falta la escalera y LASSO en
+  `ln(Revenue)`); P3.2 cerrado; P3.1 y P3.3 avanzaron (falta representatividad e
+  intervalos de los cuantiles); H4 completo (P4.1 a P4.6).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
   script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
@@ -70,24 +96,74 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `cerrar-sesion` (commit, push y `.jsonl`; `model: haiku`) y
   `registrar-hallazgo` (notas de `05_Notas/` y contraste con lo registrado). Aún
   sin probar con un resultado real.
-- **Notas:** `05_Notas/README.md` con el índice vacío; todavía no hay notas de
-  hallazgos porque no hay resultados.
+- **Notas:** cuatro notas descriptivas y de punto de partida en
+  `05_Notas/03_punto_partida/` (quiebre en 5 minutos, interacción entre sesiones
+  pasadas y tiempo, dispositivo y sistema operativo) y tres notas de la Parte A en
+  `05_Notas/04_prediccion_lineal_observacional/` (escalera e importancia lineal; el corte
+  de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), una nota de LASSO en
+  `05_Notas/05_lasso_observacional/` (`A_lasso_vs_lineal_flexible.md`), indexadas por
+  script en `05_Notas/README.md`. Tres notas de árboles: el árbol recupera el corte de
+  5 minutos y el cruce (`09_arboles_observacional/`), importancia del bosque
+  (`10_bosque_observacional/`) y la comparación método × escala en prueba
+  (`11_comparacion_prediccion_observacional/`). Notas de la Parte B en `05_Notas/06_ate_experimento_niveles/` (ITT en dólares sin y con controles; balance y cumplimiento). Todas en dólares salvo dos: la distribución en las dos escalas (`05_Notas/07_forma_funcional_observacional/`) y el ITT en logaritmo y su regreso a dólares (`05_Notas/08_ate_experimento_log/`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
   `experimento_listos.RDS`), sin pérdidas. `Revenue` > 0 en las dos bases, así
-  que `ln(Revenue)` no pierde observaciones, pero todavía no está construido en
-  las bases. Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
+  que `ln(Revenue)` no pierde observaciones y ya está construido como
+  `log_revenue` en las dos bases (convención `log(Revenue)` confirmada con el
+  Taller 1). Cumplimiento del experimento perfecto (5,043 / 0 / 0 / 4,957).
 - **Scripts:** `00_main.R` (raíz) verifica la raíz del proyecto, carga los
-  paquetes con `pacman` (`tidyverse`, `gt`, `modelsummary`, `sandwich`, `fixest`, `caret`, `glmnet`, `rpart`, `rpart.plot`, `ranger`, `grf`), crea las carpetas de salida que
-  falten y corre `01_limpieza_observacional.R` y `02_limpieza_experimento.R` (ambos construyen `log_revenue`); `00_main.R` corre completo sin errores.
-  `00_formato_graficas.R` define paleta, tema y `guardar_figura()`.
-  `00_formato_tablas.R` define decimales por tipo de cifra, `nota_tabla()`,
-  `estilo_tabla()` y `guardar_tabla()` (`.png` con `gt` + Chrome headless, y
-  `.csv`); aún no lo usa ningún script de análisis.
-- **Resultados:** solo los reportes de calidad de la base observacional
-  (`03_Resultados/Tablas/reporte_calidad_observacional*.csv`). Ningún modelo
-  estimado.
+  paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
+  script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
+  `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
+  en nivel), `04_prediccion_lineal_observacional.R`
+  (escalera lineal en dólares), `05_lasso_observacional.R` (LASSO en dólares),
+  `06_ate_experimento_niveles.R` (balance, cumplimiento e ITT en dólares sin y con controles) y
+  `07_forma_funcional_observacional.R` (`ln(Revenue)` y distribución en las dos escalas) y
+  `08_ate_experimento_log.R` (ITT en `ln(Revenue)`, retransformación a dólares, cuantiles),
+  `09_arboles_observacional.R` (CART en las dos escalas), `10_bosque_observacional.R`
+  (bagging y bosque, rejilla OOB e importancia) y
+  `11_comparacion_prediccion_observacional.R` (evaluación única en `test`, lee los
+  hiperparámetros de 09 y 10) y `12_heterogeneidad_experimento.R` (bosque causal en
+  log, dólares y sin tiempo; `num.threads = 4`); `00_main.R` corre los 12 scripts sin
+  errores en unos 17 minutos (verificado el 2026-10-25). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`
+  y `guardar_figura_base()` para gráficos base),
+  `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
+  la lista. Cada script dibuja sus propias figuras.
+- **Resultados:** reportes de calidad de la base observacional en
+  `03_Resultados/Tablas/01_limpieza_observacional/` y 12 figuras descriptivas
+  (6 por escala, 9×6 pulgadas: ingreso frente a tiempo en el sitio, sesiones
+  pasadas, dispositivo, sistema operativo, usuario recurrente e interacción
+  tiempo × sesiones y el ingreso frente al tiempo, ambas con curvas loess; las
+  de dispositivo, sistema operativo y usuario recurrente marcan media y mediana
+  con sus cifras y el n en el título del panel; ejes con
+  mayúscula inicial y un solo paréntesis) en `03_Resultados/Figuras/03_punto_partida/` y
+  `.../07_forma_funcional_observacional/`; las tablas de balance, cumplimiento y MCO del registro en
+  `03_Resultados/Tablas/06_ate_experimento_niveles/` (ITT 0.491 dólares sin controles, 0.454 con ellos); y,
+  en `.../{Tablas,Figuras}/04_prediccion_lineal_observacional/`, cuatro tablas (escalera,
+  aporte de cada variable con fila del cruce, robustez de la forma del tiempo y RMSE de
+  prueba) y dos figuras (escalera y orden de entrada del tiempo y el corte). RMSE de
+  prueba en dólares: 2.716 (ingenuo), 2.314 (lineal del Taller 1), 1.845 (lineal con
+  corte y cruce) y 1.765 (LASSO, 74 términos), con cuatro tablas y una figura de LASSO
+  en `.../05_lasso_observacional/` (la mejora de LASSO viene del diccionario, no de la
+  regularización: MCO con los mismos términos iguala su error de validación).
+- **Árboles (Parte A):** RMSE de prueba en dólares 1.627 (árbol podado, 1-SE, 9 hojas) y
+  1.626 (bosque, `mtry` 3, nodo 100); en logaritmo 0.349 y 0.350 frente a 0.361
+  (LASSO). Llevadas a dólares con smearing de Duan, las predicciones en logaritmo de
+  los árboles quedan en 1.627; los lineales simples empeoran (2.382 y 1.952) y LASSO
+  baja a 1.746. Primer corte del árbol en 5.0007 minutos; tiempo y sesiones concentran
+  más del 90% de la importancia. Resultados en `03_Resultados/{Tablas,Figuras}/09_…`,
+  `10_…` y `11_…`.
+- **Parte B en logaritmo:** ITT en `ln(Revenue)` de 0.0134 (IC −0.010 a 0.037) frente a 0.491 dólares; la diferencia es dispersión (desviación estándar de `ln(Revenue)` de 0.53 a 0.66), y retransformar con un factor común deja el efecto en 0.057 dólares. Tablas en `03_Resultados/Tablas/08_ate_experimento_log/`.
+- **Heterogeneidad (Parte B, script 12):** ATE del bosque 0.004 en `ln(Revenue)` y
+  0.414 dólares (MCO: 0.013 y 0.491). Evidencia formal de HTE: calibración
+  diferencial 1.01 (log) y 1.06 (dólares), p < 0.001; AUTOC 0.200 en log con muestra
+  dividida. Efectos positivos en computador, tableta, osx y 3 o más sesiones;
+  negativos en celular, Windows, usuarios nuevos y 0 a 2 sesiones. En dólares se
+  agrandan en los grupos de mayor gasto. Tablas y figuras en
+  `03_Resultados/{Tablas,Figuras}/12_heterogeneidad_experimento/`; notas en
+  `05_Notas/12_heterogeneidad_experimento/`.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -104,6 +180,103 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-25 (sesión 9): bosque causal, CATE y evidencia de heterogeneidad
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `12_heterogeneidad_experimento.R`: bosque causal (`grf`, 2,000 árboles, `W.hat` estimado, `num.threads = 4`) en `ln(Revenue)`, dólares y sin tiempo. El ATE coincide con MCO (0.004 log; 0.414 dólares). Calibración y TOC con muestra dividida dan evidencia formal de HTE: computador, osx y usuarios frecuentes ganan; celular, Windows y usuarios nuevos pierden. `00_main.R` corre los 12 scripts sin errores. P3.2 y P4.1–P4.6 cerrados; P3.1 sin trabajar.
+- Bitácora: [2026-10-25_bosque-causal-heterogeneidad_9.md](06_Bitacoras/2026-10-25_bosque-causal-heterogeneidad_9.md)
+- **Siguientes objetivos:** (1) P2.2 (resto) y P2.6 en `ln(Revenue)` (sesión paralela); (2) P3.1: representatividad del experimento; (3) P5.1 y P5.2: síntesis y recomendación con la heterogeneidad.
+
+### 2026-10-25 (sesión 8): árboles para predicción y comparación en prueba con los lineales
+
+- Santiago Muñoz (`SantiagoMunozM`), en paralelo con la sesión de `ln(Revenue)` (que cerró P1.2 y P1.3 en 34507eb). Nuevos `09_arboles_observacional.R` (CART, regla 1-SE), `10_bosque_observacional.R` (rejilla OOB, bagging, importancia) y `11_comparacion_prediccion_observacional.R` (prueba única, dólares, log y log a dólares con smearing de Duan): árbol 1.627 frente a LASSO 1.765 dólares; la ganancia viene del método. El árbol encuentra solo el corte de 5 minutos. `00_main.R` corre los 11 scripts sin errores. P2.3, P2.4 y P2.5 cerrados; P2.6 avanzó.
+- Bitácora: [2026-10-25_arboles-prediccion-y-comparacion_8.md](06_Bitacoras/2026-10-25_arboles-prediccion-y-comparacion_8.md)
+- **Siguientes objetivos:** (1) P2.2 (resto) y P2.6: escalera y LASSO en `ln(Revenue)`, contrastados con el script 11; (2) P3.1 y P3.2: representatividad y ATE del bosque causal (`W.hat`); (3) P4.1 y P4.2: bosque causal y evidencia de HTE en `12_heterogeneidad_experimento.R`.
+
+### 2026-10-24 (sesión 7): distribución en log y dólares, y del ITT en logaritmo a dólares
+
+- Santiago Muñoz (`SantiagoMunozM`). Sección de distribución de `Revenue` frente a `ln(Revenue)` en el script 07 y nuevo `08_ate_experimento_log.R` (ITT en log 0.0134, retransformación con factor por grupo que reproduce 0.491, descomposición media geométrica × dispersión, cuantiles y cola). Scripts previstos corridos una posición (árboles `09_`, comparación `10_`). `00_main.R` completo corre sin errores. P1.1 cerrado; P3.2 y P3.3 avanzaron.
+- Bitácora: [2026-10-24_distribucion-log-y-ate-log-a-dolares_7.md](06_Bitacoras/2026-10-24_distribucion-log-y-ate-log-a-dolares_7.md)
+- **Siguientes objetivos:** (1) P1.3 y cierre de P1.2; (2) P2.2 (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `09_arboles_observacional.R`.
+
+### 2026-10-24 (sesión 6): análisis causal en dólares al script 06 y forma funcional a 07
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `06_ate_experimento_niveles.R` (cumplimiento, balance con prueba conjunta F = 0.96, p = 0.456, e ITT en dólares: 0.491 sin controles, 0.454 con los controles del lineal final, error estándar de 0.073 a 0.051); la sección causal salió del 03 y la forma funcional pasó a `07_`. Scripts previstos renumerados. `00_main.R` completo corre sin errores. P3.1 y P3.2 avanzaron.
+- Bitácora: [2026-10-24_ate-niveles-balance-cumplimiento_6.md](06_Bitacoras/2026-10-24_ate-niveles-balance-cumplimiento_6.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2; (2) P2.2 (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `08_arboles_observacional.R`.
+
+### 2026-10-24 (sesión 5): LASSO como benchmark lineal flexible y renumeración de scripts
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `05_lasso_observacional.R` (solo el modelo
+  final, diccionario de 74 términos, mismos pliegues que el 04): RMSE de prueba 1.765
+  frente a 1.845 del lineal con quiebre y cruce y 2.314 del Taller 1. Chequeo con MCO sin
+  penalización: la mejora viene del diccionario, no de la regularización (nota corregida);
+  se quitaron dos columnas duplicadas (76 a 74). El script de forma funcional pasó a
+  `06_` y los planificados se renumeraron (07 a 11). `00_main.R` completo corre sin
+  errores. P2.2 avanzó (falta `ln(Revenue)`).
+- Bitácora: [2026-10-24_lasso-benchmark-y-renumeracion_5.md](06_Bitacoras/2026-10-24_lasso-benchmark-y-renumeracion_5.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (descriptiva pendiente); (2) P2.2
+  (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `07_arboles_observacional.R`.
+
+### 2026-10-24 (sesión 4): MCO del efecto del registro y escalera de modelos lineales
+
+- Santiago Muñoz (`SantiagoMunozM`). MCO del efecto del registro en el experimento (0.491
+  dólares, cumplimiento perfecto) en `03_punto_partida.R`; nuevo
+  `04_prediccion_lineal_observacional.R` con la escalera lineal en dólares (corte de 5
+  minutos, sesiones, cruce, dispositivo, sistema operativo, recurrente y `sign_up` al
+  final), validación cruzada en `train` y prueba única (1.845 frente a 2.314 del Taller 1).
+  El tiempo continuo sale de la escalera por redundante con el corte. Notas al pie en
+  párrafos; scripts 04 y 05 intercambiaron numeración. P2.1 cerrado; P2.2 y P2.6 avanzaron.
+  No se corrió `00_main.R` completo.
+- Bitácora: [2026-10-24_ols-registro-y-escalera-lineal_4.md](06_Bitacoras/2026-10-24_ols-registro-y-escalera-lineal_4.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (descriptiva pendiente); (2) P2.2
+  (resto): escalera en `ln(Revenue)` y LASSO; (3) P2.3: CART.
+
+### 2026-10-24 (sesión 3): figuras en cada script, loess del tiempo, categóricas con media y mediana y notas por script
+
+- Santiago Muñoz (`SantiagoMunozM`). Las figuras se construyen ahora dentro de los
+  scripts 03 y 04 (se eliminó `00_formato_descriptivas.R`); el ingreso frente al
+  tiempo usa loess por lado de los 5 minutos, sin banda por memoria; las
+  categóricas muestran media y mediana con sus cifras; las tres notas pasaron a
+  `05_Notas/03_punto_partida/` y se limitaron al script 03 (medianas parecidas,
+  medias distintas, cola derecha como sugerencia). No se corrió `00_main.R`
+  completo.
+- P1.2 sigue abierto (falta `sign_up`); P1.1, P1.3, P2.1 y P2.2 no se trabajaron.
+- Bitácora: [2026-10-24_figuras-categoricas-loess-y-notas-por-script_3.md](06_Bitacoras/2026-10-24_figuras-categoricas-loess-y-notas-por-script_3.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas con percentiles altos);
+  (2) P2.1: partición 80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en
+  las dos escalas.
+
+### 2026-10-24 (sesión 2): renombre del script 03, ejes y figura continua de interacción
+
+- Santiago Muñoz (`SantiagoMunozM`). Se renombró `03_punto_de_partida_observacional.R`
+  a `03_punto_partida.R` (con su carpeta de figuras y todas las referencias), las
+  figuras pasaron a 9×6 y los ejes a mayúscula inicial con un solo paréntesis. La
+  figura de interacción tiempo × sesiones pasó a un panel con curvas loess (se
+  probó y descartó el promedio móvil); se regeneró todo con `00_main.R`.
+- P1.2 sigue abierto (falta `sign_up`); P1.1, P1.3, P2.1 y P2.2 no se trabajaron.
+- Bitácora: [2026-10-24_ajustes-figuras-y-renombre-script_2.md](06_Bitacoras/2026-10-24_ajustes-figuras-y-renombre-script_2.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas); (2) P2.1: partición
+  80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en las dos escalas.
+
+### 2026-10-24: descriptiva del ingreso frente a las covariables y carpeta de resultados por script
+
+- Santiago Muñoz (`SantiagoMunozM`). Se hicieron las figuras de P1.2 de la base
+  observacional en dos escalas (primero `Revenue` en nivel y luego `ln(Revenue)`)
+  con el formato de densidades del Taller 1: tiempo en el sitio (escalón en 5
+  minutos), sesiones pasadas, dispositivo, sistema operativo, usuario recurrente
+  y la interacción tiempo × sesiones. Tres notas nuevas en `05_Notas/`.
+- Se separó el script en `03_punto_de_partida_observacional.R` y
+  `04_forma_funcional_observacional.R` (funciones en `00_formato_descriptivas.R`),
+  y se fijó la regla de una subcarpeta de resultados por script (en `CLAUDE.md`).
+- P1.2 avanzó pero no se cerró (falta `sign_up`); P1.1, P1.3 y P2.1 no se
+  trabajaron y se mantienen.
+- Bitácora: [2026-10-24_descriptiva-covariables-observacional.md](06_Bitacoras/2026-10-24_descriptiva-covariables-observacional.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2 (densidad
+  `Revenue`/`ln(Revenue)`, `sign_up`, tablas exportadas); (2) P2.1: partición
+  80/20 que reproduce el RMSE 2.314; (3) P2.2: benchmarks en las dos escalas.
 
 ### 2026-10-23: README inicial
 

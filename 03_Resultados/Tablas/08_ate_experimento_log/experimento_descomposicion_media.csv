@@ -1,0 +1,8 @@
+concepto,valor
+Cociente de medias aritméticas (tratado / control),1.123385050833063
+  Factor de la media geométrica: exp(coef),1.013498975395215
+  Factor de la dispersión: smearing tratado / smearing control,1.1084224830074425
+"Desviación estándar del logaritmo, control",0.531683262328974
+"Desviación estándar del logaritmo, tratado",0.6601274164171983
+Diferencia de varianzas del logaritmo (tratado − control),0.15304926014290543
+  Error estándar (HC1),0.012146398251404417

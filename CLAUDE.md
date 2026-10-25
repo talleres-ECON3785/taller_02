@@ -98,7 +98,7 @@ Preguntas:
 - `01_Datos/02_Procesados/`  datos limpios o transformados
 - `01_Datos/03_Listos/`      bases finales que ingresan al análisis
 - `02_Scripts/`              scripts de R
-- `03_Resultados/`           Tablas/ y Figuras/ generadas
+- `03_Resultados/`           Tablas/ y Figuras/ generadas, cada una con una subcarpeta por script (ver "Una carpeta de resultados por script")
 - `04_Presentaciones/`       borradores de la presentación
 - `05_Notas/`                notas de hallazgos: un `.md` por hallazgo principal, con
   referencia a sus tablas/figuras (ver "Notas de hallazgos")
@@ -189,6 +189,26 @@ explícitas para este taller. Son obligatorias:
   está en la lista, se agrega la carpeta a `carpetas_salida` en `00_main.R`.
   `01_Datos/01_Crudos/` no va en la lista: no es una salida y nunca se escribe
   en ella.
+- **Una carpeta de resultados por script.** Todo script que genere al menos
+  una figura o tabla guarda sus salidas en su propia subcarpeta, con el nombre
+  del script sin `.R`: `03_Resultados/Figuras/<script>/` y
+  `03_Resultados/Tablas/<script>/` (p. ej.
+  `03_Resultados/Figuras/03_punto_partida/observacional_revenue_tiempo_sesion.png`).
+  Así cada archivo se rastrea a su script por la ruta. Reglas:
+  - El script define `carpeta_salida <- "<nombre_del_script>"` al comienzo y
+    la pasa a `guardar_figura(nombre, grafica, carpeta)` y
+    `guardar_tabla(nombre, tabla, datos, carpeta)`; no escribe en la raíz de
+    `Figuras/` ni de `Tablas/`. Lo mismo vale para los `.csv` que se escriben
+    con `write_csv()` (p. ej. los reportes de calidad de `01_`).
+  - Cada subcarpeta se agrega a `carpetas_salida` en `00_main.R` en la misma
+    sesión en que se crea el script (las funciones y los scripts no llaman a
+    `dir.create()`).
+  - Si se renombra un script, se renombra su subcarpeta (con `git mv`) y se
+    actualizan `00_main.R`, el README y las notas de `05_Notas/` que citen sus
+    rutas. Los scripts de formato (`00_formato_*.R`) no tienen subcarpeta: no
+    generan resultados.
+  - Si dos scripts producen una misma figura o tabla, solo uno la genera; el
+    otro la lee.
 - **Las tablas se exportan en el formato final de la diapositiva.** En el
   Taller 1 las tablas de las diapositivas no eran las exportadas (se cambiaron a
   mano colores de encabezado, decimales, etc.). Ahora la tabla que entra a la
@@ -221,11 +241,14 @@ tablas, solo define el estilo y la función de exportación (p. ej.
   (`00_formato_graficas.R`), texto en español y sin nombres de variables del
   código, número de decimales fijo por tipo de cifra, unidades explícitas
   (dólares, log, %) y una nota que declare la base (experimento u
-  observacional), el `n` y si las cifras son de entrenamiento o de prueba.
+  observacional), el `n` y si las cifras son de entrenamiento o de prueba. En
+  las tablas de regresión que ya muestran las observaciones por columna, la
+  nota no repite el `n` (`nota_tabla(base, NULL, ...)`).
 - Se exporta en un formato que se inserta directamente en las diapositivas
   (p. ej. `.png` de alta resolución o `.html`), y además en `.csv` con las
   cifras sin formato, para trazabilidad.
-- **Nombres de archivo:** `03_Resultados/Tablas/<base>_<contenido>.<ext>`, con
+- **Nombres de archivo:** `03_Resultados/Tablas/<script>/<base>_<contenido>.<ext>`
+  (la subcarpeta `<script>` es la de "Una carpeta de resultados por script"), con
   la misma convención que las figuras (p. ej.
   `observacional_rmse_escalonado.png`, `experimento_balance.png`).
 
@@ -347,11 +370,17 @@ qué importa**, mientras que las bitácoras (`06_Bitacoras/`) registran **qué s
 hizo en cada sesión**. Quien arme la presentación debe poder leer solo las notas
 y reconstruir los mensajes principales.
 
-- **Una nota por hallazgo principal**, no por sesión ni por script. Un hallazgo
-  es un resultado que sostiene (o matiza, o contradice) una conclusión del
-  taller. Nombre: `<parte>_<slug>.md` (p. ej. `A_quiebre_time_spent.md`,
+- **Una nota por hallazgo principal**, no por sesión. Un hallazgo es un
+  resultado que sostiene (o matiza, o contradice) una conclusión del taller.
+  Nombre: `<parte>_<slug>.md` (p. ej. `A_quiebre_time_spent.md`,
   `B_evidencia_hte.md`), con `<parte>` = `A`, `B` o `X` (transversal, p. ej.
   qué cambia por la transformación vs. por el método).
+- **Las notas se agrupan por el script del que se derivan:**
+  `05_Notas/<script>/<parte>_<slug>.md` (p. ej.
+  `05_Notas/03_punto_partida/A_quiebre_time_spent.md`). Una nota solo habla de lo
+  que se sabe con los resultados de su script; si otro script matiza o cambia el
+  hallazgo (p. ej. el análisis en `ln(Revenue)`), se registra en la subcarpeta de
+  ese script y se enlaza. Cada nota declara su "Script de origen".
 - **Una nota se crea o actualiza en la misma sesión en que el resultado que la
   sostiene se genera o cambia.** No se espera al cierre ni a la presentación.
 - **Estructura de cada nota:**
@@ -361,6 +390,7 @@ y reconstruir los mensajes principales.
 
   - **Estado:** vigente | matizado | reemplazado (con enlace a la nota que lo reemplaza)
   - **Parte / base:** A o B; observacional o experimento; descriptivo, predictivo o causal
+  - **Script de origen:** `02_Scripts/<script>.R`
   - **Última verificación:** YYYY-MM-DD, con el script que lo genera
 
   ## Evidencia
@@ -561,14 +591,18 @@ ese script no genera figuras, solo define paleta, tema y exportación.
   (`geom_density`, `alpha = 0.55`, `linewidth = 0.8`), nunca histograma, con la
   mediana de cada grupo en línea punteada gris; `Revenue` y `time_spent` van en
   escala logarítmica en el eje x.
-- **Nombres de archivo:** `03_Resultados/Figuras/<base>_<contenido>.png`, donde
+- **Nombres de archivo:** `03_Resultados/Figuras/<script>/<base>_<contenido>.png`
+  (la subcarpeta `<script>` es la de "Una carpeta de resultados por script"), donde
   `<base>` es `experimento` u `observacional`. Para distinguir partes del
   taller puede agregarse el contenido (p. ej. `observacional_importancia_variables.png`,
   `experimento_cate_por_grupo.png`).
-- **Exportación:** siempre con `guardar_figura()` (8×6 pulgadas, 300 dpi, fondo
+- **Exportación:** siempre con `guardar_figura()` (9×6 pulgadas, 300 dpi, fondo
   blanco explícito). `guardar_figura()` no crea carpetas: asume que
   `00_main.R` ya verificó `03_Resultados/Figuras/` (ver "Reproducibilidad y
-  salidas").
+  salidas"). Las figuras de gráficos base de R que `ggsave()` no guarda (p. ej.
+  el árbol de `rpart.plot`) usan `guardar_figura_base(nombre, dibujar, carpeta)`,
+  definida en el mismo `00_formato_graficas.R` con el mismo tamaño, resolución y
+  fondo.
 - La figura que entra a la diapositiva es la exportada, sin retoques manuales:
   si algo debe verse distinto en la presentación, se cambia en el código.
 - Las figuras de árboles (diagramas de particiones) y de importancia de
@@ -614,7 +648,21 @@ ese script no genera figuras, solo define paleta, tema y exportación.
 | 2026-10-23 | El cierre de sesión se divide en `bitacora-sesion` (bitácora, notas y handoff; modelo de la sesión) y `cerrar-sesion` (commit, push y copia del `.jsonl`; `model: haiku`). Se descarta `context: fork` para la bitácora. | Reduce el uso de tokens delegando a un modelo más barato solo la parte mecánica; la bitácora requiere juicio y el historial de la conversación, que un subagente no ve. |
 | 2026-10-23 | `time_spent` se trata como covariable pre-tratamiento (moderador) en el bosque causal, con una prueba de robustez sin ella.                                          | En el Taller 1, `easier_signup` no afectó significativamente a `time_spent`; la robustez cubre la posibilidad de que se mida en la misma sesión que el gasto.                         |
 | 2026-10-23 | Las tablas se formatean con `gt`, con `modelsummary(..., output = "gt")` para las tablas de regresión; el `.png` se genera con Chrome/Chromium en modo headless (sin `webshot2`, cuya dependencia `websocket` no compila en todas las máquinas); el estilo y `guardar_tabla()` viven en `02_Scripts/00_formato_tablas.R`. Se descartan `flextable`, `kableExtra` y el dibujo de tablas con `ggplot2`. | `gt` da control total de encabezados, decimales, etiquetas y notas al pie desde el código, y `modelsummary` evita rehacer a mano las tablas con errores robustos. El equipo ya tiene Chrome/Chromium; `guardar_tabla()` lo localiza o usa `CHROME_PATH`. Registrado en el "Registro de ampliaciones" del catálogo. |
-| 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Pendiente confirmar que coincide con la convención del Taller 1. |
+| 2026-10-23 | `ln(Revenue)` = `log(Revenue)` (logaritmo natural, sin constante), construido como `log_revenue` en los scripts `01_` y `02_`, que se detienen si algún `Revenue <= 0`. | `Revenue > 0` en las dos bases (0 observaciones perdidas), así que no hace falta sumar una constante. Confirmado el 2026-10-24: el Taller 1 también usa `log(Revenue)` sin constante. |
+| 2026-10-24 | Cada script que genera figuras o tablas guarda sus salidas en una subcarpeta propia, con su nombre: `03_Resultados/{Figuras,Tablas}/<script>/`. `guardar_figura()` y `guardar_tabla()` reciben `carpeta`; `00_main.R` crea las subcarpetas en `carpetas_salida`. | La ruta de cada archivo indica qué script lo genera; con decenas de figuras en una sola carpeta, rastrear y regenerar cada resultado se vuelve lento. Se conservan `Figuras/` y `Tablas/` como carpetas de primer nivel para no romper las rutas ya citadas. |
+| 2026-10-24 | La figura de interacción tiempo × sesiones pasadas es un solo panel con una curva loess por tramo de sesiones, ajustada por separado a cada lado de los 5 minutos y con el eje x recortado a 0.1–25 minutos. Se descartan la versión de tres paneles con 20 grupos por tramo y el promedio móvil. `loess` solo se usa como suavizado descriptivo de figuras (ampliación registrada en el catálogo). | La curva continua muestra la interacción sin elegir cuantiles; el promedio móvil se probó y el usuario prefirió el loess. No es un estimador ni un benchmark. |
+| 2026-10-24 | Las figuras se construyen dentro del script que las genera; `02_Scripts/00_formato_*.R` solo define formato (paleta, tema, tablas, guardado). Se elimina `00_formato_descriptivas.R`. El ingreso frente al tiempo en el sitio también usa curva loess por lado de los 5 minutos, sin banda de confianza (límite de memoria). Las densidades por categoría muestran media (línea continua) y mediana (punteada) con sus cifras junto a cada línea y el n en el título del panel. | Quien lee un script debe ver cómo se construye cada figura, sin saltar a un auxiliar; las cifras dentro de la figura evitan consultarlas en la nota al pie. Con ~85,000 observaciones a un lado, loess con errores estándar necesita más de 4 mil millones de celdas. |
+| 2026-10-24 | Las notas de `05_Notas/` se agrupan en una subcarpeta por script de origen (`05_Notas/<script>/`) y solo hablan de lo que se sabe con los resultados de ese script. | Permite atribuir cada hallazgo a su script y registrar por separado qué cambia al pasar a `ln(Revenue)` (script 04). |
+| 2026-10-24 | En el lineal flexible de la Parte A el tiempo entra solo como indicador de más de 5 minutos; `time_spent` continuo queda únicamente en el lineal del Taller 1 (referencia). La escalera pone el cruce (más de 5 minutos × sesiones) después de sesiones anteriores y `sign_up` al final. | Con el indicador incluido, el RMSE de validación cruzada es igual con o sin el tiempo continuo (1.869 frente a 1.869; 1.873 con solo el tiempo); si el tiempo entra primero, infla su importancia al aproximar el salto. Ver `05_Notas/04_prediccion_lineal_observacional/`. Solo probado en dólares; falta `ln(Revenue)`. |
+| 2026-10-24 | Los scripts 04 y 05 intercambian número: `04_prediccion_lineal_observacional.R` y `05_forma_funcional_observacional.R` (con sus subcarpetas de resultados y de notas). | Mantener el orden de la numeración: la predicción lineal precede a los demás scripts de la Parte A; los números 05 en adelante del plan (árboles, comparación, Parte B) deben renumerarse al crearse. |
+| 2026-10-24 | Las notas al pie de las tablas van en párrafos cortos (`nota_tabla()` devuelve un vector y `estilo_tabla()` agrega un `tab_source_note` por elemento); la primera línea combina base, muestra y n ("Datos históricos, muestra de entrenamiento (n = 80,000). Análisis predictivo, no causal."). Las figuras de predicción usan `subtitulo_observacional_predictivo`. | Mejor legibilidad y una sola oración sobre el alcance del análisis (predictivo, no causal) en lugar de dos redundantes. |
+| 2026-10-24 | LASSO (`05_lasso_observacional.R`) evalúa solo el modelo final, no la escalera: diccionario de 74 términos únicos (variables del lineal final, tiempo continuo, su cuadrado y logaritmo, sesiones al cuadrado e interacciones de a pares), mismos 5 pliegues que el script 04 (`foldid`, `keep = TRUE`), λ titular `lambda.min` declarado antes de ver `test`. Los scripts siguientes se corren una posición: forma funcional pasa a `06_`; árboles, comparación, validación, ATE y heterogeneidad a `07_`–`11_`. | LASSO no agrega variables de a una, así que la escalera no aplica; los mismos pliegues permiten comparar su RMSE con el del lineal pliegue a pliegue. Chequeo con MCO sin penalización: la mejora viene del diccionario, no de la regularización. Solo dólares por ahora; falta `ln(Revenue)`. Ver `05_Notas/05_lasso_observacional/`. |
+| 2026-10-24 | El análisis causal de `Revenue` en dólares sale de `03_punto_partida.R` y pasa a `06_ate_experimento_niveles.R`: cumplimiento, balance (diferencias de medias y prueba de Wald conjunta con `os_type`) y MCO sin controles y con los controles del lineal final de la predicción (indicador de más de 5 minutos, sesiones anteriores y su cruce, dispositivo, sistema operativo y usuario recurrente; sin `sign_up`, que coincide con el tratamiento). La forma funcional pasa a `07_`; los scripts previstos quedan `08_arboles`, `09_comparacion`, `10_ate_experimento` (logaritmo y bosque causal) y `11_heterogeneidad`; `09_validacion_experimento` se absorbe en el 06. | Un solo script con el experimento en dólares ordena la Parte B y deja el 03 como descriptiva pura. Los controles son los de la Parte A para comparar ambas partes; en un experimento aleatorizado solo ganan precisión (error estándar 0.073 a 0.051; efecto 0.491 a 0.454). Balance y cumplimiento valen para las dos escalas, así que no se repiten en el script en logaritmo. |
+| 2026-10-24 | El efecto del registro en `ln(Revenue)` se reporta como cambio proporcional del usuario típico (`exp(coef) − 1`, media geométrica) y se lleva a dólares con el factor de smearing **por grupo**, nunca con un factor común; el efecto en dólares de referencia es la diferencia de medias directa. Script `10_ate_experimento.R` (creado antes que 08 y 09). Decisión de smearing para predicciones (P2.5) sigue abierta. | El tratamiento cambia la dispersión de `ln(Revenue)` (desviación 0.53 a 0.66): con un factor común el efecto en dólares sale 0.06 frente a 0.49 real. Ver `05_Notas/10_ate_experimento/`. |
+| 2026-10-25 | Árboles de la Parte A en tres scripts: `09_arboles_observacional.R` (CART), `10_bosque_observacional.R` (bagging y bosque) y `11_comparacion_prediccion_observacional.R` (evaluación única en `test`); la heterogeneidad pasa a `12_`. Los árboles reciben las 6 variables crudas del Taller 1 (tiempo continuo, sin el indicador de 5 minutos ni el cruce) y se estiman en las dos escalas. El árbol titular es el de la regla 1-SE (declarado antes de ver resultados); el bosque se elige por error OOB en una rejilla `mtry` 1–6 × `min.node.size` 5, 25, 100 (300 árboles) y se reestima con 1,000. | Variables crudas para ver si el árbol encuentra solo el corte y la interacción (lo hace: primer corte en 5.0007 min) sin heredar el corte elegido con toda la base; un script por método da una carpeta de resultados y notas por método. Ver `05_Notas/09_arboles_observacional/` a `11_`. |
+| 2026-10-25 | P2.5: las predicciones en `ln(Revenue)` se comparan de dos formas: mejora % frente a la media en su propia escala y RMSE en dólares tras retransformar con el *smearing* de Duan, un factor por modelo (`mean(exp(residuos de train))`; residuos fuera de bolsa en el bosque). No se usa dependencia parcial para describir el bosque (no se amplía el catálogo). | La mejora % evita comparar RMSE con unidades distintas; la versión en dólares es la única comparable con el 2.314 del Taller 1. En los árboles la retransformación deja el error en dólares igual (1.627); en los lineales simples lo empeora. |
+| 2026-10-25 | Heterogeneidad en un solo script, `12_heterogeneidad_experimento.R`: bosque causal (`grf`, 2,000 árboles, `seed = 2026`, `num.threads = 4`) con las 5 covariables crudas (tiempo continuo) en tres especificaciones: `ln(Revenue)` (principal), `Revenue` en dólares y `ln(Revenue)` sin `time_spent`. `W.hat` lo estima `grf` (no se fija en 0.5). Grupos predefinidos de P4.3 (sesiones en 0–2, 3–4 y 5 o más); la multiplicidad se trata solo con advertencia, sin ajustar p-valores. Evidencia de HTE: `test_calibration()` en la muestra completa y TOC/AUTOC con muestra dividida 50/50. | Decisión del usuario. Hilos fijos porque `grf` solo reproduce las cifras con la misma semilla y el mismo número de hilos. Con `W.hat = 0.5` el ATE en dólares es el mismo (0.414), así que la elección no mueve el resultado. Ajustar p-valores requeriría ampliar el catálogo. |
+| 2026-10-25 | P2.2 y P2.6 se cierran sin pasar la escalera lineal ni LASSO a `ln(Revenue)` en los scripts 04 y 05: la escala logarítmica de los benchmarks está en el 11 (prueba) y "qué variables predicen" en logaritmo, en la importancia del árbol y del bosque (09 y 10). Representatividad (P3.1) con la especificación del balance (con `os_type`), sin replicar la del Taller 1. La recomendación (P5.2) se alinea con los CATE del bosque causal (regla por dispositivo: computador y tableta) y usa los bosques predictivos solo para priorizar. | Decisión del usuario el día de la entrega; la interpretación en logaritmo ya estaba hecha. La regla por dispositivo es la que más separa los efectos, sus intervalos están lejos de cero en las dos escalas y es observable al entrar. Ver `05_Notas/sintesis.md`. |
 
 ## Análisis descartados
 

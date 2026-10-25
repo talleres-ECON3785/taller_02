@@ -49,7 +49,28 @@ pacman::p_load(
 # 01_Datos/01_Crudos/ no va aqui: no es una salida y nunca se escribe en ella
 carpetas_salida <- c(
   "01_Datos/02_Procesados", "01_Datos/03_Listos",
-  "03_Resultados/Tablas", "03_Resultados/Figuras"
+  "03_Resultados/Tablas", "03_Resultados/Figuras",
+  # una subcarpeta por script que genera tablas o figuras (nombre del script)
+  "03_Resultados/Tablas/01_limpieza_observacional",
+  "03_Resultados/Figuras/03_punto_partida",
+  "03_Resultados/Tablas/04_prediccion_lineal_observacional",
+  "03_Resultados/Figuras/04_prediccion_lineal_observacional",
+  "03_Resultados/Tablas/05_lasso_observacional",
+  "03_Resultados/Figuras/05_lasso_observacional",
+  "03_Resultados/Tablas/06_ate_experimento_niveles",
+  "03_Resultados/Figuras/06_ate_experimento_niveles",
+  "03_Resultados/Tablas/07_forma_funcional_observacional",
+  "03_Resultados/Figuras/07_forma_funcional_observacional",
+  "03_Resultados/Tablas/08_ate_experimento_log",
+  "03_Resultados/Figuras/08_ate_experimento_log",
+  "03_Resultados/Tablas/09_arboles_observacional",
+  "03_Resultados/Figuras/09_arboles_observacional",
+  "03_Resultados/Tablas/10_bosque_observacional",
+  "03_Resultados/Figuras/10_bosque_observacional",
+  "03_Resultados/Tablas/11_comparacion_prediccion_observacional",
+  "03_Resultados/Figuras/11_comparacion_prediccion_observacional",
+  "03_Resultados/Tablas/12_heterogeneidad_experimento",
+  "03_Resultados/Figuras/12_heterogeneidad_experimento"
 )
 for (carpeta in carpetas_salida) {
   if (!dir.exists(carpeta)) dir.create(carpeta, recursive = TRUE)
@@ -61,7 +82,17 @@ for (carpeta in carpetas_salida) {
 
 scripts <- c(
   "02_Scripts/01_limpieza_observacional.R",
-  "02_Scripts/02_limpieza_experimento.R"
+  "02_Scripts/02_limpieza_experimento.R",
+  "02_Scripts/03_punto_partida.R",
+  "02_Scripts/04_prediccion_lineal_observacional.R",
+  "02_Scripts/05_lasso_observacional.R",
+  "02_Scripts/06_ate_experimento_niveles.R",
+  "02_Scripts/07_forma_funcional_observacional.R",
+  "02_Scripts/08_ate_experimento_log.R",
+  "02_Scripts/09_arboles_observacional.R",
+  "02_Scripts/10_bosque_observacional.R",
+  "02_Scripts/11_comparacion_prediccion_observacional.R",
+  "02_Scripts/12_heterogeneidad_experimento.R"
 )
 
 # nota: '00_formato_graficas.R' no aparece en esta lista porque no produce

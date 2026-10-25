@@ -44,27 +44,53 @@ decimales <- list(
 # (mismo criterio que el subtitulo y la nota de las figuras)
 nota_tabla <- function(base = c("experimento", "observacional"),
                        n, muestra = c("completa", "entrenamiento", "prueba"),
-                       extra = NULL) {
+                       extra = NULL, enfoque = c("descriptivo", "predictivo")) {
   base <- match.arg(base)
   muestra <- match.arg(muestra)
+  enfoque <- match.arg(enfoque)
   texto_base <- switch(
     base,
-    experimento   = "Datos del experimento A/B (asignación aleatoria).",
-    observacional = paste(
-      "Datos históricos (sin asignación aleatoria): las diferencias son",
-      "descriptivas, no causales."
-    )
+    experimento   = "Datos del experimento A/B (asignación aleatoria)",
+    observacional = "Datos históricos"
   )
   texto_muestra <- switch(
     muestra,
-    completa      = "Cifras de la muestra completa",
-    entrenamiento = "Cifras de la muestra de entrenamiento",
-    prueba        = "Cifras de la muestra de prueba"
+    completa      = "muestra completa",
+    entrenamiento = "muestra de entrenamiento",
+    prueba        = "muestra de prueba"
   )
-  paste0(
-    texto_base, " ", texto_muestra, " (n = ",
-    format(n, big.mark = ",", scientific = FALSE), ").",
-    if (!is.null(extra)) paste0(" ", extra) else ""
+  # el experimento identifica efectos causales; en los datos historicos se
+  # declara el alcance del analisis
+  texto_enfoque <- if (base == "observacional") {
+    if (enfoque == "predictivo") {
+      "Análisis predictivo, no causal."
+    } else {
+      "Las diferencias son descriptivas, no causales."
+    }
+  } else {
+    NULL
+  }
+  # un vector: el primer elemento declara base, muestra, n y alcance; cada
+  # elemento de `extra` es un parrafo aparte (la nota se lee mejor en parrafos
+  # cortos)
+  c(
+    paste(
+      c(
+        # n = NULL: la tabla ya muestra las observaciones (p. ej. regresiones),
+        # asi que la nota no las repite
+        if (is.null(n)) {
+          paste0(texto_base, ", ", texto_muestra, ".")
+        } else {
+          paste0(
+            texto_base, ", ", texto_muestra, " (n = ",
+            format(n, big.mark = ",", scientific = FALSE), ")."
+          )
+        },
+        texto_enfoque
+      ),
+      collapse = " "
+    ),
+    extra
   )
 }
 
@@ -81,8 +107,9 @@ estilo_tabla <- function(tabla, titulo = NULL, subtitulo = NULL, nota = NULL) {
   if (!is.null(titulo)) {
     tabla <- tab_header(tabla, title = titulo, subtitle = subtitulo)
   }
-  if (!is.null(nota)) {
-    tabla <- tab_source_note(tabla, source_note = nota)
+  # cada elemento de `nota` se agrega como un parrafo aparte
+  for (parrafo in nota) {
+    tabla <- tab_source_note(tabla, source_note = parrafo)
   }
   tabla |>
     opt_table_font(font = list(google_font("Inter"), default_fonts())) |>
@@ -151,12 +178,14 @@ ruta_chrome <- function() {
 #     compila en todas las maquinas): `gt` escribe un HTML, Chrome en modo
 #     headless mide la tabla y la fotografia con ese tamano exacto
 #   - .csv con las cifras sin formato, para trazabilidad
-# Convencion de nombres: 03_Resultados/Tablas/<base>_<contenido>.<ext>, donde
-# <base> es 'experimento' u 'observacional' (p. ej. 'experimento_balance').
-# `nombre` va sin extension; `datos` son las cifras sin formato (un data frame).
+# Cada script guarda sus tablas en su propia subcarpeta:
+# 03_Resultados/Tablas/<script>/<base>_<contenido>.<ext>, donde <script> es el
+# nombre del script sin '.R' y <base> es 'experimento' u 'observacional'
+# (p. ej. 'experimento_balance'). `carpeta` es ese <script>; `nombre` va sin
+# extension; `datos` son las cifras sin formato (un data frame).
 # Como `guardar_figura()`, no crea carpetas: asume que 00_main.R ya verifico
-# 03_Resultados/Tablas/.
-guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
+# 03_Resultados/Tablas/<script>/.
+guardar_tabla <- function(nombre, tabla, datos, carpeta, zoom = 2, margen = 20) {
   chrome <- ruta_chrome()
   html <- tempfile(fileext = ".html")
   on.exit(unlink(html), add = TRUE)
@@ -185,7 +214,7 @@ guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
   ancho <- as.integer(medidas[2]) + 2 * margen
   alto  <- as.integer(medidas[3]) + 2 * margen + 40 # holgura para el pie
 
-  png <- file.path("03_Resultados/Tablas", paste0(nombre, ".png"))
+  png <- file.path("03_Resultados/Tablas", carpeta, paste0(nombre, ".png"))
   system2(chrome, c(opciones, paste0("--force-device-scale-factor=", zoom),
                     "--default-background-color=FFFFFFFF",
                     paste0("--window-size=", ancho, ",", alto),
@@ -194,5 +223,5 @@ guardar_tabla <- function(nombre, tabla, datos, zoom = 2, margen = 20) {
           stdout = FALSE, stderr = FALSE)
   if (!file.exists(png)) stop("Chrome no genero el .png de ", nombre)
 
-  write_csv(datos, file.path("03_Resultados/Tablas", paste0(nombre, ".csv")))
+  write_csv(datos, file.path("03_Resultados/Tablas", carpeta, paste0(nombre, ".csv")))
 }

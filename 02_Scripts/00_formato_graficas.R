@@ -50,6 +50,11 @@ subtitulo_observacional <- paste(
   "Datos historicos (sin asignacion aleatoria):",
   "las diferencias son descriptivas, no causales."
 )
+# para las figuras de prediccion sobre la base historica, una sola oracion
+subtitulo_observacional_predictivo <- paste(
+  "Datos históricos (sin asignación aleatoria).",
+  "Análisis predictivo, no causal."
+)
 
 # -----------------------------------------------------------------------------
 # 3. Tema
@@ -89,14 +94,31 @@ tema_paneles <- theme(
 # vean homogeneas al insertarlas en la presentacion. El fondo blanco es
 # explicito porque ggplot lo deja transparente por defecto y eso se ve mal
 # sobre el fondo de una diapositiva.
-# Convencion de nombres: 03_Resultados/Figuras/<base>_<contenido>.png, donde
+# Cada script guarda sus figuras en su propia subcarpeta:
+# 03_Resultados/Figuras/<script>/<base>_<contenido>.png, donde <script> es el
+# nombre del script sin '.R' (p. ej. '03_punto_partida') y
 # <base> es 'experimento' u 'observacional', para saber de un vistazo que
-# base sostiene cada figura.
-guardar_figura <- function(nombre_archivo, grafica,
-                           width = 8, height = 6, dpi = 300) {
+# base sostiene cada figura. `carpeta` es ese <script>; la subcarpeta debe
+# estar en `carpetas_salida` de 00_main.R (esta funcion no crea carpetas).
+guardar_figura <- function(nombre_archivo, grafica, carpeta,
+                           width = 9, height = 6, dpi = 300) {
   ggsave(
-    file.path("03_Resultados/Figuras", nombre_archivo),
+    file.path("03_Resultados/Figuras", carpeta, nombre_archivo),
     grafica,
     width = width, height = height, dpi = dpi, bg = "white"
   )
+}
+
+# version de `guardar_figura()` para las figuras que se dibujan con graficos
+# base de R (p. ej. el arbol de `rpart.plot`), que `ggsave()` no puede guardar.
+# `dibujar` es una funcion sin argumentos que hace la figura; se exporta con el
+# mismo tamano, resolucion y fondo blanco que las demas. Tampoco crea carpetas
+guardar_figura_base <- function(nombre_archivo, dibujar, carpeta,
+                                width = 9, height = 6, dpi = 300) {
+  png(
+    file.path("03_Resultados/Figuras", carpeta, nombre_archivo),
+    width = width, height = height, units = "in", res = dpi, bg = "white"
+  )
+  on.exit(dev.off(), add = TRUE)
+  dibujar()
 }

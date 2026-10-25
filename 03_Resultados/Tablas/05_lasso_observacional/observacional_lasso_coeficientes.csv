@@ -1,0 +1,75 @@
+columna,termino,coef_min,coef_1se,est_min,est_1se
+mas_5_min:past_sessions,Más de 5 minutos × Sesiones anteriores,2.300493886287018,1.9774146164335327,4.093331754349189,3.5184679642968364
+I(past_sessions^2),Sesiones anteriores²,0.16691296066390407,0.06784230793221056,2.13573356801148,0.8680757552072325
+mas_5_min:is_returning_user,Más de 5 minutos × Usuario recurrente,-3.236779942699771,-2.3837936663426462,-1.542448581025044,-1.1359682224920882
+mas_5_min:I(past_sessions^2),Más de 5 minutos × Sesiones anteriores²,-0.13253773701905952,-0.09076247825705419,-1.2717132683914678,-0.8708753481658544
+past_sessions:I(past_sessions^2),Sesiones anteriores × Sesiones anteriores²,-0.013085327849107008,-0.005893982397209143,-1.2475285506214353,-0.5619202974635722
+mas_5_min,Más de 5 minutos,1.8707101562293378,1.4423774743854296,0.9014170321143204,0.6950214162357221
+past_sessions:os_typewindows,Sesiones anteriores × Sistema: Windows,-0.3664993527831179,-0.1695179904468075,-0.7277137466167061,-0.3365915137645057
+past_sessions,Sesiones anteriores,-0.3400391138569739,0,-0.5869707775873543,0
+mas_5_min:os_typewindows,Más de 5 minutos × Sistema: Windows,-1.2007491095207428,-1.0895705335280617,-0.4960538137137813,-0.4501236887716531
+past_sessions:os_typeother,Sesiones anteriores × Sistema: otro,-0.3939395884952082,-0.05774286553091759,-0.41164516219684166,-0.060338112597368765
+past_sessions:device_typemobile,Sesiones anteriores × Dispositivo: móvil,-0.20932160984515244,-0.05970679803363078,-0.40493021249029887,-0.11550210431096286
+os_typewindows:is_returning_user,Sistema: Windows × Usuario recurrente,0.6796402219737673,0.2216443548344836,0.33659216492493227,0.10976947924075081
+past_sessions:sign_up,Sesiones anteriores × Registro,0.13410983200322482,0,0.26834436940095496,0
+I(past_sessions^2):sign_up,Sesiones anteriores² × Registro,-0.019477955012277635,0,-0.24616126814584452,0
+mas_5_min:os_typeother,Más de 5 minutos × Sistema: otro,-1.1973261611343233,-1.0821713192739928,-0.2243887505602797,-0.20280778797484153
+os_typeother:is_returning_user,Sistema: otro × Usuario recurrente,0.7450095356470232,0.01963515399811519,0.21749425093583552,0.005732185839904696
+I(past_sessions^2):device_typemobile,Sesiones anteriores² × Dispositivo: móvil,0.01883837568648617,0,0.20501009121757557,0
+mas_5_min:device_typemobile,Más de 5 minutos × Dispositivo: móvil,-0.5095927668564856,-0.47497542010208654,-0.19716893001540697,-0.18377496985062425
+device_typemobile,Dispositivo: móvil,-0.39084538727002355,-0.3347849752971109,-0.19542119612318973,-0.1673912049304406
+os_typewindows,Sistema: Windows,0.36356121288212667,0.38004679400446784,0.17825134166623063,0.18633409870708564
+device_typemobile:is_returning_user,Dispositivo: móvil × Usuario recurrente,0.26551710354111435,0,0.13263168374182122,0
+I(past_sessions^2):os_typewindows,Sesiones anteriores² × Sistema: Windows,0.00857559102524802,-0.011076746469511003,0.09822681363900482,-0.12687562967774507
+os_typeother,Sistema: otro,0.27392472266662343,0.3256819874074098,0.08182061523114241,0.09728037805410665
+I(past_sessions^2):os_typeother,Sesiones anteriores² × Sistema: otro,0.012900846150640107,-0.022287329195582836,0.06993811766759125,-0.1208241563054121
+time_spent:I(past_sessions^2),Tiempo × Sesiones anteriores²,5.584882083957927e-4,0,0.059646105094680164,0
+mas_5_min:sign_up,Más de 5 minutos × Registro,0.12949299927636107,0.08402956995341875,0.05944200335126037,0.038572633321405356
+is_returning_user:sign_up,Usuario recurrente × Registro,-0.12637431237229613,0,-0.05552717057804489,0
+past_sessions:device_typetablet,Sesiones anteriores × Dispositivo: tableta,-0.04756068244350503,-0.0011769254661610918,-0.04986370952382489,-0.001233915632845658
+mas_5_min:device_typetablet,Más de 5 minutos × Dispositivo: tableta,-0.2624212799359317,-0.1512149710812776,-0.04911494185236113,-0.028301494885158127
+I(time_spent^2):past_sessions,Tiempo² × Sesiones anteriores,-1.222137588563478e-4,0,-0.046836400709182754,0
+time_spent:device_typetablet,Tiempo × Dispositivo: tableta,0.0181763225006177,0,0.03869683071886518,0
+device_typetablet:sign_up,Dispositivo: tableta × Registro,-0.12440184314124203,-0.11104255186645892,-0.03290667072632165,-0.02937288225489852
+os_typewindows:sign_up,Sistema: Windows × Registro,-0.063477668181128,0,-0.031635063385642516,0
+device_typemobile:os_typewindows,Dispositivo: móvil × Sistema: Windows,0.06444647613109027,0.009115841529697967,0.029526937301229017,0.004176533729289226
+mas_5_min:time_spent,Más de 5 minutos × Tiempo,-0.005078009710245442,0,-0.028934326382520283,0
+I(time_spent^2):device_typetablet,Tiempo² × Dispositivo: tableta,-7.411993342667463e-4,-1.2935097568656512e-4,-0.026478994007344086,-0.0046210021403176715
+device_typetablet,Dispositivo: tableta,-0.07804543324097578,-0.0016212238171783321,-0.02330018032223719,-4.840104758766094e-4
+log(time_spent):I(past_sessions^2),log(Tiempo) × Sesiones anteriores²,-8.778571309836971e-4,0,-0.022711131958354544,0
+time_spent:past_sessions,Tiempo × Sesiones anteriores,0.0011258819983645317,7.089228419346227e-4,0.021596072997224536,0.01359818299436298
+time_spent:I(time_spent^2),Tiempo × Tiempo²,6.815716868450355e-6,0,0.020834061084642624,0
+log(time_spent):sign_up,log(Tiempo) × Registro,-0.016932201696877217,0,-0.020605589935217918,0
+log(time_spent):is_returning_user,log(Tiempo) × Usuario recurrente,0.015532538378230768,0,0.019836948419952618,0
+I(time_spent^2):os_typewindows,Tiempo² × Sistema: Windows,2.1046974180458916e-4,0,0.018544086370046772,0
+device_typemobile:os_typeother,Dispositivo: móvil × Sistema: otro,0.06080272136123889,0.005535302369736916,0.013196662680685941,0.001201385671128639
+I(time_spent^2):is_returning_user,Tiempo² × Usuario recurrente,-1.2150004811077505e-4,-5.913869695778885e-5,-0.013101772773904572,-0.006377131381703849
+device_typemobile:sign_up,Dispositivo: móvil × Registro,-0.026281259363720447,-0.01465391622479367,-0.01283607366862484,-0.007157143635778973
+log(time_spent),log(Tiempo),0.00873754575532722,0.007047223598234368,0.011265148523639624,0.009085848902708853
+device_typetablet:os_typewindows,Dispositivo: tableta × Sistema: Windows,0.04041537257249816,0,0.009485951663144036,0
+time_spent:device_typemobile,Tiempo × Dispositivo: móvil,-0.00207013592205914,-0.0012960499183243776,-0.008992845022772032,-0.0056301501428342015
+I(time_spent^2):sign_up,Tiempo² × Registro,-7.361396852456572e-5,0,-0.007460572129296775,0
+is_returning_user,Usuario recurrente,0.023648725767589515,-0.1907324179932224,0.005117984845217749,-0.04127772609714475
+log(time_spent):os_typeother,log(Tiempo) × Sistema: otro,-0.009951290133910455,0,-0.005055802718962188,0
+log(time_spent):os_typewindows,log(Tiempo) × Sistema: Windows,-0.0025440294310123896,0,-0.0028434132550455376,0
+device_typetablet:os_typeother,Dispositivo: tableta × Sistema: otro,0.027203231774522735,0,0.0027283837041326762,0
+log(time_spent):device_typemobile,log(Tiempo) × Dispositivo: móvil,0.0020646454710605256,0,0.002166734211067888,0
+os_typeother:sign_up,Sistema: otro × Registro,0.005319325434701572,0.017985742008487755,0.0014083425540082927,0.004761898129173021
+device_typetablet:is_returning_user,Dispositivo: tableta × Usuario recurrente,-0.0034080236336458155,-0.11654511544210223,-9.95749651215803e-4,-0.03405192291117763
+log(time_spent):device_typetablet,log(Tiempo) × Dispositivo: tableta,-0.0013775357565186043,0,-7.004849127446895e-4,0
+log(time_spent):past_sessions,log(Tiempo) × Sesiones anteriores,-1.104811947076092e-4,0,-5.280835132009767e-4,0
+I(time_spent^2):I(past_sessions^2),Tiempo² × Sesiones anteriores²,1.1995652827227025e-7,0,2.3754809644092742e-4,0
+time_spent:log(time_spent),Tiempo × log(Tiempo),-6.822800674506431e-6,0,-1.050089342271321e-4,0
+I(time_spent^2):os_typeother,Tiempo² × Sistema: otro,-1.6969827894004445e-6,-7.021142161509763e-5,-6.368305437306073e-5,-0.0026348397922785574
+sign_up,Registro,2.344266601293338e-5,0,9.857778972225507e-6,0
+time_spent,Tiempo,0,0,0,0
+I(time_spent^2),Tiempo²,0,0,0,0
+mas_5_min:I(time_spent^2),Más de 5 minutos × Tiempo²,0,0,0,0
+mas_5_min:log(time_spent),Más de 5 minutos × log(Tiempo),0,0,0,0
+time_spent:os_typeother,Tiempo × Sistema: otro,0,0,0,0
+time_spent:os_typewindows,Tiempo × Sistema: Windows,0,0,0,0
+time_spent:is_returning_user,Tiempo × Usuario recurrente,0,-0.0028378766659124164,0,-0.014167530413523602
+time_spent:sign_up,Tiempo × Registro,0,0,0,0
+I(time_spent^2):log(time_spent),Tiempo² × log(Tiempo),0,0,0,0
+I(time_spent^2):device_typemobile,Tiempo² × Dispositivo: móvil,0,0,0,0
+I(past_sessions^2):device_typetablet,Sesiones anteriores² × Dispositivo: tableta,0,-0.004503764587461935,0,-0.0241967404320683

@@ -69,15 +69,18 @@ bases listas traen `log_revenue`.
 
 ## H1. Punto de partida y descriptiva (H3, H4) · Resp.: ____
 
-Script: `03_descriptivas_observacional.R`.
+Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
+`07_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
-- [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
+- [x] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
-- [ ] **P1.2** Cómo varía `ln(Revenue)` con cada covariable (`time_spent` y su
+- [x] **P1.2** Cómo varía `ln(Revenue)` con cada covariable (`time_spent` y su
   quiebre en 5 min, `past_sessions`, dispositivo, sistema operativo, usuario
   recurrente, registro), más una interacción candidata. Son las hipótesis que
-  deben confirmar o matizar los árboles.
-- [ ] **P1.3** Tabla con las cifras clave del Taller 1 (RMSE, ITT en nivel y
+  deben confirmar o matizar los árboles. *Avance 2026-10-24:* hechas las
+  figuras de tiempo, sesiones pasadas, dispositivo, sistema operativo, usuario
+  recurrente y la interacción tiempo × sesiones, en las dos escalas, y el registro (densidades por grupo).
+- [x] **P1.3** Tabla con las cifras clave del Taller 1 (RMSE, ITT en nivel y
   en log, quiebre en 5 min) como punto de partida de la presentación.
 
 *Terminado cuando:* las figuras y la tabla salen con `guardar_figura()` /
@@ -85,43 +88,63 @@ Script: `03_descriptivas_observacional.R`.
 
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
-Scripts: `04_prediccion_lineal_observacional.R`, `05_arboles_observacional.R`,
-`06_comparacion_prediccion_observacional.R`.
+Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
+`09_arboles_observacional.R`, `10_bosque_observacional.R`,
+`11_comparacion_prediccion_observacional.R`.
 
-- [ ] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
+- [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
-- [ ] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
+- [x] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
-  interacciones de la descriptiva) y LASSO (`cv.glmnet`).
-- [ ] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
+  interacciones de la descriptiva) y LASSO (`cv.glmnet`). *Avance 2026-10-24:* hechos ingenuo, lineal del Taller 1 y lineal flexible
+  en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); LASSO en dólares
+  hecho (`05_lasso_observacional.R`, RMSE de prueba 1.765); falta la escala
+  `ln(Revenue)` de todos los benchmarks. *Cerrado 2026-10-25:* la escala
+  `ln(Revenue)` de los cuatro benchmarks está en
+  `11_comparacion_prediccion_observacional.R` (prueba: 0.534, 0.452, 0.369 y 0.361).
+- [x] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
-  ¿Qué interacciones aparecen?
-- [ ] **P2.4** Bosque (`ranger`): rejilla `mtry` × `min.node.size` por error
+  ¿Qué interacciones aparecen? *Hecho 2026-10-25* en `09_arboles_observacional.R`
+  (dos escalas; primer corte en 5.0007 min, sesiones solo después del corte).
+- [x] **P2.4** Bosque (`ranger`): rejilla `mtry` × `min.node.size` por error
   OOB (bagging = `mtry` igual al número de predictores) e importancia por
-  permutación.
-- [ ] **P2.5** Evaluación en `test`, una sola vez: tabla 2×2 de RMSE (método ×
+  permutación. *Hecho 2026-10-25* en `10_bosque_observacional.R`.
+- [x] **P2.5** Evaluación en `test`, una sola vez: tabla 2×2 de RMSE (método ×
   escala) con la mejora % frente al ingenuo en cada escala y la lectura en
   unidades del negocio (H6). **Decidir y registrar** si las predicciones en log
   se retransforman a dólares (*smearing*) o si solo se comparan mejoras
-  relativas.
-- [ ] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
-  junto con la importancia del bosque, para responder qué variables predicen.
+  relativas. *Hecho 2026-10-25* en `11_comparacion_prediccion_observacional.R`:
+  se reportan las dos (mejora % en cada escala y log llevado a dólares con
+  *smearing* de Duan por modelo); decisión en `CLAUDE.md`.
+- [x] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
+  junto con la importancia del bosque, para responder qué variables predicen. *Avance 2026-10-24:* escalera lineal en dólares hecha;
+  falta la escala logarítmica. *Avance 2026-10-25:* importancia del bosque y del
+  árbol en las dos escalas hecha (scripts 09 y 10). *Cerrado 2026-10-25:* en
+  logaritmo, qué variables predicen lo responde la importancia del árbol y del
+  bosque; la escalera lineal queda solo en dólares (decisión en `CLAUDE.md`).
 
 *Terminado cuando:* existen la tabla 2×2 de RMSE de prueba, la escalera, la
 figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
 
 ## H3. Parte B: validez del experimento y ATE · Resp.: ____
 
-Scripts: `07_validacion_experimento.R`, `08_ate_experimento.R`.
+Scripts: `06_ate_experimento_niveles.R`, `08_ate_experimento_log.R`.
 
-- [ ] **P3.1** Validación: tabla de balance, tabla de cumplimiento
+- [x] **P3.1** Validación: tabla de balance, tabla de cumplimiento
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
-  (H7, H9).
-- [ ] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
-  sin controles) y ATE del bosque causal (`average_treatment_effect`).
+  (H7, H9). *Avance 2026-10-24:* hechos balance y cumplimiento en
+  `06_ate_experimento_niveles.R`; falta la representatividad. *Cerrado
+  2026-10-25:* representatividad en la sección 2b del mismo script
+  (`experimento_representatividad`; F = 0.66, p = 0.708).
+- [x] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
+  sin controles; *avance 2026-10-24:* hecho en dólares con `lm` y HC1 en el
+  script 06 y en `ln(Revenue)` en `08_ate_experimento_log.R`, con retransformación a dólares) y ATE del bosque causal (`average_treatment_effect`).
   **Decidir y registrar** `W.hat` (0.5 por diseño o la proporción observada).
+  *Cerrado 2026-10-25:* ATE del bosque en `12_heterogeneidad_experimento.R`
+  (tabla MCO frente a bosque); `W.hat` lo estima `grf` (con 0.5 el ATE en
+  dólares no cambia: 0.414).
 - [ ] **P3.3** Conciliación nivel–log (H2): cuantiles de `Revenue` por brazo y
-  efecto en nivel sin la cola alta. Sostiene la diapositiva "por qué los dos
+  efecto en nivel sin la cola alta (*avance 2026-10-24:* cuantiles, efecto con ingreso limitado y descomposición hechos en `08_ate_experimento_log.R`; faltan intervalos de los cuantiles). Sostiene la diapositiva "por qué los dos
   números no se contradicen".
 
 *Terminado cuando:* la tabla de ATE (lineal y bosque, nivel y log, con IC) y
@@ -129,34 +152,38 @@ las de validación salen desde `00_main.R`.
 
 ## H4. Parte B: ¿el efecto es igual para todos? · Resp.: ____
 
-Script: `09_heterogeneidad_experimento.R`.
+Script: `12_heterogeneidad_experimento.R`.
 
-- [ ] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
+- [x] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
   `seed = 2026`, las 5 covariables pre-tratamiento con `time_spent`), con los
   CATE fuera de bolsa y su varianza (`estimate.variance = TRUE`).
-- [ ] **P4.2** Evidencia formal de HTE: `test_calibration()` y TOC/AUTOC con
+- [x] **P4.2** Evidencia formal de HTE: `test_calibration()` y TOC/AUTOC con
   muestra dividida (bosque de entrenamiento para priorizar y bosque de
   evaluación independiente).
-- [ ] **P4.3** ATE por subgrupo con IC (`subset`): dispositivo, sistema
+- [x] **P4.3** ATE por subgrupo con IC (`subset`): dispositivo, sistema
   operativo, usuario recurrente, `time_spent` < 5 / ≥ 5 min y terciles de
   `past_sessions`, cada uno con su tamaño y su peso en la base histórica (H8,
-  H9). Advertencia de multiplicidad.
-- [ ] **P4.4** `variable_importance()` del bosque causal, leída como "dónde
+  H9). Advertencia de multiplicidad. (Sesiones en tramos 0–2, 3–4 y 5 o más,
+  los cuantiles 1/3 y 2/3 del experimento.)
+- [x] **P4.4** `variable_importance()` del bosque causal, leída como "dónde
   mira el bosque", no como efecto.
-- [ ] **P4.5** Bosque causal sobre `Revenue` en nivel, para probar la
+- [x] **P4.5** Bosque causal sobre `Revenue` en nivel, para probar la
   hipótesis de la cola alta: ¿hay heterogeneidad en nivel que no aparece en
   log?
-- [ ] **P4.6** Robustez: bosque sin `time_spent`.
+- [x] **P4.6** Robustez: bosque sin `time_spent`.
+
+*Cerrado 2026-10-25* en `12_heterogeneidad_experimento.R` (todo con
+`num.threads = 4`; ver `05_Notas/12_heterogeneidad_experimento/`).
 
 *Terminado cuando:* existen la prueba de calibración, la figura TOC, la tabla de
 CATE por grupo con IC y la comparación nivel–log de la heterogeneidad.
 
 ## H5. Síntesis y recomendación (H10) · Resp.: ____
 
-- [ ] **P5.1** Tabla de conclusiones en `05_Notas/sintesis.md`: qué se
+- [x] **P5.1** Tabla de conclusiones en `05_Notas/sintesis.md`: qué se
   mantiene, qué se matiza y qué cambia frente al Taller 1, y si se debe a la
   transformación, al método o a ambos (Partes A y B).
-- [ ] **P5.2** Recomendación sí/no en una frase ("escalar / no escalar el
+- [x] **P5.2** Recomendación sí/no en una frase ("escalar / no escalar el
   registro facilitado [para todos | para el grupo G]"), separando la decisión
   respaldada de las preguntas abiertas (qué evidencia y qué resultado la
   cambiarían).
