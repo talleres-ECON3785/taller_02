@@ -108,3 +108,17 @@ guardar_figura <- function(nombre_archivo, grafica, carpeta,
     width = width, height = height, dpi = dpi, bg = "white"
   )
 }
+
+# version de `guardar_figura()` para las figuras que se dibujan con graficos
+# base de R (p. ej. el arbol de `rpart.plot`), que `ggsave()` no puede guardar.
+# `dibujar` es una funcion sin argumentos que hace la figura; se exporta con el
+# mismo tamano, resolucion y fondo blanco que las demas. Tampoco crea carpetas
+guardar_figura_base <- function(nombre_archivo, dibujar, carpeta,
+                                width = 9, height = 6, dpi = 300) {
+  png(
+    file.path("03_Resultados/Figuras", carpeta, nombre_archivo),
+    width = width, height = height, units = "in", res = dpi, bg = "white"
+  )
+  on.exit(dev.off(), add = TRUE)
+  dibujar()
+}

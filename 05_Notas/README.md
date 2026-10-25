@@ -71,6 +71,24 @@ Faltan las notas que comparan, figura por figura, qué cambia frente al script 0
 | [A_corte_5_minutos_captura_tiempo.md](04_prediccion_lineal_observacional/A_corte_5_minutos_captura_tiempo.md) | vigente | A / observacional / predictivo | ¿Qué relaciones aparecen? ¿Qué cambia respecto al Taller 1? (el corte de 5 minutos reemplaza al tiempo lineal) |
 | [A_lineal_flexible_vs_taller1.md](04_prediccion_lineal_observacional/A_lineal_flexible_vs_taller1.md) | vigente | A / observacional / predictivo | ¿Cómo se compara con el lineal del Taller 1? (RMSE de prueba 1.845 frente a 2.314) |
 
+### `09_arboles_observacional/` (`09_arboles_observacional.R`: árbol de regresión en dólares y en logaritmo)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [A_cart_recupera_corte_5_min.md](09_arboles_observacional/A_cart_recupera_corte_5_min.md) | vigente | A / observacional / predictivo | ¿Qué patrones aparecen con los árboles? (el árbol encuentra solo el corte de 5 minutos y el cruce con las sesiones) |
+
+### `10_bosque_observacional/` (`10_bosque_observacional.R`: bagging y bosque aleatorio)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [A_importancia_bosque.md](10_bosque_observacional/A_importancia_bosque.md) | vigente | A / observacional / predictivo | ¿Qué variables resultan más útiles para predecir? (tiempo y sesiones; el registro, cerca de 0) |
+
+### `11_comparacion_prediccion_observacional/` (`11_comparacion_prediccion_observacional.R`: evaluación en prueba, método × escala)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [X_rmse_metodo_por_escala.md](11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md) | vigente | A / observacional / predictivo | ¿Cómo se comparan árboles y lineales? ¿Qué cambia con `ln(Revenue)`? (árbol 1.627 frente a LASSO 1.765 dólares; ganancia del método, no de la transformación) |
+
 ## Pendientes de conciliar
 
 Contradicciones detectadas y aún sin decisión del equipo (nota afectada, resultado

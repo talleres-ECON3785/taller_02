@@ -89,8 +89,8 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
 Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
-`09_arboles_observacional.R`,
-`10_comparacion_prediccion_observacional.R`.
+`09_arboles_observacional.R`, `10_bosque_observacional.R`,
+`11_comparacion_prediccion_observacional.R`.
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
@@ -100,20 +100,24 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
   en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); LASSO en dólares
   hecho (`05_lasso_observacional.R`, RMSE de prueba 1.765); falta la escala
   `ln(Revenue)` de todos los benchmarks.
-- [ ] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
+- [x] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
-  ¿Qué interacciones aparecen?
-- [ ] **P2.4** Bosque (`ranger`): rejilla `mtry` × `min.node.size` por error
+  ¿Qué interacciones aparecen? *Hecho 2026-10-25* en `09_arboles_observacional.R`
+  (dos escalas; primer corte en 5.0007 min, sesiones solo después del corte).
+- [x] **P2.4** Bosque (`ranger`): rejilla `mtry` × `min.node.size` por error
   OOB (bagging = `mtry` igual al número de predictores) e importancia por
-  permutación.
-- [ ] **P2.5** Evaluación en `test`, una sola vez: tabla 2×2 de RMSE (método ×
+  permutación. *Hecho 2026-10-25* en `10_bosque_observacional.R`.
+- [x] **P2.5** Evaluación en `test`, una sola vez: tabla 2×2 de RMSE (método ×
   escala) con la mejora % frente al ingenuo en cada escala y la lectura en
   unidades del negocio (H6). **Decidir y registrar** si las predicciones en log
   se retransforman a dólares (*smearing*) o si solo se comparan mejoras
-  relativas.
+  relativas. *Hecho 2026-10-25* en `11_comparacion_prediccion_observacional.R`:
+  se reportan las dos (mejora % en cada escala y log llevado a dólares con
+  *smearing* de Duan por modelo); decisión en `CLAUDE.md`.
 - [ ] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
   junto con la importancia del bosque, para responder qué variables predicen. *Avance 2026-10-24:* escalera lineal en dólares hecha;
-  falta la escala logarítmica y la importancia del bosque.
+  falta la escala logarítmica. *Avance 2026-10-25:* importancia del bosque y del
+  árbol en las dos escalas hecha (scripts 09 y 10).
 
 *Terminado cuando:* existen la tabla 2×2 de RMSE de prueba, la escalera, la
 figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
@@ -139,7 +143,7 @@ las de validación salen desde `00_main.R`.
 
 ## H4. Parte B: ¿el efecto es igual para todos? · Resp.: ____
 
-Script: `11_heterogeneidad_experimento.R`.
+Script: `12_heterogeneidad_experimento.R`.
 
 - [ ] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
   `seed = 2026`, las 5 covariables pre-tratamiento con `time_spent`), con los
