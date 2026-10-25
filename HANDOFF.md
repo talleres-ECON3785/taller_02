@@ -78,7 +78,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo) y P2.1; P1.2
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo) y P2.1; P3.1 y P3.2 avanzaron (balance, cumplimiento e ITT en dólares); P1.2
   avanzó (falta `sign_up`) y P2.2 y P2.6 avanzaron (escalera lineal y LASSO en dólares).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
@@ -90,12 +90,11 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   sin probar con un resultado real.
 - **Notas:** cuatro notas descriptivas y de punto de partida en
   `05_Notas/03_punto_partida/` (quiebre en 5 minutos, interacción entre sesiones
-  pasadas y tiempo, dispositivo y sistema operativo, y `B_ols_efecto_registro.md`: ITT
-  en dólares con cumplimiento perfecto) y tres notas de la Parte A en
+  pasadas y tiempo, dispositivo y sistema operativo) y tres notas de la Parte A en
   `05_Notas/04_prediccion_lineal_observacional/` (escalera e importancia lineal; el corte
   de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), una nota de LASSO en
   `05_Notas/05_lasso_observacional/` (`A_lasso_vs_lineal_flexible.md`), indexadas por
-  script en `05_Notas/README.md`. Todas en dólares; aún no hay notas del script 06
+  script en `05_Notas/README.md`. Dos notas de la Parte B en `05_Notas/06_ate_experimento_niveles/` (ITT en dólares sin y con controles; balance y cumplimiento). Todas en dólares; aún no hay notas del script 07
   (`ln(Revenue)`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
@@ -108,10 +107,11 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   paquetes con `pacman`, crea las carpetas de salida (incluida una subcarpeta por
   script, ver `CLAUDE.md`) y corre `01_limpieza_observacional.R`,
   `02_limpieza_experimento.R`, `03_punto_partida.R` (`Revenue`
-  en nivel, más el MCO del efecto del registro), `04_prediccion_lineal_observacional.R`
-  (escalera lineal en dólares), `05_lasso_observacional.R` (LASSO en dólares) y
-  `06_forma_funcional_observacional.R` (`ln(Revenue)`); `00_main.R` corre completo
-  sin errores (verificado en la sesión 5, unos 3 minutos). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  en nivel), `04_prediccion_lineal_observacional.R`
+  (escalera lineal en dólares), `05_lasso_observacional.R` (LASSO en dólares),
+  `06_ate_experimento_niveles.R` (balance, cumplimiento e ITT en dólares sin y con controles) y
+  `07_forma_funcional_observacional.R` (`ln(Revenue)`); `00_main.R` corre completo
+  sin errores (verificado en la sesión 6). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
   `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
   la lista. Cada script dibuja sus propias figuras.
 - **Resultados:** reportes de calidad de la base observacional en
@@ -147,6 +147,12 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 6): análisis causal en dólares al script 06 y forma funcional a 07
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `06_ate_experimento_niveles.R` (cumplimiento, balance con prueba conjunta F = 0.96, p = 0.456, e ITT en dólares: 0.491 sin controles, 0.454 con los controles del lineal final, error estándar de 0.073 a 0.051); la sección causal salió del 03 y la forma funcional pasó a `07_`. Scripts previstos renumerados. `00_main.R` completo corre sin errores. P3.1 y P3.2 avanzaron.
+- Bitácora: [2026-10-24_ate-niveles-balance-cumplimiento_6.md](06_Bitacoras/2026-10-24_ate-niveles-balance-cumplimiento_6.md)
+- **Siguientes objetivos:** (1) P1.1, P1.3 y cierre de P1.2; (2) P2.2 (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `08_arboles_observacional.R`.
 
 ### 2026-10-24 (sesión 5): LASSO como benchmark lineal flexible y renumeración de scripts
 
