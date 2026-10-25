@@ -18,39 +18,38 @@ octubre de 2026.**
 
 Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
-1. **P1.1, P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
-   `03_punto_partida.R` / `07_forma_funcional_observacional.R`
-   la densidad de `Revenue` frente a `ln(Revenue)` (P1.1) y la relación con
-   `sign_up` (P1.2); y exportar con `guardar_tabla()` la tabla de medias por
+1. **P1.3 y cierre de P1.2: descriptiva pendiente.** Agregar a
+   `03_punto_partida.R` / `07_forma_funcional_observacional.R` la relación con
+   `sign_up` (P1.2) y exportar con `guardar_tabla()` la tabla de medias por
    covariable y escala y la tabla de cifras del Taller 1 (P1.3).
    *Terminado cuando:* esas figuras y tablas salen de `00_main.R` en las
-   subcarpetas de su script y las cifras de las notas de `05_Notas/` (hoy leídas
-   de las figuras) remiten a una tabla exportada.
+   subcarpetas de su script y las cifras de las notas de `05_Notas/` remiten a una
+   tabla exportada.
 2. **P2.2 (resto): escalera lineal y LASSO en `ln(Revenue)`.** Ampliar
    `04_prediccion_lineal_observacional.R` con la misma escalera en `ln(Revenue)`
-   (incluida la prueba de si el tiempo continuo aporta algo más allá del corte de
-   5 minutos, que en dólares no aporta) y `05_lasso_observacional.R` con LASSO sobre
-   `log_revenue` (el de dólares ya está hecho).
+   (incluida la prueba de si el tiempo continuo aporta más allá del corte de 5
+   minutos) y `05_lasso_observacional.R` con LASSO sobre `log_revenue`.
    *Terminado cuando:* hay RMSE de CV para cada modelo en las dos escalas, sin
    tocar `test`, y las notas `A_corte_5_minutos_captura_tiempo.md` y
    `A_lasso_vs_lineal_flexible.md` dicen qué cambia en logaritmo.
-3. **P2.3: CART.** Nuevo `08_arboles_observacional.R` (`rpart`, `cp = 0`, poda por CV
+3. **P2.3: CART.** Nuevo `09_arboles_observacional.R` (`rpart`, `cp = 0`, poda por CV
    con la regla del mínimo y la 1-SE) y figura del árbol podado; ¿recupera el corte
    de 5 minutos y el cruce con las sesiones? Su benchmark lineal es LASSO (RMSE de
-   prueba 1.765), no el lineal del Taller 1.
+   prueba 1.765).
    *Terminado cuando:* existen la figura del árbol y una nota que compara sus
-   cortes con las descriptivas, con el lineal de `A_lineal_flexible_vs_taller1.md` y
-   con LASSO.
+   cortes con las descriptivas, con el lineal y con LASSO.
 
 **Bloqueos / preguntas abiertas:**
 
+- Autorizar (o no) ampliar el catálogo con remuestreo para dar intervalos a los cuantiles por grupo (P3.3); hoy son descriptivos sin intervalos.
+- Estimar el factor de smearing de las predicciones en `ln(Revenue)` (P2.5): el del ATE es por grupo; para predicción condicional debe calcularse con `train`.
 - Opcional: probar LASSO con un diccionario sin el indicador de más de 5 minutos, para ver si lo recupera solo (sería nota nueva).
 - `.claude/worktrees/` quedó como directorio no versionado en el checkout principal (worktree sin rama de esta sesión); quitarlo con `git worktree remove .claude/worktrees/lasso` o ignorarlo en `.gitignore`.
 - El corte de 5 minutos y el cruce se eligieron mirando la base completa (incluye
   `test`); decidir si se redefine el cruce solo con `train` para la comparación con
   árboles.
 - Respaldar con una tabla exportada la lectura de la cola derecha (medianas parecidas, medias distintas): percentiles altos por grupo (p. ej. p90 y p99), dentro de P1.3.
-- Escribir las notas del script 07 en `05_Notas/07_forma_funcional_observacional/`, atribuyendo cada diferencia a la transformación.
+- Faltan las notas del script 07 que comparan, figura por figura, qué cambia frente al script 03 (hoy solo está la de distribución).
 - Probar a mano borrar `03_Resultados/` y correr `00_main.R` (el `rm` con comodín fue bloqueado esta sesión); verifica que las subcarpetas por script se recrean (P7.1).
 - Corregir los subtítulos y notas al pie sin tilde ("historicos", "asignacion", "linea punteada", "tamano") en `00_formato_graficas.R` y en los scripts 03 y 04.
 - Confirmar con el equipo la ampliación de `loess` (suavizado descriptivo solo en las figuras de interacción y de ingreso frente al tiempo, esta última sin banda de confianza por memoria; registrada en el catálogo el 2026-10-24). Con loess, `00_main.R` tarda unos 2.5 minutos.
@@ -78,7 +77,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 
 - **Plan:** [`PLAN.md`](PLAN.md) con los hitos H0–H7 y 33 tareas con casilla,
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
-  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo) y P2.1; P3.1 y P3.2 avanzaron (balance, cumplimiento e ITT en dólares); P1.2
+  tabla pregunta del enunciado → paso. Hecho: P0.1 a P0.5 (H0 completo), P1.1 y P2.1; P3.1 y P3.2 avanzaron (balance, cumplimiento e ITT en dólares); P1.2
   avanzó (falta `sign_up`) y P2.2 y P2.6 avanzaron (escalera lineal y LASSO en dólares).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
@@ -94,8 +93,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `05_Notas/04_prediccion_lineal_observacional/` (escalera e importancia lineal; el corte
   de 5 minutos captura el tiempo; lineal flexible frente al del Taller 1), una nota de LASSO en
   `05_Notas/05_lasso_observacional/` (`A_lasso_vs_lineal_flexible.md`), indexadas por
-  script en `05_Notas/README.md`. Dos notas de la Parte B en `05_Notas/06_ate_experimento_niveles/` (ITT en dólares sin y con controles; balance y cumplimiento). Todas en dólares; aún no hay notas del script 07
-  (`ln(Revenue)`).
+  script en `05_Notas/README.md`. Dos notas de la Parte B en `05_Notas/06_ate_experimento_niveles/` (ITT en dólares sin y con controles; balance y cumplimiento). Todas en dólares salvo dos: la distribución en las dos escalas (`05_Notas/07_forma_funcional_observacional/`) y el ITT en logaritmo y su regreso a dólares (`05_Notas/08_ate_experimento_log/`).
 - **Datos:** crudos en `01_Datos/01_Crudos/` (`datos_historicos.Rds`, 100,000
   obs.; `datos_experimento.Rds`, 10,000 obs.). Bases listas en
   `01_Datos/03_Listos/` (`observacional_limpio.Rds`,
@@ -110,8 +108,9 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   en nivel), `04_prediccion_lineal_observacional.R`
   (escalera lineal en dólares), `05_lasso_observacional.R` (LASSO en dólares),
   `06_ate_experimento_niveles.R` (balance, cumplimiento e ITT en dólares sin y con controles) y
-  `07_forma_funcional_observacional.R` (`ln(Revenue)`); `00_main.R` corre completo
-  sin errores (verificado en la sesión 6). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
+  `07_forma_funcional_observacional.R` (`ln(Revenue)` y distribución en las dos escalas) y
+  `08_ate_experimento_log.R` (ITT en `ln(Revenue)`, retransformación a dólares, cuantiles); `00_main.R` corre completo
+  sin errores (verificado en la sesión 7). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`),
   `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
   la lista. Cada script dibuja sus propias figuras.
 - **Resultados:** reportes de calidad de la base observacional en
@@ -131,6 +130,7 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   corte y cruce) y 1.765 (LASSO, 74 términos), con cuatro tablas y una figura de LASSO
   en `.../05_lasso_observacional/` (la mejora de LASSO viene del diccionario, no de la
   regularización: MCO con los mismos términos iguala su error de validación).
+- **Parte B en logaritmo:** ITT en `ln(Revenue)` de 0.0134 (IC −0.010 a 0.037) frente a 0.491 dólares; la diferencia es dispersión (desviación estándar de `ln(Revenue)` de 0.53 a 0.66), y retransformar con un factor común deja el efecto en 0.057 dólares. Tablas en `03_Resultados/Tablas/08_ate_experimento_log/`.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -147,6 +147,12 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-24 (sesión 7): distribución en log y dólares, y del ITT en logaritmo a dólares
+
+- Santiago Muñoz (`SantiagoMunozM`). Sección de distribución de `Revenue` frente a `ln(Revenue)` en el script 07 y nuevo `08_ate_experimento_log.R` (ITT en log 0.0134, retransformación con factor por grupo que reproduce 0.491, descomposición media geométrica × dispersión, cuantiles y cola). Scripts previstos corridos una posición (árboles `09_`, comparación `10_`). `00_main.R` completo corre sin errores. P1.1 cerrado; P3.2 y P3.3 avanzaron.
+- Bitácora: [2026-10-24_distribucion-log-y-ate-log-a-dolares_7.md](06_Bitacoras/2026-10-24_distribucion-log-y-ate-log-a-dolares_7.md)
+- **Siguientes objetivos:** (1) P1.3 y cierre de P1.2; (2) P2.2 (resto): escalera y LASSO en `ln(Revenue)`; (3) P2.3: CART en `09_arboles_observacional.R`.
 
 ### 2026-10-24 (sesión 6): análisis causal en dólares al script 06 y forma funcional a 07
 

@@ -16,10 +16,11 @@
 
 # paleta, tema, subtitulos por base y funcion de guardado de las figuras
 source("02_Scripts/00_formato_graficas.R")
+source("02_Scripts/00_formato_tablas.R")
 
 set.seed(2026)
 
-# subcarpeta de 03_Resultados/Figuras/ de este script (nombre del script)
+# subcarpeta de 03_Resultados/{Figuras,Tablas}/ de este script (nombre del script)
 carpeta_salida <- "07_forma_funcional_observacional"
 
 obs <- readRDS("01_Datos/03_Listos/observacional_limpio.Rds")
@@ -376,5 +377,199 @@ guardar_figura(
   "observacional_lnrevenue_tiempo_por_sesiones.png", grafica_cruce, carpeta_salida
 )
 
-cat("\nListo. Figuras guardadas en 03_Resultados/Figuras/07_forma_funcional_observacional/.\n")
+# -----------------------------------------------------------------------------
+# 8. Distribucion del ingreso: dolares frente a logaritmo
+# -----------------------------------------------------------------------------
+
+# Que cambia al pasar de Revenue a ln(Revenue) en la variable misma: la forma de
+# la distribucion. Es el argumento para la transformacion (heuristica H4) y la
+# base para leer despues los coeficientes como cambios proporcionales.
+asimetria <- function(x) mean((x - mean(x))^3) / sd(x)^3
+curtosis <- function(x) mean((x - mean(x))^4) / sd(x)^4
+
+# figura: dos paneles con la misma muestra. Cada panel marca media y mediana; en
+# el de logaritmo se superpone la normal con la misma media y desviacion para
+# ver cuanto se aleja la distribucion de la simetria
+dist_dolares <- tibble(
+  panel = "Ingreso en dólares", x = obs$Revenue,
+  media = mean(obs$Revenue), mediana = median(obs$Revenue)
+)
+dist_log <- tibble(
+  panel = "Logaritmo natural del ingreso", x = obs$log_revenue,
+  media = mean(obs$log_revenue), mediana = median(obs$log_revenue)
+)
+datos_dist <- bind_rows(dist_dolares, dist_log) |>
+  mutate(panel = factor(panel, c("Ingreso en dólares",
+                                 "Logaritmo natural del ingreso")))
+resumen_dist <- datos_dist |>
+  distinct(panel, media, mediana)
+
+normal_log <- tibble(
+  x = seq(min(obs$log_revenue), max(obs$log_revenue), length.out = 300)
+) |>
+  mutate(
+    densidad = dnorm(x, mean(obs$log_revenue), sd(obs$log_revenue)),
+    panel = factor("Logaritmo natural del ingreso",
+                   levels(datos_dist$panel))
+  )
+
+grafica_distribucion <- ggplot(datos_dist, aes(x = x)) +
+  geom_density(
+    fill = paleta_categorica[1], color = paleta_categorica[1],
+    alpha = 0.55, linewidth = 0.8
+  ) +
+  geom_line(
+    data = normal_log, aes(y = densidad), color = paleta_categorica[2],
+    linewidth = 0.8, linetype = "longdash"
+  ) +
+  geom_vline(
+    data = resumen_dist, aes(xintercept = mediana), linetype = "dashed",
+    color = gris_secundario, linewidth = 0.6
+  ) +
+  geom_vline(
+    data = resumen_dist, aes(xintercept = media), color = gris_texto,
+    linewidth = 0.8
+  ) +
+  geom_text(
+    data = resumen_dist,
+    aes(x = media, y = Inf, label = paste0("Media: ", sprintf("%.2f", media))),
+    hjust = -0.1, vjust = 1.6, size = 3.4, color = gris_texto
+  ) +
+  geom_text(
+    data = resumen_dist,
+    aes(x = mediana, y = Inf,
+        label = paste0("Mediana: ", sprintf("%.2f", mediana))),
+    hjust = 1.1, vjust = 3.4, size = 3.4, color = gris_secundario
+  ) +
+  facet_wrap(~panel, scales = "free") +
+  # espacio a la izquierda para que las etiquetas no se corten
+  scale_x_continuous(expand = expansion(mult = c(0.35, 0.05))) +
+  labs(
+    title = "El ingreso tiene cola derecha larga; su logaritmo es mucho más simétrico",
+    subtitle = subtitulo_observacional,
+    x = NULL, y = "Densidad",
+    caption = paste(
+      sprintf("Nota: n = %s usuarios.", format(n_obs, big.mark = ",")),
+      paste(
+        "Línea continua: media. Línea punteada gris: mediana. Línea ocre:",
+        "distribución normal con la misma media y desviación estándar que el",
+        "logaritmo del ingreso."
+      ),
+      sep = "\n"
+    )
+  ) +
+  tema_presentacion +
+  tema_paneles
+
+guardar_figura(
+  "observacional_distribucion_ingreso_dos_escalas.png", grafica_distribucion,
+  carpeta_salida
+)
+
+# tabla de forma de la distribucion en cada escala. Los cuantiles de ln(Revenue)
+# son el logaritmo de los cuantiles de Revenue (el logaritmo es monotono), por
+# eso mediana y percentiles coinciden entre escalas; la media no
+cuantiles <- c(0.01, 0.10, 0.25, 0.50, 0.75, 0.90, 0.99)
+resumir_escala <- function(x) {
+  c(
+    Media = mean(x), `Desviación estándar` = sd(x), Asimetría = asimetria(x),
+    Curtosis = curtosis(x),
+    setNames(quantile(x, cuantiles), paste0("p", cuantiles * 100))
+  )
+}
+distribucion <- tibble(
+  estadistico = names(resumir_escala(obs$Revenue)),
+  dolares = unname(resumir_escala(obs$Revenue)),
+  logaritmo = unname(resumir_escala(obs$log_revenue))
+) |>
+  mutate(
+    estadistico = recode(
+      estadistico, p1 = "Percentil 1", p10 = "Percentil 10",
+      p25 = "Percentil 25", p50 = "Mediana", p75 = "Percentil 75",
+      p90 = "Percentil 90", p99 = "Percentil 99"
+    ),
+    # percentiles del logaritmo, tambien llevados a dolares con exp()
+    logaritmo_en_dolares = if_else(
+      estadistico %in% c("Percentil 1", "Percentil 10", "Percentil 25",
+                         "Mediana", "Percentil 75", "Percentil 90",
+                         "Percentil 99"),
+      exp(logaritmo), NA_real_
+    )
+  )
+
+tabla_distribucion <- distribucion |>
+  gt() |>
+  cols_label(
+    estadistico = "Estadístico",
+    dolares = "Ingreso (dólares)",
+    logaritmo = "Logaritmo del ingreso",
+    logaritmo_en_dolares = "Logaritmo llevado a dólares con exp()"
+  ) |>
+  fmt_number(c(dolares, logaritmo, logaritmo_en_dolares), decimals = 2) |>
+  sub_missing(missing_text = "—") |>
+  estilo_tabla(
+    titulo = "El logaritmo reduce la asimetría y la cola derecha",
+    subtitulo = "Forma de la distribución del ingreso por usuario en cada escala",
+    nota = nota_tabla(
+      "observacional", n_obs,
+      extra = c(
+        paste(
+          "Asimetría y curtosis: una distribución simétrica tiene asimetría 0;",
+          "la normal, curtosis 3. Los percentiles del logaritmo, llevados a",
+          "dólares con exp(), recuperan los percentiles del ingreso; la media",
+          "no se recupera así."
+        )
+      )
+    )
+  )
+
+guardar_tabla(
+  "observacional_distribucion_ingreso", tabla_distribucion, distribucion,
+  carpeta_salida
+)
+
+# puente entre medias: exp(media del logaritmo) es la media geometrica, que
+# queda por debajo de la media aritmetica en dolares. Su cociente es el factor
+# de smearing de Duan (promedio de exp(residuo)) del modelo sin covariables, y
+# es lo que hay que multiplicar para volver de la escala log al promedio en
+# dolares. Con una distribucion normal en log, el factor seria exp(var / 2)
+media_log <- mean(obs$log_revenue)
+puente <- tibble(
+  concepto = c(
+    "Media en dólares (media aritmética)",
+    "Mediana en dólares",
+    "exp(media del logaritmo) = media geométrica",
+    "Factor de corrección (media aritmética / media geométrica)",
+    "Factor si el logaritmo fuera normal: exp(varianza / 2)"
+  ),
+  valor = c(
+    mean(obs$Revenue), median(obs$Revenue), exp(media_log),
+    mean(obs$Revenue) / exp(media_log), exp(var(obs$log_revenue) / 2)
+  ),
+  unidad = c("dólares", "dólares", "dólares", "razón", "razón")
+)
+
+tabla_puente <- puente |>
+  gt() |>
+  cols_label(concepto = "Cifra", valor = "Valor", unidad = "Unidad") |>
+  fmt_number(valor, decimals = 3) |>
+  estilo_tabla(
+    titulo = "Volver de logaritmo a dólares exige un factor de corrección",
+    subtitulo = "La media geométrica subestima el ingreso promedio en dólares",
+    nota = nota_tabla(
+      "observacional", n_obs,
+      extra = paste(
+        "El factor de corrección es el de Duan (smearing) del modelo sin",
+        "covariables. Que difiera de exp(varianza / 2) indica que el",
+        "logaritmo no es exactamente normal (asimetría y curtosis en la tabla",
+        "de distribución)."
+      )
+    )
+  )
+
+guardar_tabla(
+  "observacional_puente_media_dolares", tabla_puente, puente, carpeta_salida
+)
+
+cat("\nListo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/07_forma_funcional_observacional/.\n")
 cat("Recordatorio: son asociaciones descriptivas, no efectos causales.\n")

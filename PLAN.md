@@ -72,7 +72,7 @@ bases listas traen `log_revenue`.
 Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 `07_forma_funcional_observacional.R` (`ln(Revenue)`); cada uno dibuja sus figuras.
 
-- [ ] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
+- [x] **P1.1** Densidad de `Revenue` frente a `ln(Revenue)`: asimetría y cola
   alta. Es el argumento para usar la transformación.
 - [ ] **P1.2** Cómo varía `ln(Revenue)` con cada covariable (`time_spent` y su
   quiebre en 5 min, `past_sessions`, dispositivo, sistema operativo, usuario
@@ -90,8 +90,8 @@ Scripts: `03_punto_partida.R` (`Revenue` en nivel) y
 ## H2. Parte A: ¿predicen mejor los árboles? · Resp.: ____
 
 Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
-`08_arboles_observacional.R`,
-`09_comparacion_prediccion_observacional.R`.
+`09_arboles_observacional.R`,
+`10_comparacion_prediccion_observacional.R`.
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
@@ -121,7 +121,7 @@ figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
 
 ## H3. Parte B: validez del experimento y ATE · Resp.: ____
 
-Scripts: `06_ate_experimento_niveles.R`, `10_ate_experimento.R`.
+Scripts: `06_ate_experimento_niveles.R`, `08_ate_experimento_log.R`.
 
 - [ ] **P3.1** Validación: tabla de balance, tabla de cumplimiento
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
@@ -129,10 +129,10 @@ Scripts: `06_ate_experimento_niveles.R`, `10_ate_experimento.R`.
   `06_ate_experimento_niveles.R`; falta la representatividad.
 - [ ] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
   sin controles; *avance 2026-10-24:* hecho en dólares con `lm` y HC1 en el
-  script 06, falta `ln(Revenue)`) y ATE del bosque causal (`average_treatment_effect`).
+  script 06 y en `ln(Revenue)` en `08_ate_experimento_log.R`, con retransformación a dólares) y ATE del bosque causal (`average_treatment_effect`).
   **Decidir y registrar** `W.hat` (0.5 por diseño o la proporción observada).
 - [ ] **P3.3** Conciliación nivel–log (H2): cuantiles de `Revenue` por brazo y
-  efecto en nivel sin la cola alta. Sostiene la diapositiva "por qué los dos
+  efecto en nivel sin la cola alta (*avance 2026-10-24:* cuantiles, efecto con ingreso limitado y descomposición hechos en `08_ate_experimento_log.R`; faltan intervalos de los cuantiles). Sostiene la diapositiva "por qué los dos
   números no se contradicen".
 
 *Terminado cuando:* la tabla de ATE (lineal y bosque, nivel y log, con IC) y

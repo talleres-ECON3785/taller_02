@@ -51,8 +51,17 @@ contradictorio.
 
 ### `07_forma_funcional_observacional/` (`07_forma_funcional_observacional.R`: `ln(Revenue)`)
 
-Sin notas todavía. Las figuras ya existen; falta registrar qué cambia frente al
-script 03 y atribuirlo a la transformación.
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [X_distribucion_dolares_vs_logaritmo.md](07_forma_funcional_observacional/X_distribucion_dolares_vs_logaritmo.md) | vigente | A / observacional / descriptivo | ¿Qué cambia al usar `ln(Revenue)`? (cola derecha, media geométrica y factor de corrección) |
+
+Faltan las notas que comparan, figura por figura, qué cambia frente al script 03.
+
+### `08_ate_experimento_log/` (`08_ate_experimento_log.R`: ITT en `ln(Revenue)` y regreso a dólares)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [B_log_a_dolares_efecto_registro.md](08_ate_experimento_log/B_log_a_dolares_efecto_registro.md) | vigente | B / experimento / causal | ¿Cambia el ATE y su interpretación en log? (1.3% en logaritmo frente a 12% en dólares: dispersión) |
 
 ### `04_prediccion_lineal_observacional/` (`04_prediccion_lineal_observacional.R`: escalera lineal en dólares)
 
