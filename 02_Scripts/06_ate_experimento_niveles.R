@@ -102,9 +102,10 @@ guardar_tabla(
 # una categoria; las categoricas y binarias se reportan como porcentaje.
 # El valor p es el de la regresion de la covariable sobre easier_signup (HC1),
 # que equivale a una prueba de diferencia de medias con varianzas desiguales.
-covariables <- exp |>
+# la misma lista de caracteristicas se usa en la seccion 2b (representatividad)
+medir_caracteristicas <- function(datos, ...) datos |>
   transmute(
-    easier_signup,
+    ...,
     `Tiempo en el sitio (minutos)` = time_spent,
     `Más de 5 minutos en el sitio (%)` = 100 * mas_5_min,
     `Sesiones anteriores (número)` = past_sessions,
@@ -116,6 +117,8 @@ covariables <- exp |>
     `Sistema windows (%)` = 100 * (os_type == "windows"),
     `Otro sistema operativo (%)` = 100 * (os_type == "other")
   )
+
+covariables <- medir_caracteristicas(exp, easier_signup)
 
 balance <- covariables |>
   pivot_longer(-easier_signup, names_to = "variable", values_to = "valor") |>
@@ -192,6 +195,116 @@ tabla_balance <- balance |>
 guardar_tabla(
   "experimento_balance", tabla_balance,
   balance |> mutate(f_conjunta = f_conjunta, p_conjunta = p_conjunta),
+  carpeta_salida
+)
+
+# -----------------------------------------------------------------------------
+# 2b. Representatividad: ¿la muestra del experimento se parece a la historica?
+# -----------------------------------------------------------------------------
+
+# validez externa (heuristicas H7 y H9): si los usuarios del experimento tienen
+# las mismas caracteristicas que la base historica, el ITT y los CATE por grupo
+# se pueden extrapolar a la poblacion de CheMarket. Mismas caracteristicas y
+# misma prueba del balance (con os_type); no se replica la especificacion del
+# Taller 1 (F = 0.65, p = 0.712), que se toma solo como referencia. sign_up y
+# Revenue no entran: en el experimento son posteriores al tratamiento
+obs_hist <- readRDS("01_Datos/03_Listos/observacional_limpio.Rds") |>
+  mutate(mas_5_min = as.integer(time_spent > 5))
+n_hist <- nrow(obs_hist)
+
+# las categorias deben coincidir para comparar porcentajes entre bases
+stopifnot(
+  identical(levels(obs_hist$device_type), levels(exp$device_type)),
+  identical(levels(obs_hist$os_type), levels(exp$os_type))
+)
+
+ambas_bases <- bind_rows(
+  obs_hist |> mutate(experimento = 0L),
+  exp |> mutate(experimento = 1L)
+)
+
+# diferencia de medias experimento menos historico, con error estandar HC1
+# (varianzas distintas entre bases)
+representatividad <- medir_caracteristicas(ambas_bases, experimento) |>
+  pivot_longer(-experimento, names_to = "variable", values_to = "valor") |>
+  group_by(variable = factor(variable, names(covariables)[-1])) |>
+  group_modify(~ {
+    ajuste <- lm(valor ~ experimento, data = .x)
+    ee <- sqrt(diag(sandwich::vcovHC(ajuste, type = "HC1")))[["experimento"]]
+    b <- coef(ajuste)[["experimento"]]
+    tibble(
+      media_historico = mean(.x$valor[.x$experimento == 0]),
+      media_experimento = mean(.x$valor[.x$experimento == 1]),
+      diferencia = b,
+      error_estandar = ee,
+      valor_p = 2 * pt(-abs(b / ee), df = ajuste$df.residual)
+    )
+  }) |>
+  ungroup() |>
+  mutate(variable = as.character(variable))
+
+# prueba conjunta: ¿las caracteristicas predicen si el usuario esta en el
+# experimento? Misma especificacion que la prueba conjunta de balance
+ajuste_representatividad <- fixest::feols(
+  experimento ~ time_spent + past_sessions + is_returning_user +
+    device_type + os_type,
+  data = ambas_bases, vcov = "hc1"
+)
+prueba_representatividad <- fixest::wald(
+  ajuste_representatividad,
+  keep = "time_spent|past_sessions|is_returning_user|device|os",
+  print = FALSE
+)
+f_repr <- prueba_representatividad$stat
+p_repr <- prueba_representatividad$p
+cat(sprintf("\nPrueba conjunta de representatividad: F = %.3f, valor p = %.3f\n",
+            f_repr, p_repr))
+print(representatividad)
+
+tabla_representatividad <- representatividad |>
+  gt() |>
+  cols_label(
+    variable = "Característica",
+    media_historico = "Base histórica",
+    media_experimento = "Experimento",
+    diferencia = "Diferencia",
+    error_estandar = "Error estándar",
+    valor_p = "Valor p"
+  ) |>
+  fmt_number(
+    columns = c(media_historico, media_experimento, diferencia, error_estandar),
+    decimals = 2
+  ) |>
+  fmt_number(columns = valor_p, decimals = decimales$estadistico) |>
+  cols_align(align = "left", columns = variable) |>
+  estilo_tabla(
+    titulo = "Los usuarios del experimento se parecen a los de la base histórica",
+    subtitulo = "Promedios de las características antes del tratamiento, por base",
+    nota = nota_tabla(
+      "experimento", n_exp,
+      extra = c(
+        sprintf(
+          "Comparado con los datos históricos, muestra completa (n = %s).",
+          format(n_hist, big.mark = ",")
+        ),
+        paste(
+          "Diferencia = experimento menos base histórica; error estándar y",
+          "valor p robustos (HC1). Los porcentajes están en puntos."
+        ),
+        sprintf(
+          paste(
+            "Prueba conjunta de que las características no predicen la base",
+            "(misma especificación que la prueba de balance): F = %.2f, valor p = %.3f."
+          ),
+          f_repr, p_repr
+        )
+      )
+    )
+  )
+
+guardar_tabla(
+  "experimento_representatividad", tabla_representatividad,
+  representatividad |> mutate(f_conjunta = f_repr, p_conjunta = p_repr),
   carpeta_salida
 )
 

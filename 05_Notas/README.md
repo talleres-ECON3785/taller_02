@@ -47,6 +47,7 @@ contradictorio.
 | --- | --- | --- | --- |
 | [B_ols_efecto_registro.md](06_ate_experimento_niveles/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares: 0.49 sin controles, 0.45 con controles) |
 | [B_balance_y_cumplimiento.md](06_ate_experimento_niveles/B_balance_y_cumplimiento.md) | vigente | B / experimento / validación del diseño | ¿Se sostiene la lectura causal? (grupos comparables, cumplimiento perfecto) |
+| [B_representatividad_experimento.md](06_ate_experimento_niveles/B_representatividad_experimento.md) | vigente | B / experimento vs. observacional / validación (validez externa) | ¿A quién aplica el resultado? (la muestra del experimento se parece a la histórica: F = 0.66, p = 0.708) |
 | [B_patrones_de_los_controles_en_experimento.md](06_ate_experimento_niveles/B_patrones_de_los_controles_en_experimento.md) | vigente | B / experimento vs. observacional / descriptivo y predictivo | ¿Los patrones que justifican los controles (corte de 5 minutos, cruce con sesiones) están en el experimento? (sí; cruce y aporte de dispositivo y sistema operativo, mayores) |
 
 ### `07_forma_funcional_observacional/` (`07_forma_funcional_observacional.R`: `ln(Revenue)`)
@@ -96,6 +97,12 @@ Faltan las notas que comparan, figura por figura, qué cambia frente al script 0
 | [B_evidencia_hte.md](12_heterogeneidad_experimento/B_evidencia_hte.md) | vigente | B / experimento / causal | ¿Existe evidencia de HTE? (calibración 1.01, AUTOC 0.20 en log; el ATE ≈ 0 esconde efectos de signo opuesto) |
 | [B_cate_por_grupo.md](12_heterogeneidad_experimento/B_cate_por_grupo.md) | vigente | B / experimento / causal | ¿Cómo varían los CATE y qué grupos difieren? (computador, osx y más sesiones positivos; celular, Windows y usuarios nuevos negativos) |
 | [X_hte_nivel_vs_log.md](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) | vigente | B / experimento / causal | ¿Cómo se relaciona con el ATE del Taller 1? ¿Qué cambia en log? (heterogeneidad en las dos escalas; en dólares se agranda en los usuarios de mayor gasto) |
+
+### Síntesis (transversal)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [sintesis.md](sintesis.md) | vigente | A y B / ambas bases | ¿Qué se mantiene, qué se matiza y qué cambia frente al Taller 1, y por qué? ¿Qué debe hacer CheMarket? (escalar el registro facilitado solo en computador y tableta) |
 
 ## Pendientes de conciliar
 

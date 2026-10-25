@@ -94,12 +94,14 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
 
 - [x] **P2.1** Partición 80/20 con `set.seed(2026)`, idéntica a la del
   Taller 1. Se verifica reproduciendo el RMSE 2.314 del lineal en nivel.
-- [ ] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
+- [x] **P2.2** Benchmarks en las dos escalas: ingenuo (media de `train`),
   lineal del Taller 1, lineal flexible (quiebre en 5 min, log del tiempo,
   interacciones de la descriptiva) y LASSO (`cv.glmnet`). *Avance 2026-10-24:* hechos ingenuo, lineal del Taller 1 y lineal flexible
   en dólares (`04_prediccion_lineal_observacional.R`, solo `train`/CV); LASSO en dólares
   hecho (`05_lasso_observacional.R`, RMSE de prueba 1.765); falta la escala
-  `ln(Revenue)` de todos los benchmarks.
+  `ln(Revenue)` de todos los benchmarks. *Cerrado 2026-10-25:* la escala
+  `ln(Revenue)` de los cuatro benchmarks está en
+  `11_comparacion_prediccion_observacional.R` (prueba: 0.534, 0.452, 0.369 y 0.361).
 - [x] **P2.3** CART (`rpart`, `cp = 0`, poda por CV con la regla del mínimo y
   la 1-SE) y la figura del árbol podado. ¿Recupera el quiebre en 5 min?
   ¿Qué interacciones aparecen? *Hecho 2026-10-25* en `09_arboles_observacional.R`
@@ -114,10 +116,12 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
   relativas. *Hecho 2026-10-25* en `11_comparacion_prediccion_observacional.R`:
   se reportan las dos (mejora % en cada escala y log llevado a dólares con
   *smearing* de Duan por modelo); decisión en `CLAUDE.md`.
-- [ ] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
+- [x] **P2.6** Escalera de RMSE fuera de muestra al agregar variables (H5),
   junto con la importancia del bosque, para responder qué variables predicen. *Avance 2026-10-24:* escalera lineal en dólares hecha;
   falta la escala logarítmica. *Avance 2026-10-25:* importancia del bosque y del
-  árbol en las dos escalas hecha (scripts 09 y 10).
+  árbol en las dos escalas hecha (scripts 09 y 10). *Cerrado 2026-10-25:* en
+  logaritmo, qué variables predicen lo responde la importancia del árbol y del
+  bosque; la escalera lineal queda solo en dólares (decisión en `CLAUDE.md`).
 
 *Terminado cuando:* existen la tabla 2×2 de RMSE de prueba, la escalera, la
 figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
@@ -126,10 +130,12 @@ figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
 
 Scripts: `06_ate_experimento_niveles.R`, `08_ate_experimento_log.R`.
 
-- [ ] **P3.1** Validación: tabla de balance, tabla de cumplimiento
+- [x] **P3.1** Validación: tabla de balance, tabla de cumplimiento
   (`easier_signup` × `sign_up`) y representatividad frente a la base histórica
   (H7, H9). *Avance 2026-10-24:* hechos balance y cumplimiento en
-  `06_ate_experimento_niveles.R`; falta la representatividad.
+  `06_ate_experimento_niveles.R`; falta la representatividad. *Cerrado
+  2026-10-25:* representatividad en la sección 2b del mismo script
+  (`experimento_representatividad`; F = 0.66, p = 0.708).
 - [x] **P3.2** ATE en las dos escalas: ITT con `feols` (errores `hc1`, con y
   sin controles; *avance 2026-10-24:* hecho en dólares con `lm` y HC1 en el
   script 06 y en `ln(Revenue)` en `08_ate_experimento_log.R`, con retransformación a dólares) y ATE del bosque causal (`average_treatment_effect`).
@@ -174,10 +180,10 @@ CATE por grupo con IC y la comparación nivel–log de la heterogeneidad.
 
 ## H5. Síntesis y recomendación (H10) · Resp.: ____
 
-- [ ] **P5.1** Tabla de conclusiones en `05_Notas/sintesis.md`: qué se
+- [x] **P5.1** Tabla de conclusiones en `05_Notas/sintesis.md`: qué se
   mantiene, qué se matiza y qué cambia frente al Taller 1, y si se debe a la
   transformación, al método o a ambos (Partes A y B).
-- [ ] **P5.2** Recomendación sí/no en una frase ("escalar / no escalar el
+- [x] **P5.2** Recomendación sí/no en una frase ("escalar / no escalar el
   registro facilitado [para todos | para el grupo G]"), separando la decisión
   respaldada de las preguntas abiertas (qué evidencia y qué resultado la
   cambiarían).
