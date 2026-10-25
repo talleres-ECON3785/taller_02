@@ -10,7 +10,7 @@
   (error fuera de bolsa, entrenamiento, n = 80,000):
   - **Bosque titular:** en las dos escalas, 3 variables sorteadas por corte y tamaño
     mínimo de nodo 100, con 1,000 árboles. RMSE fuera de bolsa de 1.647 en dólares
-    (40.0% menos que la media, 2.741) y de 0.350 en logaritmo (34.6% menos que
+    (39.9% menos que la media, 2.741) y de 0.350 en logaritmo (34.6% menos que
     0.535).
   - **Bagging** (las 6 variables en cada corte): 1.668 dólares y 0.354 en
     logaritmo.

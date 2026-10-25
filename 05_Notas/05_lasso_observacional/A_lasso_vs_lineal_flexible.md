@@ -118,3 +118,4 @@ esto es una conclusión causal sobre el registro.
   LASSO: RMSE de prueba 1.766 a 1.765; términos conservados 49 a 63. La
   conclusión no cambia.
 - 2026-10-24: se retiró la lectura de "más de 5 minutos × usuario recurrente" como factor propio del salto; es colineal con las sesiones anteriores (no hay recurrentes con 0 sesiones).
+- 2026-10-25: contraste con `11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md`: el 11 reproduce 1.765 en prueba y el árbol podado baja a 1.627. Es la ganancia "frente a 1.765" que esta nota anticipaba (interacciones de tres variables). Consistente; no cambia la nota.

@@ -45,3 +45,4 @@ flexible del taller, el tiempo continuo sale de la especificación.
 ## Historial
 - 2026-10-24: primera versión, a partir de la tabla de robustez y la figura del
   orden de entrada.
+- 2026-10-25: contraste con `09_arboles_observacional/A_cart_recupera_corte_5_min.md`: el árbol, con el tiempo continuo y solo con entrenamiento, pone su primer corte en 5.0007 minutos. Consistente; no cambia la nota.

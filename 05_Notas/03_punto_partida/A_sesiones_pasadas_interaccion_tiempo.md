@@ -58,3 +58,4 @@ registrará con el script `07_forma_funcional_observacional.R`.
   siguen leídas de las figuras.
 - 2026-10-24: la nota se limita al script 03 (se retiran las cifras en logaritmo)
   y se mueve a `05_Notas/03_punto_partida/`.
+- 2026-10-25: contraste con `09_arboles_observacional/A_cart_recupera_corte_5_min.md`: el árbol solo parte por sesiones anteriores del lado de más de 5 minutos. Consistente; no cambia la nota.
