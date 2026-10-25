@@ -241,7 +241,9 @@ tablas, solo define el estilo y la función de exportación (p. ej.
   (`00_formato_graficas.R`), texto en español y sin nombres de variables del
   código, número de decimales fijo por tipo de cifra, unidades explícitas
   (dólares, log, %) y una nota que declare la base (experimento u
-  observacional), el `n` y si las cifras son de entrenamiento o de prueba.
+  observacional), el `n` y si las cifras son de entrenamiento o de prueba. En
+  las tablas de regresión que ya muestran las observaciones por columna, la
+  nota no repite el `n` (`nota_tabla(base, NULL, ...)`).
 - Se exporta en un formato que se inserta directamente en las diapositivas
   (p. ej. `.png` de alta resolución o `.html`), y además en `.csv` con las
   cifras sin formato, para trazabilidad.
