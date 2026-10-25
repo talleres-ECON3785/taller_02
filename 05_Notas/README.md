@@ -47,6 +47,7 @@ contradictorio.
 | --- | --- | --- | --- |
 | [B_ols_efecto_registro.md](06_ate_experimento_niveles/B_ols_efecto_registro.md) | vigente | B / experimento / causal (ITT en dólares) | ¿Cambia el ATE y su interpretación? (punto de partida en dólares: 0.49 sin controles, 0.45 con controles) |
 | [B_balance_y_cumplimiento.md](06_ate_experimento_niveles/B_balance_y_cumplimiento.md) | vigente | B / experimento / validación del diseño | ¿Se sostiene la lectura causal? (grupos comparables, cumplimiento perfecto) |
+| [B_patrones_de_los_controles_en_experimento.md](06_ate_experimento_niveles/B_patrones_de_los_controles_en_experimento.md) | vigente | B / experimento vs. observacional / descriptivo y predictivo | ¿Los patrones que justifican los controles (corte de 5 minutos, cruce con sesiones) están en el experimento? (sí; cruce y aporte de dispositivo y sistema operativo, mayores) |
 
 ### `07_forma_funcional_observacional/` (`07_forma_funcional_observacional.R`: `ln(Revenue)`)
 

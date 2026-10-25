@@ -58,6 +58,7 @@ carpetas_salida <- c(
   "03_Resultados/Tablas/05_lasso_observacional",
   "03_Resultados/Figuras/05_lasso_observacional",
   "03_Resultados/Tablas/06_ate_experimento_niveles",
+  "03_Resultados/Figuras/06_ate_experimento_niveles",
   "03_Resultados/Figuras/07_forma_funcional_observacional"
 )
 for (carpeta in carpetas_salida) {
