@@ -25,17 +25,18 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
    `test`, y sus cifras se contrastan con la celda lineal × logaritmo de
    `05_Notas/11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md`
    (lineal con corte y cruce 0.369, LASSO 0.361 en prueba).
-2. **P3.1 y P3.2: representatividad y ATE del bosque causal.** Agregar la
-   comparación experimento frente a base histórica (P3.1) y el ATE de
-   `causal_forest` (`average_treatment_effect`) en las dos escalas, decidiendo y
-   registrando `W.hat` (P3.2).
-   *Terminado cuando:* la tabla de ATE (lineal y bosque, nivel y log, con IC) sale
-   de `00_main.R` y la decisión de `W.hat` está en `CLAUDE.md`.
-3. **P4.1 y P4.2: heterogeneidad.** Nuevo `12_heterogeneidad_experimento.R`
-   (`causal_forest` sobre `ln(Revenue)`, ≥2000 árboles, `seed = 2026`, CATE fuera
-   de bolsa con varianza; `test_calibration()` y TOC/AUTOC con muestra dividida).
-   *Terminado cuando:* existen la prueba de calibración y la figura TOC, con una
-   nota en `05_Notas/12_heterogeneidad_experimento/`.
+2. **P3.1: representatividad del experimento.** Comparar las características
+   compartidas del experimento con la base histórica (diferencias de medias y
+   prueba conjunta, como el F = 0.65, p = 0.712 del Taller 1), en
+   `06_ate_experimento_niveles.R`.
+   *Terminado cuando:* la tabla sale de `00_main.R` y hay una nota en
+   `05_Notas/06_ate_experimento_niveles/`.
+3. **P5.1 y P5.2: síntesis y recomendación.** `05_Notas/sintesis.md` con qué se
+   mantiene, qué se matiza y qué cambia (transformación, método o ambos), y una
+   recomendación sí/no que incorpore la heterogeneidad (focalizar por dispositivo
+   queda como implicación por evaluar).
+   *Terminado cuando:* existe `sintesis.md` con cada conclusión enlazada a su nota
+   y la recomendación en una frase.
 
 **Bloqueos / preguntas abiertas:**
 
@@ -61,8 +62,10 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
 - Roles: llenar la columna "Resp." de cada hito en `PLAN.md`. Con la entrega
   el 25 de octubre, las Partes A (H2) y B (H3–H4) tienen que avanzar en
   paralelo el sábado.
-- Decisión pendiente dentro del plan: `W.hat` igual a 0.5 o a la proporción
-  observada, 4,957 / 10,000 (P3.2).
+- Heterogeneidad (script 12): no se estimó el ingreso de una regla de
+  focalización (p. ej. registro facilitado solo en computador y tableta) frente
+  a darlo a todos; decidir si se hace antes de recomendar focalizar. Revisar las
+  14 advertencias de la corrida completa de `00_main.R`.
 - Rama `SantiagoMartinezL` todavía en GitHub (Santiago Martínez salió del
   equipo; borrarla requiere permiso del usuario). Confirmar el nombre de la rama
   de Samuel (`SamuelEscandonC`, inferido de su correo).
@@ -83,8 +86,8 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   el diseño 2×2 (forma funcional × método), los estimandos de cada parte y la
   tabla pregunta del enunciado → paso. Hecho: H0 completo, H1 completo (P1.1 a P1.3),
   P2.1, P2.3, P2.4 y P2.5; P2.2 y P2.6 avanzaron (falta la escalera y LASSO en
-  `ln(Revenue)`); P3.1, P3.2 y P3.3 avanzaron (balance, cumplimiento, ITT en las dos
-  escalas; falta representatividad y bosque causal); H4 sin empezar.
+  `ln(Revenue)`); P3.2 cerrado; P3.1 y P3.3 avanzaron (falta representatividad e
+  intervalos de los cuantiles); H4 completo (P4.1 a P4.6).
 - **Repositorio:** estructura de carpetas del Taller 1, `taller_02.Rproj`,
   `.gitignore`, `CLAUDE.md`, `README.md` (objetivo, ejecución, estructura y mapa
   script → resultados por llenar) y este `HANDOFF.md`. Una rama por integrante en
@@ -122,8 +125,9 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   `09_arboles_observacional.R` (CART en las dos escalas), `10_bosque_observacional.R`
   (bagging y bosque, rejilla OOB e importancia) y
   `11_comparacion_prediccion_observacional.R` (evaluación única en `test`, lee los
-  hiperparámetros de 09 y 10); `00_main.R` corre los 11 scripts sin errores en unos 16
-  minutos (verificado el 2026-10-25). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`
+  hiperparámetros de 09 y 10) y `12_heterogeneidad_experimento.R` (bosque causal en
+  log, dólares y sin tiempo; `num.threads = 4`); `00_main.R` corre los 12 scripts sin
+  errores en unos 17 minutos (verificado el 2026-10-25). `00_formato_graficas.R` (paleta, tema, `guardar_figura()`
   y `guardar_figura_base()` para gráficos base),
   `00_formato_tablas.R` (`guardar_tabla()`; notas en párrafos) no van en
   la lista. Cada script dibuja sus propias figuras.
@@ -152,6 +156,14 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
   más del 90% de la importancia. Resultados en `03_Resultados/{Tablas,Figuras}/09_…`,
   `10_…` y `11_…`.
 - **Parte B en logaritmo:** ITT en `ln(Revenue)` de 0.0134 (IC −0.010 a 0.037) frente a 0.491 dólares; la diferencia es dispersión (desviación estándar de `ln(Revenue)` de 0.53 a 0.66), y retransformar con un factor común deja el efecto en 0.057 dólares. Tablas en `03_Resultados/Tablas/08_ate_experimento_log/`.
+- **Heterogeneidad (Parte B, script 12):** ATE del bosque 0.004 en `ln(Revenue)` y
+  0.414 dólares (MCO: 0.013 y 0.491). Evidencia formal de HTE: calibración
+  diferencial 1.01 (log) y 1.06 (dólares), p < 0.001; AUTOC 0.200 en log con muestra
+  dividida. Efectos positivos en computador, tableta, osx y 3 o más sesiones;
+  negativos en celular, Windows, usuarios nuevos y 0 a 2 sesiones. En dólares se
+  agrandan en los grupos de mayor gasto. Tablas y figuras en
+  `03_Resultados/{Tablas,Figuras}/12_heterogeneidad_experimento/`; notas en
+  `05_Notas/12_heterogeneidad_experimento/`.
 - **Métodos permitidos:** catálogo cerrado en `07_Recursos/catalogo_metodos.md`
   (lineal, LASSO, CART, bagging y bosque con `ranger`, bosque causal con
   `grf`), más cuatro ampliaciones registradas: importancia de variables, varianza
@@ -168,6 +180,12 @@ Objetivos derivados de [`PLAN.md`](PLAN.md) (primeras casillas sin marcar).
      que se hizo, quién y en qué rama, el enlace a la bitácora y, al final, los
      dos a tres siguientes objetivos que quedaron al cerrar esa sesión. Las
      entradas anteriores no se editan. -->
+
+### 2026-10-25 (sesión 9): bosque causal, CATE y evidencia de heterogeneidad
+
+- Santiago Muñoz (`SantiagoMunozM`). Nuevo `12_heterogeneidad_experimento.R`: bosque causal (`grf`, 2,000 árboles, `W.hat` estimado, `num.threads = 4`) en `ln(Revenue)`, dólares y sin tiempo. El ATE coincide con MCO (0.004 log; 0.414 dólares). Calibración y TOC con muestra dividida dan evidencia formal de HTE: computador, osx y usuarios frecuentes ganan; celular, Windows y usuarios nuevos pierden. `00_main.R` corre los 12 scripts sin errores. P3.2 y P4.1–P4.6 cerrados; P3.1 sin trabajar.
+- Bitácora: [2026-10-25_bosque-causal-heterogeneidad_9.md](06_Bitacoras/2026-10-25_bosque-causal-heterogeneidad_9.md)
+- **Siguientes objetivos:** (1) P2.2 (resto) y P2.6 en `ln(Revenue)` (sesión paralela); (2) P3.1: representatividad del experimento; (3) P5.1 y P5.2: síntesis y recomendación con la heterogeneidad.
 
 ### 2026-10-25 (sesión 8): árboles para predicción y comparación en prueba con los lineales
 
