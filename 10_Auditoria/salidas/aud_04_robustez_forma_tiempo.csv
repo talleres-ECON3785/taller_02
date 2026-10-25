@@ -1,0 +1,9 @@
+especificacion,terminos,respuesta,rmse_cv
+Solo el indicador de más de 5 minutos,mas_5_min + mas_5_min:past_sessions,Revenue,1.8687200045008026
+Solo el tiempo en minutos (lineal),time_spent + time_spent:past_sessions,Revenue,2.1996889009699054
+Logaritmo del tiempo,log(time_spent) + log(time_spent):past_sessions,Revenue,2.2698991200189127
+Indicador y tiempo en minutos,mas_5_min + time_spent + mas_5_min:past_sessions,Revenue,1.8687660633761272
+Solo el indicador de más de 5 minutos,mas_5_min + mas_5_min:past_sessions,log_revenue,0.37035774363298546
+Solo el tiempo en minutos (lineal),time_spent + time_spent:past_sessions,log_revenue,0.43448607647776444
+Logaritmo del tiempo,log(time_spent) + log(time_spent):past_sessions,log_revenue,0.4481528493753021
+Indicador y tiempo en minutos,mas_5_min + time_spent + mas_5_min:past_sessions,log_revenue,0.37036204883402774

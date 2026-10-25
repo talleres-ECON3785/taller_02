@@ -1,0 +1,559 @@
+13:23:53 Loading required package: pacman
+13:23:57 ==================================================
+13:23:57 Ejecutando: 02_Scripts/01_limpieza_observacional.R
+13:23:57 ==================================================
+13:23:57 Dimensiones de la base cruda: 100000 7 
+13:23:57 tibble [100,000 × 7] (S3: tbl_df/tbl/data.frame)
+13:23:57  $ time_spent       : num [1:100000] 2.3262 5.1932 2.8028 0.0425 0.4431 ...
+13:23:57  $ past_sessions    : int [1:100000] 4 3 2 3 2 3 2 5 3 3 ...
+13:23:57  $ device_type      : Factor w/ 3 levels "desktop","mobile",..: 1 1 2 2 1 2 3 2 2 1 ...
+13:23:57  $ os_type          : Factor w/ 3 levels "osx","other",..: 2 1 2 3 3 3 1 3 3 1 ...
+13:23:58  $ is_returning_user: num [1:100000] 1 1 1 1 1 1 1 1 1 1 ...
+13:23:58  $ sign_up          : int [1:100000] 1 1 1 1 1 1 1 1 1 1 ...
+13:23:58  $ Revenue          : num [1:100000] 2.29 7.27 2.95 2.7 2.64 ...
+13:23:58 
+13:23:58 --- Revenue ---
+13:23:58 NAs: 0 | Negativos: 0 | Atipicos (IQR 1.5x): 8510 
+13:23:58    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+13:23:58  0.5451  2.3400  3.1370  3.9766  4.5221 36.2934 
+13:23:58 
+13:23:58 --- time_spent ---
+13:23:58 NAs: 0 | Negativos: 0 | Atipicos (IQR 1.5x): 4949 
+13:23:58      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+13:23:58  0.000125  1.424704  3.438399  4.994639  6.911740 54.398987 
+13:23:58 
+13:23:58 --- past_sessions ---
+13:23:58 NAs: 0 | Negativos: 0 | Atipicos (IQR 1.5x): 1186 
+13:23:58    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+13:23:58   0.000   2.000   3.000   3.001   4.000  14.000 
+13:23:58 
+13:23:58 --- sign_up ---
+13:23:58 NAs: 0 | Fuera de {0,1}: 0 
+13:23:58 x
+13:23:58     0     1 
+13:23:59 22942 77058 
+13:23:59 
+13:23:59 --- is_returning_user ---
+13:23:59 NAs: 0 | Fuera de {0,1}: 0 
+13:23:59 x
+13:23:59     0     1 
+13:23:59  4930 95070 
+13:23:59 
+13:23:59 --- device_type ---
+13:23:59 NAs: 0 | Fuera de {mobile, desktop, tablet}: 0 
+13:23:59 
+13:23:59 desktop  mobile  tablet 
+13:23:59   40009   50109    9882 
+13:23:59 
+13:23:59 Filas duplicadas exactas: 0 
+13:23:59 
+13:23:59 Inconsistencia is_returning_user==0 & past_sessions>0: 0 
+13:23:59 Inconsistencia sign_up==1 & time_spent==0: 0 
+13:23:59 
+13:23:59 Correccion automatica aplicada: is_returning_user y sign_up estandarizadas a tipo integer (antes mezclaban numeric/integer).
+13:23:59 
+13:23:59 log_revenue construida como log(Revenue); Revenue minimo: 0.545 
+13:23:59 
+13:23:59 === Tabla de embudo de observaciones ===
+13:23:59 # A tibble: 4 × 3
+13:24:00   paso                                                          n_obs n_perdidas
+13:24:00   <chr>                                                         <int>      <int>
+13:24:00 1 01. Base cruda (datos_historicos.Rds)                           1e5          0
+13:24:00 2 02. Eliminar duplicados exactos de fila                         1e5          0
+13:24:00 3 03. Estandarizar tipos de columna (sin perdida de observacio…   1e5          0
+13:24:00 4 04. Construir log_revenue (Revenue > 0, sin perdida de obser…   1e5          0
+13:24:00 
+13:24:00 Listo. Base limpia guardada en 01_Datos/03_Listos/observacional_limpio.Rds
+13:24:00 Reportes guardados en 03_Resultados/Tablas/01_limpieza_observacional/
+13:24:00 ================================================
+13:24:00 Ejecutando: 02_Scripts/02_limpieza_experimento.R
+13:24:00 ================================================
+13:24:00 tibble [10,000 × 8] (S3: tbl_df/tbl/data.frame)
+13:24:00  $ time_spent       : num [1:10000] 2.3262 5.1932 2.8028 0.0425 0.4431 ...
+13:24:00  $ past_sessions    : int [1:10000] 3 4 5 7 7 3 1 0 2 4 ...
+13:24:00  $ device_type      : Factor w/ 3 levels "desktop","mobile",..: 1 2 1 2 3 1 1 2 1 3 ...
+13:24:00  $ os_type          : Factor w/ 3 levels "osx","other",..: 2 3 3 3 3 3 1 3 1 3 ...
+13:24:00  $ is_returning_user: num [1:10000] 1 1 1 1 1 1 1 0 1 1 ...
+13:24:00  $ sign_up          : int [1:10000] 1 1 0 1 1 1 1 0 1 1 ...
+13:24:00  $ Revenue          : num [1:10000] 2.74 11.68 4.96 2.53 3.79 ...
+13:24:00  $ easier_signup    : int [1:10000] 1 1 0 1 1 1 1 0 1 1 ...
+13:24:00 =========================================
+13:24:00 Ejecutando: 02_Scripts/03_punto_partida.R
+13:24:00 =========================================
+13:27:38 
+13:27:38 Listo. Figuras guardadas en 03_Resultados/Figuras/03_punto_partida/.
+13:27:38 Recordatorio: las figuras son asociaciones descriptivas, no efectos causales.
+13:27:38 ===========================================================
+13:27:38 Ejecutando: 02_Scripts/04_prediccion_lineal_observacional.R
+13:27:38 ===========================================================
+13:27:39 train = 80,000, test = 20,000
+13:27:40 # A tibble: 8 × 8
+13:27:40    paso variable_agregada         rmse_cv ee_rmse_cv    caida ee_caida caida_pct
+13:27:40   <dbl> <chr>                       <dbl>      <dbl>    <dbl>    <dbl>     <dbl>
+13:27:40 1     0 Ninguna (media del entre…    2.74    0.00931 NA       NA       NA       
+13:27:41 2     1 Más de 5 minutos en el s…    2.30    0.00862  4.36e-1  2.95e-3 15.9     
+13:27:41 3     2 Sesiones anteriores          2.17    0.00747  1.34e-1  2.22e-3  5.81    
+13:27:41 4     3 Más de 5 minutos × sesio…    1.91    0.00895  2.57e-1  4.39e-3 11.9     
+13:27:41 5     4 Dispositivo                  1.88    0.00876  2.95e-2  9.93e-4  1.54    
+13:27:41 6     5 Sistema operativo            1.87    0.00838  1.05e-2  7.63e-4  0.557   
+13:27:41 7     6 Usuario recurrente           1.87    0.00854  4.60e-3  3.65e-4  0.246   
+13:27:41 8     7 Registro                     1.87    0.00849 -8.20e-6  6.90e-5 -0.000439
+13:27:41 # ℹ 1 more variable: mejora_ingenuo_pct <dbl>
+13:27:43 # A tibble: 7 × 5
+13:27:43   variable                 mejora_sola ee_mejora_sola aumento_sin ee_aumento_sin
+13:27:43   <chr>                          <dbl>          <dbl>       <dbl>          <dbl>
+13:27:43 1 Más de 5 minutos             0.436         0.00295   0.724           0.00431  
+13:27:43 2 Sesiones anteriores          0.110         0.00151   0.394           0.00626  
+13:27:43 3 Cruce: más de 5 minutos…     0.257         0.00439   0.263           0.00507  
+13:27:43 4 Usuario recurrente           0.00632       0.000212  0.00462         0.000374 
+13:27:43 5 Dispositivo                  0.0212        0.00146   0.0298          0.00105  
+13:27:43 6 Sistema operativo            0.00733       0.000612  0.0105          0.000769 
+13:27:43 7 Registro                     0.00972       0.00125  -0.00000820      0.0000690
+13:27:44 # A tibble: 4 × 3
+13:27:44   especificacion                                  rmse_cv ee_rmse_cv
+13:27:44   <chr>                                             <dbl>      <dbl>
+13:27:44 1 Solo el indicador de más de 5 minutos              1.87    0.00849
+13:27:44 2 Solo el tiempo en minutos (lineal)                 1.87    0.00790
+13:27:44 3 Indicador y tiempo en minutos                      1.87    0.00846
+13:27:44 4 Indicador y una pendiente a cada lado del corte    1.87    0.00845
+13:27:44                 Estimate  Std. Error     t value   Pr(>|t|)
+13:27:44 (Intercept)  2.835235683 0.018288022 155.0323816 0.00000000
+13:27:44 mas_5_min    3.088124797 0.030294841 101.9356645 0.00000000
+13:27:44 t_bajo       0.007200200 0.007275569   0.9896408 0.32235269
+13:27:44 t_alto      -0.005962174 0.002687385  -2.2185780 0.02651824
+13:27:45 # A tibble: 3 × 7
+13:27:45   modelo           rmse_cv rmse_prueba  brecha rmse_media_pct mejora_ingenuo_pct
+13:27:45   <chr>              <dbl>       <dbl>   <dbl>          <dbl>              <dbl>
+13:27:45 1 Referencia inge…    2.74        2.72 -0.0249           68.3                0  
+13:27:45 2 Lineal del Tall…    2.34        2.31 -0.0254           58.2               14.8
+13:27:45 3 Lineal con quie…    1.87        1.84 -0.0239           46.4               32.1
+13:27:45 # ℹ 1 more variable: explicado_pct <dbl>
+13:27:45 Verificacion Taller 1: lineal 2.314 (esperado 2.314), ingenuo 2.716 (esperado 2.716)
+13:28:01 Ultimo paso: tiempo despues del corte baja 0.0000 (ee 0.0000); corte despues del tiempo baja 0.1955 (ee 0.0020)
+13:28:02 
+13:28:02 Listo. Tablas y figuras en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.
+13:28:02 Recordatorio: aporte predictivo en datos historicos, no efecto causal.
+13:28:02 ===============================================
+13:28:02 Ejecutando: 02_Scripts/05_lasso_observacional.R
+13:28:02 ===============================================
+13:28:02 train = 80,000, test = 20,000
+13:28:04 Columnas duplicadas que se quitan: past_sessions:is_returning_user I(past_sessions^2):is_returning_user 
+13:28:04 Diccionario: 74 columnas
+13:28:09 lambda.min = 0.00020, lambda.1se = 0.00421
+13:28:09 lambda.min: RMSE CV 1.7932; lineal final 1.8687; caida pareada 0.0756 (ee 0.0031)
+13:28:09 lambda.1se: RMSE CV 1.7988; lineal final 1.8687; caida pareada 0.0699 (ee 0.0026)
+13:28:09 Terminos conservados: 63 (lambda.min) y 38 (lambda.1se) de 74
+13:28:09 Cruce mas de 5 minutos x sesiones: coef 2.3005 (lambda.min), 1.9774 (lambda.1se)
+13:28:09 # A tibble: 15 × 6
+13:28:09    columna                          termino    coef_min coef_1se est_min est_1se
+13:28:09    <chr>                            <chr>         <dbl>    <dbl>   <dbl>   <dbl>
+13:28:09  1 mas_5_min:past_sessions          Más de 5 …   2.30    1.98      4.09   3.52  
+13:28:09  2 I(past_sessions^2)               Sesiones …   0.167   0.0678    2.14   0.868 
+13:28:09  3 mas_5_min:is_returning_user      Más de 5 …  -3.24   -2.38     -1.54  -1.14  
+13:28:09  4 mas_5_min:I(past_sessions^2)     Más de 5 …  -0.133  -0.0908   -1.27  -0.871 
+13:28:10  5 past_sessions:I(past_sessions^2) Sesiones …  -0.0131 -0.00589  -1.25  -0.562 
+13:28:10  6 mas_5_min                        Más de 5 …   1.87    1.44      0.901  0.695 
+13:28:10  7 past_sessions:os_typewindows     Sesiones …  -0.366  -0.170    -0.728 -0.337 
+13:28:10  8 past_sessions                    Sesiones …  -0.340   0        -0.587  0     
+13:28:10  9 mas_5_min:os_typewindows         Más de 5 …  -1.20   -1.09     -0.496 -0.450 
+13:28:10 10 past_sessions:os_typeother       Sesiones …  -0.394  -0.0577   -0.412 -0.0603
+13:28:10 11 past_sessions:device_typemobile  Sesiones …  -0.209  -0.0597   -0.405 -0.116 
+13:28:10 12 os_typewindows:is_returning_user Sistema: …   0.680   0.222     0.337  0.110 
+13:28:10 13 past_sessions:sign_up            Sesiones …   0.134   0         0.268  0     
+13:28:10 14 I(past_sessions^2):sign_up       Sesiones …  -0.0195  0        -0.246  0     
+13:28:10 15 mas_5_min:os_typeother           Más de 5 …  -1.20   -1.08     -0.224 -0.203 
+13:28:10 Rango de X: 74 de 74 columnas
+13:28:20 # A tibble: 5 × 8
+13:28:20   modelo          terminos rmse_cv ee_rmse_cv caida_vs_lineal ee_caida_vs_lineal
+13:28:20   <chr>              <dbl>   <dbl>      <dbl>           <dbl>              <dbl>
+13:28:20 1 Lineal con qui…        9    1.87    0.00849          0                 0      
+13:28:20 2 MCO con todos …       74    1.79    0.00651          0.0754            0.00307
+13:28:20 3 MCO solo con l…       63    1.79    0.00645          0.0757            0.00305
+13:28:20 4 LASSO (λ de me…       63    1.79    0.00636          0.0756            0.00311
+13:28:20 5 LASSO (λ más r…       38    1.80    0.00656          0.0699            0.00257
+13:28:20 # ℹ 2 more variables: dif_vs_lasso <dbl>, ee_dif_vs_lasso <dbl>
+13:28:20 # A tibble: 5 × 7
+13:28:21   modelo           rmse_cv rmse_prueba  brecha rmse_media_pct mejora_ingenuo_pct
+13:28:21   <chr>              <dbl>       <dbl>   <dbl>          <dbl>              <dbl>
+13:28:21 1 Referencia inge…    2.74        2.72 -0.0249           68.3                0  
+13:28:21 2 Lineal del Tall…    2.34        2.31 -0.0254           58.2               14.8
+13:28:21 3 Lineal con quie…    1.87        1.84 -0.0239           46.4               32.1
+13:28:21 4 LASSO (λ de men…    1.79        1.76 -0.0284           44.4               35.0
+13:28:21 5 LASSO (λ más re…    1.80        1.77 -0.0283           44.5               34.8
+13:28:21 # ℹ 1 more variable: explicado_pct <dbl>
+13:28:36 
+13:28:36 Listo. Tablas y figuras en 03_Resultados/{Tablas,Figuras}/05_lasso_observacional/.
+13:28:36 Recordatorio: terminos conservados = uso predictivo en datos historicos, no efecto causal.
+13:28:36 ===================================================
+13:28:36 Ejecutando: 02_Scripts/06_ate_experimento_niveles.R
+13:28:36 ===================================================
+13:28:36 # A tibble: 2 × 3
+13:28:36   easier_signup       sign_up          n
+13:28:36   <fct>               <fct>        <int>
+13:28:36 1 Control             Sin registro  5043
+13:28:36 2 Registro facilitado Registrado    4957
+13:28:46 
+13:28:46 Prueba conjunta de balance: F = 0.964, valor p = 0.456
+13:28:52 
+13:28:52 Prueba conjunta de representatividad: F = 0.657, valor p = 0.708
+13:28:52 # A tibble: 10 × 6
+13:28:52    variable  media_historico media_experimento diferencia error_estandar valor_p
+13:28:52    <chr>               <dbl>             <dbl>      <dbl>          <dbl>   <dbl>
+13:28:52  1 Tiempo e…            4.99              5.03     0.0376         0.0525   0.474
+13:28:52  2 Más de 5…           36.7              37.2      0.491          0.507    0.333
+13:28:52  3 Sesiones…            3.00              3.02     0.0163         0.0182   0.371
+13:28:52  4 Usuario …           95.1              94.8     -0.260          0.232    0.263
+13:28:52  5 Computad…           40.0              40.3      0.281          0.514    0.585
+13:28:53  6 Celular …           50.1              49.8     -0.359          0.524    0.494
+13:28:53  7 Tableta …            9.88              9.96     0.0780         0.314    0.804
+13:28:53  8 Sistema …           30.3              30.1     -0.143          0.481    0.766
+13:28:53  9 Sistema …           59.8              59.9      0.0720         0.514    0.889
+13:28:53 10 Otro sis…            9.91              9.98     0.0710         0.314    0.821
+13:29:10 # A tibble: 8 × 8
+13:29:10    paso variable rmse_exp caida_exp ee_caida_exp rmse_obs caida_obs ee_caida_obs
+13:29:10   <dbl> <chr>       <dbl>     <dbl>        <dbl>    <dbl>     <dbl>        <dbl>
+13:29:10 1     0 Ninguna…     3.65  NA           NA           2.74  NA         NA        
+13:29:10 2     1 Más de …     3.24   0.415        0.0155      2.30   4.36e-1    0.00295  
+13:29:10 3     2 Sesione…     3.06   0.180        0.0111      2.17   1.34e-1    0.00222  
+13:29:10 4     3 Más de …     2.72   0.341        0.0189      1.91   2.57e-1    0.00439  
+13:29:10 5     4 Disposi…     2.64   0.0798       0.00543     1.88   2.95e-2    0.000993 
+13:29:11 6     5 Sistema…     2.57   0.0667       0.00572     1.87   1.05e-2    0.000763 
+13:29:11 7     6 Usuario…     2.56   0.00661      0.00138     1.87   4.60e-3    0.000365 
+13:29:11 8     7 Registr…     2.55   0.00985      0.00247     1.87  -8.20e-6    0.0000690
+13:29:14 
+13:29:14 Listo. Tablas y figuras guardadas en 03_Resultados/{Tablas,Figuras}/06_ate_experimento_niveles/.
+13:29:14 Recordatorio: el ITT es causal por la asignacion aleatoria; los controles solo ganan precision.
+13:29:14 =========================================================
+13:29:14 Ejecutando: 02_Scripts/07_forma_funcional_observacional.R
+13:29:14 =========================================================
+13:33:33 
+13:33:33 Listo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/07_forma_funcional_observacional/.
+13:33:33 Recordatorio: son asociaciones descriptivas, no efectos causales.
+13:33:33 ===============================================
+13:33:33 Ejecutando: 02_Scripts/08_ate_experimento_log.R
+13:33:33 ===============================================
+13:33:56 
+13:33:57 Listo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/08_ate_experimento_log/.
+13:33:57 Recordatorio: efectos del experimento (ITT); los cuantiles son descriptivos.
+13:33:57 =================================================
+13:33:57 Ejecutando: 02_Scripts/09_arboles_observacional.R
+13:33:57 =================================================
+13:33:57 train = 80,000
+13:34:10 Dólares: arbol grande con 3939 cortes; minimo 12 cortes, 1-SE 8 cortes
+13:34:10 n= 80000 
+13:34:10 
+13:34:10 node), split, n, deviance, yval
+13:34:10       * denotes terminal node
+13:34:10 
+13:34:10  1) root 80000 601006.10  3.978854  
+13:34:10    2) time_spent< 5.000686 50679  56954.28  2.850238  
+13:34:10      4) device_type=mobile 25548  22469.25  2.616321 *
+13:34:10      5) device_type=desktop,tablet 25131  31666.00  3.088037 *
+13:34:10    3) time_spent>=5.000686 29321 367922.60  5.929576  
+13:34:10      6) past_sessions< 3.5 18959  58120.53  4.187395  
+13:34:10       12) past_sessions< 2.5 12398  23249.62  3.658088  
+13:34:10         24) device_type=mobile 6204   8822.57  3.341685 *
+13:34:10         25) device_type=desktop,tablet 6194  13183.88  3.975002 *
+13:34:10       13) past_sessions>=2.5 6561  24833.73  5.187599 *
+13:34:10      7) past_sessions>=3.5 10362 146971.00  9.117185  
+13:34:10       14) os_type=other,windows 7227  65443.35  8.094421  
+13:34:10         28) device_type=mobile,tablet 4320  32395.17  7.564378 *
+13:34:10         29) device_type=desktop 2907  30030.88  8.882102 *
+13:34:11       15) os_type=osx 3135  56540.66 11.474920  
+13:34:11         30) device_type=mobile 1611  24849.22 10.539330 *
+13:34:11         31) device_type=desktop,tablet 1524  28790.62 12.463930 *
+13:34:11 Logaritmo: arbol grande con 4492 cortes; minimo 14 cortes, 1-SE 9 cortes
+13:34:11 n= 80000 
+13:34:11 
+13:34:11 node), split, n, deviance, yval
+13:34:11       * denotes terminal node
+13:34:11 
+13:34:11  1) root 80000 22930.1000 1.2193430  
+13:34:11    2) time_spent< 5.000686 50679  6532.5940 0.9828581  
+13:34:11      4) device_type=mobile 25548  3079.4600 0.9014473 *
+13:34:11      5) device_type=desktop,tablet 25131  3111.6750 1.0656200  
+13:34:11       10) device_type=tablet 5005   616.0196 0.9978053 *
+13:34:11       11) device_type=desktop 20126  2466.9140 1.0824840 *
+13:34:11    3) time_spent>=5.000686 29321  8664.5340 1.6280890  
+13:34:11      6) past_sessions< 3.5 18959  2984.4130 1.3527160  
+13:34:11       12) past_sessions< 2.5 12398  1611.9550 1.2317690  
+13:34:11         24) device_type=mobile 6204   749.2050 1.1462050 *
+13:34:11         25) device_type=desktop,tablet 6194   771.8368 1.3174700 *
+13:34:11       13) past_sessions>=2.5 6561   848.3873 1.5812650  
+13:34:11         26) device_type=mobile 3260   404.4417 1.5017710 *
+13:34:11         27) device_type=desktop,tablet 3301   402.9996 1.6597710 *
+13:34:11      7) past_sessions>=3.5 10362  1612.0210 2.1319280  
+13:34:11       14) os_type=other,windows 7227   935.3096 2.0264620  
+13:34:12         28) device_type=mobile,tablet 4320   536.2556 1.9615020 *
+13:34:12         29) device_type=desktop 2907   353.7343 2.1229970 *
+13:34:12       15) os_type=osx 3135   411.0128 2.3750550 *
+13:34:24 # A tibble: 4 × 12
+13:34:24   escala  regla      cp cortes hojas rmse_xval rmse_cv ee_rmse_cv rmse_lineal_cv
+13:34:25   <chr>   <chr>   <dbl>  <dbl> <dbl>     <dbl>   <dbl>      <dbl>          <dbl>
+13:34:25 1 Dólares Míni… 1.58e-4     12    13     1.64    1.66    0.0104            1.87 
+13:34:25 2 Dólares 1-SE  1.80e-3      8     9     1.65    1.65    0.00755           1.87 
+13:34:25 3 Logari… Míni… 6.14e-5     14    15     0.349   0.349   0.000791          0.370
+13:34:25 4 Logari… 1-SE  1.03e-3      9    10     0.350   0.350   0.000710          0.370
+13:34:25 # ℹ 3 more variables: dif_lineal <dbl>, ee_dif_lineal <dbl>, titular <lgl>
+13:34:25 # A tibble: 17 × 6
+13:34:25    escala     nodo profundidad variable        condicion_izquierda observaciones
+13:34:25    <chr>     <int>       <dbl> <chr>           <chr>                       <int>
+13:34:25  1 Dólares       1           0 Tiempo en el s… < 5.001                     80000
+13:34:25  2 Dólares       2           1 Dispositivo     = móvil                     50679
+13:34:25  3 Dólares       3           1 Sesiones anter… < 3.5                       29321
+13:34:25  4 Dólares       6           2 Sesiones anter… < 2.5                       18959
+13:34:25  5 Dólares       7           2 Sistema operat… = otro, Windows             10362
+13:34:25  6 Dólares      12           3 Dispositivo     = móvil                     12398
+13:34:25  7 Dólares      14           3 Dispositivo     = móvil, tableta             7227
+13:34:25  8 Dólares      15           3 Dispositivo     = móvil                      3135
+13:34:26  9 Logaritmo     1           0 Tiempo en el s… < 5.001                     80000
+13:34:26 10 Logaritmo     2           1 Dispositivo     = móvil                     50679
+13:34:26 11 Logaritmo     3           1 Sesiones anter… < 3.5                       29321
+13:34:26 12 Logaritmo     5           2 Dispositivo     = tableta                   25131
+13:34:26 13 Logaritmo     6           2 Sesiones anter… < 2.5                       18959
+13:34:26 14 Logaritmo     7           2 Sistema operat… = otro, Windows             10362
+13:34:26 15 Logaritmo    12           3 Dispositivo     = móvil                     12398
+13:34:26 16 Logaritmo    13           3 Dispositivo     = móvil                      6561
+13:34:26 17 Logaritmo    14           3 Dispositivo     = móvil, tableta             7227
+13:34:26 # A tibble: 2 × 6
+13:34:26   escala     nodo profundidad variable         condicion_izquierda observaciones
+13:34:26   <chr>     <int>       <dbl> <chr>            <chr>                       <int>
+13:34:26 1 Dólares       1           0 Tiempo en el si… < 5.001                     80000
+13:34:26 2 Logaritmo     1           0 Tiempo en el si… < 5.001                     80000
+13:34:26 # A tibble: 12 × 4
+13:34:26    escala    variable                 importancia importancia_pct
+13:34:26    <chr>     <chr>                          <dbl>           <dbl>
+13:34:26  1 Dólares   Dispositivo                  9980.           2.60   
+13:34:26  2 Dólares   Registro                      133.           0.0346 
+13:34:26  3 Dólares   Sesiones anteriores        172905.          45.0    
+13:34:27  4 Dólares   Sistema operativo           24999.           6.51   
+13:34:27  5 Dólares   Tiempo en el sitio (min)   176206.          45.9    
+13:34:27  6 Dólares   Usuario recurrente             13.6          0.00354
+13:34:27  7 Logaritmo Dispositivo                   547.           4.16   
+13:34:27  8 Logaritmo Registro                        9.84         0.0748 
+13:34:27  9 Logaritmo Sesiones anteriores          4594.          34.9    
+13:34:27 10 Logaritmo Sistema operativo             267.           2.03   
+13:34:27 11 Logaritmo Tiempo en el sitio (min)     7736.          58.8    
+13:34:27 12 Logaritmo Usuario recurrente              1.30         0.00990
+13:34:33 ================================================
+13:34:33 Ejecutando: 02_Scripts/10_bosque_observacional.R
+13:34:33 ================================================
+13:34:33 train = 80,000
+13:37:09 Growing trees.. Progress: 72%. Estimated remaining time: 11 seconds.
+13:37:54 Growing trees.. Progress: 96%. Estimated remaining time: 1 seconds.
+13:38:29 Growing trees.. Progress: 81%. Estimated remaining time: 7 seconds.
+13:39:09 Growing trees.. Progress: 63%. Estimated remaining time: 18 seconds.
+13:40:09 Growing trees.. Progress: 50%. Estimated remaining time: 31 seconds.
+13:41:01 Growing trees.. Progress: 53%. Estimated remaining time: 27 seconds.
+13:41:55 Growing trees.. Progress: 48%. Estimated remaining time: 33 seconds.
+13:42:26 Growing trees.. Progress: 78%. Estimated remaining time: 17 seconds.
+13:43:28 Growing trees.. Progress: 36%. Estimated remaining time: 55 seconds.
+13:43:59 Growing trees.. Progress: 72%. Estimated remaining time: 23 seconds.
+13:44:58 Growing trees.. Progress: 49%. Estimated remaining time: 31 seconds.
+13:48:04 Growing trees.. Progress: 82%. Estimated remaining time: 6 seconds.
+13:48:55 Growing trees.. Progress: 47%. Estimated remaining time: 35 seconds.
+13:49:26 Growing trees.. Progress: 95%. Estimated remaining time: 3 seconds.
+13:50:02 Growing trees.. Progress: 55%. Estimated remaining time: 25 seconds.
+13:51:05 Growing trees.. Progress: 30%. Estimated remaining time: 1 minute, 11 seconds.
+13:51:36 Growing trees.. Progress: 60%. Estimated remaining time: 40 seconds.
+13:52:07 Growing trees.. Progress: 90%. Estimated remaining time: 10 seconds.
+13:52:58 Growing trees.. Progress: 43%. Estimated remaining time: 41 seconds.
+13:53:29 Growing trees.. Progress: 84%. Estimated remaining time: 11 seconds.
+13:54:12 Growing trees.. Progress: 49%. Estimated remaining time: 32 seconds.
+13:54:44 Growing trees.. Progress: 99%. Estimated remaining time: 0 seconds.
+13:54:46 # A tibble: 36 × 5
+13:54:46    escala    respuesta    mtry min_nodo rmse_oob
+13:54:46    <chr>     <chr>       <int>    <dbl>    <dbl>
+13:54:46  1 Dólares   Revenue         1        5    2.07 
+13:54:46  2 Dólares   Revenue         1       25    2.07 
+13:54:46  3 Dólares   Revenue         1      100    2.08 
+13:54:46  4 Dólares   Revenue         2        5    1.67 
+13:54:46  5 Dólares   Revenue         2       25    1.67 
+13:54:46  6 Dólares   Revenue         2      100    1.67 
+13:54:46  7 Dólares   Revenue         3        5    1.65 
+13:54:46  8 Dólares   Revenue         3       25    1.65 
+13:54:46  9 Dólares   Revenue         3      100    1.65 
+13:54:46 10 Dólares   Revenue         4        5    1.69 
+13:54:46 11 Dólares   Revenue         4       25    1.67 
+13:54:46 12 Dólares   Revenue         4      100    1.65 
+13:54:46 13 Dólares   Revenue         5        5    1.76 
+13:54:46 14 Dólares   Revenue         5       25    1.70 
+13:54:46 15 Dólares   Revenue         5      100    1.66 
+13:54:46 16 Dólares   Revenue         6        5    1.82 
+13:54:46 17 Dólares   Revenue         6       25    1.72 
+13:54:46 18 Dólares   Revenue         6      100    1.67 
+13:54:46 19 Logaritmo log_revenue     1        5    0.413
+13:54:46 20 Logaritmo log_revenue     1       25    0.414
+13:54:47 21 Logaritmo log_revenue     1      100    0.414
+13:54:47 22 Logaritmo log_revenue     2        5    0.354
+13:54:47 23 Logaritmo log_revenue     2       25    0.354
+13:54:47 24 Logaritmo log_revenue     2      100    0.354
+13:54:47 25 Logaritmo log_revenue     3        5    0.351
+13:54:47 26 Logaritmo log_revenue     3       25    0.351
+13:54:47 27 Logaritmo log_revenue     3      100    0.350
+13:54:47 28 Logaritmo log_revenue     4        5    0.358
+13:54:47 29 Logaritmo log_revenue     4       25    0.354
+13:54:47 30 Logaritmo log_revenue     4      100    0.351
+13:54:47 31 Logaritmo log_revenue     5        5    0.372
+13:54:47 32 Logaritmo log_revenue     5       25    0.359
+13:54:47 33 Logaritmo log_revenue     5      100    0.353
+13:54:47 34 Logaritmo log_revenue     6        5    0.382
+13:54:47 35 Logaritmo log_revenue     6       25    0.363
+13:54:47 36 Logaritmo log_revenue     6      100    0.354
+13:55:17 Growing trees.. Progress: 49%. Estimated remaining time: 32 seconds.
+13:56:37 Growing trees.. Progress: 51%. Estimated remaining time: 29 seconds.
+13:57:08 Growing trees.. Progress: 98%. Estimated remaining time: 1 seconds.
+13:58:05 Growing trees.. Progress: 15%. Estimated remaining time: 2 minutes, 50 seconds.
+13:58:36 Growing trees.. Progress: 31%. Estimated remaining time: 2 minutes, 19 seconds.
+13:59:08 Growing trees.. Progress: 47%. Estimated remaining time: 1 minute, 46 seconds.
+13:59:39 Growing trees.. Progress: 63%. Estimated remaining time: 1 minute, 13 seconds.
+14:00:10 Growing trees.. Progress: 79%. Estimated remaining time: 41 seconds.
+14:00:41 Growing trees.. Progress: 95%. Estimated remaining time: 10 seconds.
+14:01:56 Growing trees.. Progress: 16%. Estimated remaining time: 2 minutes, 49 seconds.
+14:02:28 Growing trees.. Progress: 31%. Estimated remaining time: 2 minutes, 19 seconds.
+14:02:59 Growing trees.. Progress: 46%. Estimated remaining time: 1 minute, 47 seconds.
+14:03:30 Growing trees.. Progress: 62%. Estimated remaining time: 1 minute, 15 seconds.
+14:04:01 Growing trees.. Progress: 79%. Estimated remaining time: 41 seconds.
+14:04:32 Growing trees.. Progress: 95%. Estimated remaining time: 10 seconds.
+14:05:20 # A tibble: 4 × 11
+14:05:20   escala    respuesta    mtry min_nodo rmse_oob modelo   rmse_oob_300 rmse_media
+14:05:20   <chr>     <chr>       <int>    <dbl>    <dbl> <chr>           <dbl>      <dbl>
+14:05:20 1 Dólares   Revenue         3      100    1.65  Bosque …        1.65       2.74 
+14:05:20 2 Dólares   Revenue         6      100    1.67  Bagging         1.67       2.74 
+14:05:20 3 Logaritmo log_revenue     3      100    0.350 Bosque …        0.350      0.535
+14:05:20 4 Logaritmo log_revenue     6      100    0.354 Bagging         0.354      0.535
+14:05:20 # ℹ 3 more variables: mejora_media_pct <dbl>, arboles <dbl>, titular <lgl>
+14:05:20 # A tibble: 2 × 2
+14:05:20   escala      rango
+14:05:20   <chr>       <dbl>
+14:05:20 1 Dólares   0.00691
+14:05:20 2 Logaritmo 0.00115
+14:05:21 # A tibble: 12 × 4
+14:05:21    escala    variable                 aumento_ecm importancia_pct
+14:05:21    <chr>     <chr>                          <dbl>           <dbl>
+14:05:21  1 Dólares   Registro                   0.00424            0.0325
+14:05:21  2 Dólares   Tiempo en el sitio (min)   7.46              57.3   
+14:05:21  3 Dólares   Sesiones anteriores        4.64              35.6   
+14:05:21  4 Dólares   Dispositivo                0.283              2.17  
+14:05:21  5 Dólares   Usuario recurrente         0.0395             0.303 
+14:05:21  6 Dólares   Sistema operativo          0.606              4.65  
+14:05:21  7 Logaritmo Registro                   0.0000746          0.0185
+14:05:21  8 Logaritmo Tiempo en el sitio (min)   0.266             65.9   
+14:05:21  9 Logaritmo Sesiones anteriores        0.116             28.6   
+14:05:21 10 Logaritmo Dispositivo                0.0144             3.57  
+14:05:21 11 Logaritmo Usuario recurrente         0.00139            0.343 
+14:05:22 12 Logaritmo Sistema operativo          0.00633            1.57  
+14:05:25 ================================================================
+14:05:25 Ejecutando: 02_Scripts/11_comparacion_prediccion_observacional.R
+14:05:25 ================================================================
+14:05:26 train = 80,000, test = 20,000
+14:06:16 Growing trees.. Progress: 54%. Estimated remaining time: 26 seconds.
+14:07:21 Growing trees.. Progress: 58%. Estimated remaining time: 22 seconds.
+14:07:51 RMSE de prueba en dolares (lineales): 2.7160 2.3140 1.8449 1.7648 
+14:07:51 # A tibble: 12 × 8
+14:07:51    familia modelo                                       escala    rmse_propio
+14:07:51    <chr>   <chr>                                        <chr>           <dbl>
+14:07:51  1 Lineal  Referencia ingenua (media del entrenamiento) Dólares         2.72 
+14:07:51  2 Lineal  Referencia ingenua (media del entrenamiento) Logaritmo       0.534
+14:07:51  3 Lineal  Lineal del Taller 1 (tiempo lineal)          Dólares         2.31 
+14:07:51  4 Lineal  Lineal del Taller 1 (tiempo lineal)          Logaritmo       0.452
+14:07:51  5 Lineal  Lineal con corte de 5 minutos y cruce        Dólares         1.84 
+14:07:51  6 Lineal  Lineal con corte de 5 minutos y cruce        Logaritmo       0.369
+14:07:51  7 Lineal  LASSO (74 términos)                          Dólares         1.76 
+14:07:51  8 Lineal  LASSO (74 términos)                          Logaritmo       0.361
+14:07:52  9 Árboles Árbol de regresión podado                    Dólares         1.63 
+14:07:52 10 Árboles Árbol de regresión podado                    Logaritmo       0.349
+14:07:52 11 Árboles Bosque aleatorio                             Dólares         1.63 
+14:07:52 12 Árboles Bosque aleatorio                             Logaritmo       0.350
+14:07:52    mejora_propia_pct smearing rmse_dolares mejora_dolares_pct
+14:07:52                <dbl>    <dbl>        <dbl>              <dbl>
+14:07:52  1               0      NA            2.72                0  
+14:07:52  2               0       1.18         2.72                0  
+14:07:52  3              14.8    NA            2.31               14.8
+14:07:52  4              15.4     1.11         2.38               12.3
+14:07:52  5              32.1    NA            1.84               32.1
+14:07:52  6              30.9     1.07         1.95               28.1
+14:07:52  7              35.0    NA            1.76               35.0
+14:07:52  8              32.4     1.07         1.75               35.7
+14:07:52  9              40.1    NA            1.63               40.1
+14:07:52 10              34.7     1.06         1.63               40.1
+14:07:53 11              40.1    NA            1.63               40.1
+14:07:53 12              34.6     1.06         1.63               40.1
+14:07:56 ======================================================
+14:07:56 Ejecutando: 02_Scripts/12_heterogeneidad_experimento.R
+14:07:56 ======================================================
+14:08:24 W.hat estimado: minimo 0.303, media 0.497, maximo 0.739 (proporcion tratada 0.496)
+14:08:28 # A tibble: 2 × 6
+14:08:28   escala                   p10 mediana   p90 pct_ic_positivo pct_ic_negativo
+14:08:28   <chr>                  <dbl>   <dbl> <dbl>           <dbl>           <dbl>
+14:08:28 1 Ingreso en dólares    -0.693  0.170  1.55             33.9            30.8
+14:08:28 2 Logaritmo del ingreso -0.276  0.0456 0.316            34.6            31.8
+14:09:27 Warning: `geom_errorbarh()` was deprecated in ggplot2 4.0.0.
+14:09:27 ℹ Please use the `orientation` argument of `geom_errorbar()` instead.
+14:09:27 `height` was translated to `width`.
+14:09:27 
+14:09:28 Listo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/12_heterogeneidad_experimento/.
+14:09:28 Recordatorio: los CATE son estimaciones causales condicionales; su dispersion no prueba HTE.
+14:09:28 Pipeline completo: los 12 scripts se ejecutaron sin errores.
+14:09:28 
+14:09:28 TIEMPO_TOTAL_MIN: 45.58 
+14:09:28 R version 4.6.1 (2026-06-24 ucrt)
+14:09:28 Platform: x86_64-w64-mingw32/x64
+14:09:28 Running under: Windows 11 x64 (build 26200)
+14:09:28 
+14:09:28 Matrix products: default
+14:09:28   LAPACK version 3.12.1
+14:09:28 
+14:09:28 locale:
+14:09:28 [1] LC_COLLATE=English_United States.utf8 
+14:09:28 [2] LC_CTYPE=English_United States.utf8   
+14:09:28 [3] LC_MONETARY=English_United States.utf8
+14:09:28 [4] LC_NUMERIC=C                          
+14:09:28 [5] LC_TIME=English_United States.utf8    
+14:09:28 
+14:09:28 time zone: America/Bogota
+14:09:28 tzcode source: internal
+14:09:28 
+14:09:28 attached base packages:
+14:09:28 [1] stats     graphics  grDevices utils     datasets  methods   base     
+14:09:29 
+14:09:29 other attached packages:
+14:09:29  [1] grf_2.6.1          ranger_0.18.0      rpart.plot_3.1.5   rpart_4.1.27      
+14:09:29  [5] glmnet_5.0         Matrix_1.7-5       caret_7.0-1        lattice_0.22-9    
+14:09:29  [9] fixest_0.14.2      sandwich_3.1-3     modelsummary_2.6.0 gt_1.4.0          
+14:09:29 [13] lubridate_1.9.5    forcats_1.0.1      stringr_1.6.0      dplyr_1.2.1       
+14:09:29 [17] purrr_1.2.2        readr_2.2.0        tidyr_1.3.2        tibble_3.3.1      
+14:09:29 [21] ggplot2_4.0.3      tidyverse_2.0.0    pacman_0.5.1      
+14:09:29 
+14:09:29 loaded via a namespace (and not attached):
+14:09:29  [1] pROC_1.19.1          rlang_1.3.0          magrittr_2.0.5      
+14:09:29  [4] dreamerr_1.5.0       otel_0.2.0           compiler_4.6.1      
+14:09:29  [7] mgcv_1.9-4           systemfonts_1.3.2    vctrs_0.7.3         
+14:09:29 [10] reshape2_1.4.5       pkgconfig_2.0.3      shape_1.4.6.1       
+14:09:29 [13] crayon_1.5.3         fastmap_1.2.0        backports_1.5.1     
+14:09:29 [16] labeling_0.4.3       utf8_1.2.6           prodlim_2026.03.11  
+14:09:29 [19] tzdb_0.5.0           ragg_1.5.2           bit_4.6.0           
+14:09:29 [22] xfun_0.60            recipes_1.4.0        stringmagic_1.3.0   
+14:09:29 [25] parallel_4.6.1       R6_2.6.1             tables_0.9.35       
+14:09:29 [28] stringi_1.8.9        RColorBrewer_1.1-3   parallelly_1.48.0   
+14:09:29 [31] lmtest_0.9-40        numDeriv_2016.8-1.1  Rcpp_1.1.2          
+14:09:29 [34] iterators_1.0.14     knitr_1.51           future.apply_1.20.2 
+14:09:29 [37] zoo_1.9-0            parameters_0.29.2    splines_4.6.1       
+14:09:29 [40] nnet_7.3-20          timechange_0.4.0     tidyselect_1.2.1    
+14:09:29 [43] timeDate_4052.112    codetools_0.2-20     listenv_1.0.0       
+14:09:29 [46] plyr_1.8.9           bayestestR_0.18.1    withr_3.0.3         
+14:09:29 [49] S7_0.2.2             evaluate_1.0.5       future_1.75.0       
+14:09:29 [52] survival_3.8-6       xml2_1.6.0           pillar_1.11.1       
+14:09:30 [55] checkmate_2.3.4      foreach_1.5.2        stats4_4.6.1        
+14:09:30 [58] insight_1.5.2        generics_0.1.4       vroom_1.7.1         
+14:09:30 [61] hms_1.1.4            scales_1.4.0         globals_0.19.1      
+14:09:30 [64] class_7.3-23         glue_1.8.1           tools_4.6.1         
+14:09:30 [67] data.table_1.18.4    ModelMetrics_1.2.2.2 gower_1.0.2         
+14:09:30 [70] fs_2.1.0             grid_4.6.1           datawizard_1.3.1    
+14:09:30 [73] ipred_0.9-16         nlme_3.1-169         performance_0.17.1  
+14:09:30 [76] Formula_1.2-6        cli_3.6.6            textshaping_1.0.5   
+14:09:30 [79] lava_1.9.3           gtable_0.3.6         sass_0.4.10         
+14:09:30 [82] digest_0.6.39        farver_2.1.2         htmltools_0.5.9     
+14:09:30 [85] lifecycle_1.0.5      hardhat_1.4.3        bit64_4.8.2         
+14:09:30 [88] MASS_7.3-65         
+EXIT 0

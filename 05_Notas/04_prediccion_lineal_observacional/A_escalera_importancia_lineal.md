@@ -1,7 +1,7 @@
 # Para predecir el ingreso en el modelo lineal, pasar más de 5 minutos, las sesiones anteriores y su cruce aportan casi toda la reducción del error; dispositivo, sistema operativo, usuario recurrente y registro aportan poco
 
 - **Estado:** vigente
-- **Parte / base:** A; observacional; predictivo (ingreso en dólares)
+- **Parte / base:** A; observacional; predictivo (ingreso en dólares y en logaritmo)
 - **Script de origen:** `02_Scripts/04_prediccion_lineal_observacional.R`
 - **Última verificación:** 2026-10-24, con `02_Scripts/04_prediccion_lineal_observacional.R`
 
@@ -25,6 +25,24 @@
   0.000.
 - El cruce aislado: agregarlo al modelo que ya tiene las dos variables baja el
   RMSE 0.257 dólares (error estándar 0.004).
+- **Escalera en `ln(Revenue)`** (misma partición, mismos 5 pliegues y mismo orden;
+  entrenamiento, n = 80,000):
+  `03_Resultados/Tablas/04_prediccion_lineal_observacional/observacional_escalera_rmse_log.png`
+  (y `.csv`) y la figura
+  `03_Resultados/Figuras/04_prediccion_lineal_observacional/observacional_escalera_rmse_log.png`.
+  RMSE de CV en log (entre paréntesis, caída y % de la caída total):
+  - media: 0.535;
+  - + más de 5 minutos: 0.436 (0.100; 60%);
+  - + sesiones anteriores: 0.417 (0.019; 12%);
+  - + cruce: 0.381 (0.036; 22%);
+  - + dispositivo: 0.371 (0.010; 6%);
+  - + sistema operativo, usuario recurrente y registro: 0.370 (menos de 0.001 cada
+    uno).
+
+  En log, el indicador de 5 minutos también domina al tiempo continuo y a su
+  logaritmo (0.370 frente a 0.434 y 0.448). Este contraste es solo de auditoría
+  (`10_Auditoria/salidas/aud_04_robustez_forma_tiempo.csv`) y no sostiene ninguna
+  conclusión de la presentación.
 
 ## Qué dice, en lenguaje intuitivo
 Se armó la predicción del gasto de un usuario agregando una variable a la vez y
@@ -65,11 +83,17 @@ harán el bosque y LASSO.
   algo de ajuste a esas figuras.
 - `is_returning_user` equivale a `past_sessions > 0`: su aporte residual es mínimo
   por construcción.
-- Solo `Revenue` en dólares; falta repetirlo en `ln(Revenue)` y compararlo con
-  árboles y LASSO. Los errores estándar entre 5 pliegues son una medida aproximada
-  de la variabilidad.
+- Los errores estándar entre 5 pliegues son una medida aproximada de la
+  variabilidad.
 
 ## Historial
+- 2026-10-25: la escalera en `ln(Revenue)` pasa al script 04 (sección 9) y sale de
+  `00_main.R` (`observacional_escalera_rmse_log`); las cifras son las mismas que
+  las de la auditoría. "Parte / base" pasa a incluir el logaritmo.
+- 2026-10-25 (auditoría): se agrega la escalera en `ln(Revenue)` (H5 en la escala
+  del taller). Mismo orden de aportes que en dólares. Consistente con la importancia
+  del árbol y del bosque. El corte de 5 minutos da el 60% de la caída en log, frente
+  al 50% en dólares.
 - 2026-10-24: la escalera pasa a poner el cruce después de sesiones anteriores
   (pasos 1 a 7); cifras por paso actualizadas. El modelo completo, su RMSE y la
   tabla de prueba no cambian.

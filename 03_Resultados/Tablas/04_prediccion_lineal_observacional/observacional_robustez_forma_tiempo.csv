@@ -1,5 +1,5 @@
 especificacion,rmse_cv,ee_rmse_cv
-Solo el indicador de más de 5 minutos,1.8687200045008023,0.00848557602535898
-Solo el tiempo en minutos (lineal),1.8729960325109083,0.007899336177112259
-Indicador y tiempo en minutos,1.868766063376127,0.008459825082067298
-Indicador y una pendiente a cada lado del corte,1.8687348440969616,0.008449735142222792
+Solo el indicador de más de 5 minutos,1.8687200045008026,0.008485576025360018
+Solo el tiempo en minutos (lineal),1.872996032510908,0.007899336177114474
+Indicador y tiempo en minutos,1.8687660633761272,0.008459825082067916
+Indicador y una pendiente a cada lado del corte,1.868734844096962,0.008449735142223466

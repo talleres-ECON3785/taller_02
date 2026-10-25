@@ -1,0 +1,188 @@
+Loading required package: pacman
+# A tibble: 9 × 21
+  celda                  n peso_exp gasto_control tau_log ee_log tau_dolares
+  <chr>              <int>    <dbl>         <dbl>   <dbl>  <dbl>       <dbl>
+1 Celular–osx         1486   0.149           3.87  0.0732 0.0185       0.540
+2 Celular–Otro SO      516   0.0516          3.79 -0.216  0.0312      -0.605
+3 Celular–Windows     2973   0.297           3.62 -0.254  0.0134      -0.666
+4 Computador–osx      1213   0.121           4.61  0.368  0.0209       2.59 
+5 Computador–Otro SO   398   0.0398          4.24  0.0711 0.0377       0.362
+6 Computador–Windows  2418   0.242           4.22  0.0770 0.0144       0.606
+7 Tableta–osx          312   0.0312          3.97  0.300  0.0388       1.93 
+8 Tableta–Otro SO       84   0.0084          4.22  0.116  0.0767       0.444
+9 Tableta–Windows      600   0.06            3.80  0.0560 0.0294       0.392
+  ee_dolares pct_historica n_ent n_eva pequena particion  log_inf log_sup
+       <dbl>         <dbl> <int> <int> <lgl>   <chr>        <dbl>   <dbl>
+1     0.117         15.2     746   740 FALSE   celda_so   0.0368    0.110
+2     0.123          4.95    264   252 FALSE   celda_so  -0.277    -0.155
+3     0.0528        29.9    1463  1510 FALSE   celda_so  -0.281    -0.228
+4     0.186         12       614   599 FALSE   celda_so   0.327     0.409
+5     0.189          3.97    189   209 FALSE   celda_so  -0.00288   0.145
+6     0.0843        24.0    1223  1195 FALSE   celda_so   0.0489    0.105
+7     0.321          3.04    165   147 FALSE   celda_so   0.224     0.376
+8     0.348          0.991    45    39 TRUE    celda_so  -0.0341    0.267
+9     0.132          5.85    291   309 FALSE   celda_so  -0.00156   0.114
+  dolares_inf dolares_sup dolares_implicados tratada mco_log mco_dolares
+        <dbl>       <dbl>              <dbl> <lgl>     <dbl>       <dbl>
+1     0.311         0.770              0.294 TRUE     0.117       0.831 
+2    -0.846        -0.365             -0.736 FALSE   -0.254      -0.759 
+3    -0.769        -0.562             -0.812 FALSE   -0.255      -0.661 
+4     2.23          2.96               2.05  TRUE     0.396       2.92  
+5    -0.00864       0.733              0.313 TRUE     0.0226      0.0768
+6     0.441         0.772              0.338 TRUE     0.0717      0.530 
+7     1.30          2.56               1.39  TRUE     0.365       2.49  
+8    -0.237         1.13               0.521 TRUE    -0.0418     -0.558 
+9     0.133         0.652              0.219 TRUE     0.0795      0.545 
+# A tibble: 9 × 18
+  celda                           n peso_exp gasto_control tau_log ee_log
+  <chr>                       <int>    <dbl>         <dbl>   <dbl>  <dbl>
+1 Celular–0 a 2 sesiones       2045   0.204           2.92 -0.250  0.0163
+2 Celular–3 a 4 sesiones       1991   0.199           4.06 -0.0875 0.0162
+3 Celular–5 o más sesiones      939   0.0939          4.76 -0.0780 0.0244
+4 Computador–0 a 2 sesiones    1694   0.169           3.45  0.0748 0.0176
+5 Computador–3 a 4 sesiones    1572   0.157           4.71  0.212  0.0182
+6 Computador–5 o más sesiones   763   0.0763          5.58  0.263  0.0266
+7 Tableta–0 a 2 sesiones        438   0.0438          3.21  0.0562 0.0346
+8 Tableta–3 a 4 sesiones        404   0.0404          4.48  0.169  0.0358
+9 Tableta–5 o más sesiones      154   0.0154          4.25  0.285  0.0523
+  tau_dolares ee_dolares pct_historica n_ent n_eva pequena particion log_inf
+        <dbl>      <dbl>         <dbl> <int> <int> <lgl>   <chr>       <dbl>
+1      -0.653     0.0454         21.2   1022  1023 FALSE   celda_ses -0.282 
+2      -0.150     0.0749         19.8    986  1005 FALSE   celda_ses -0.119 
+3       0.156     0.182           9.12   465   474 FALSE   celda_ses -0.126 
+4       0.282     0.0668         16.9    837   857 FALSE   celda_ses  0.0403
+5       1.55      0.138          15.6    790   782 FALSE   celda_ses  0.176 
+6       2.41      0.260           7.52   399   364 FALSE   celda_ses  0.211 
+7       0.221     0.119           4.18   227   211 FALSE   celda_ses -0.0116
+8       0.987     0.214           3.83   203   201 FALSE   celda_ses  0.0991
+9       2.46      0.543           1.86    71    83 TRUE    celda_ses  0.182 
+  log_sup dolares_inf dolares_sup dolares_implicados
+    <dbl>       <dbl>       <dbl>              <dbl>
+1 -0.218      -0.742     -0.564               -0.647
+2 -0.0558     -0.297     -0.00369             -0.340
+3 -0.0301     -0.200      0.512               -0.357
+4  0.109       0.151      0.413                0.268
+5  0.248       1.28       1.82                 1.11 
+6  0.315       1.90       2.92                 1.68 
+7  0.124      -0.0125     0.454                0.185
+8  0.240       0.568      1.41                 0.826
+9  0.387       1.40       3.53                 1.40 
+# A tibble: 18 × 7
+   escala                tipo                                                
+   <chr>                 <chr>                                               
+ 1 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 2 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 3 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 4 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 5 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 6 Logaritmo del ingreso Valor frente a no dar el registro facilitado a nadie
+ 7 Logaritmo del ingreso Diferencia entre reglas (celdas en que difieren)    
+ 8 Logaritmo del ingreso Diferencia entre reglas (celdas en que difieren)    
+ 9 Logaritmo del ingreso Diferencia entre reglas (celdas en que difieren)    
+10 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+11 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+12 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+13 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+14 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+15 Ingreso en dólares    Valor frente a no dar el registro facilitado a nadie
+16 Ingreso en dólares    Diferencia entre reglas (celdas en que difieren)    
+17 Ingreso en dólares    Diferencia entre reglas (celdas en que difieren)    
+18 Ingreso en dólares    Diferencia entre reglas (celdas en que difieren)    
+   regla                                                                      
+   <chr>                                                                      
+ 1 Todos los usuarios                                                         
+ 2 Recomendada: todos salvo celulares con Windows u otro SO                   
+ 3 Solo computador y tableta                                                  
+ 4 Elegida en entrenamiento: dispositivo × sistema operativo                  
+ 5 Elegida en entrenamiento: dispositivo × sesiones (elegida con el logaritmo)
+ 6 Solo 3 o más sesiones anteriores                                           
+ 7 Recomendada − solo computador y tableta                                    
+ 8 Todos − recomendada                                                        
+ 9 Todos − solo 3 o más sesiones                                              
+10 Todos los usuarios                                                         
+11 Recomendada: todos salvo celulares con Windows u otro SO                   
+12 Solo computador y tableta                                                  
+13 Elegida en entrenamiento: dispositivo × sistema operativo                  
+14 Elegida en entrenamiento: dispositivo × sesiones (elegida con dólares)     
+15 Solo 3 o más sesiones anteriores                                           
+16 Recomendada − solo computador y tableta                                    
+17 Todos − recomendada                                                        
+18 Todos − solo 3 o más sesiones                                              
+    peso n_eva    valor ee_valor
+   <dbl> <int>    <dbl>    <dbl>
+ 1 1      5000  0.00775  0.0106 
+ 2 0.651  3238  0.0971   0.00838
+ 3 0.499  2498  0.0834   0.00731
+ 4 0.641  3199  0.0959   0.00830
+ 5 0.480  2415  0.0786   0.00718
+ 6 0.577  2909  0.0372   0.00802
+ 7 0.152   740  0.0135   0.00408
+ 8 0.349  1762 -0.0880   0.00590
+ 9 0.423  2091 -0.0300   0.00687
+10 1      5000  0.416    0.0610 
+11 0.651  3238  0.657    0.0558 
+12 0.499  2498  0.578    0.0507 
+13 0.641  3199  0.653    0.0555 
+14 0.571  2889  0.535    0.0533 
+15 0.577  2909  0.470    0.0562 
+16 0.152   740  0.0763   0.0230 
+17 0.349  1762 -0.235    0.0223 
+18 0.423  2091 -0.0585   0.0221 
+Celdas elegidas en entrenamiento (logaritmo): Celular–osx; Computador–osx; Computador–Otro SO; Computador–Windows; Tableta–osx; Tableta–Windows 
+# A tibble: 16 × 4
+   bloque                                
+   <chr>                                 
+ 1 Todos los usuarios                    
+ 2 Todos los usuarios                    
+ 3 Todos los usuarios                    
+ 4 Todos los usuarios                    
+ 5 Todos los usuarios                    
+ 6 Todos los usuarios                    
+ 7 Todos los usuarios                    
+ 8 Todos los usuarios                    
+ 9 Todos los usuarios                    
+10 Usuarios en grupos finos con 100 o más
+11 Usuarios en grupos finos con 100 o más
+12 Usuarios en grupos finos con 100 o más
+13 Usuarios en grupos finos con 100 o más
+14 Usuarios en grupos finos con 100 o más
+15 Usuarios en grupos finos con 100 o más
+16 Usuarios en grupos finos con 100 o más
+   concepto                                                                    
+   <chr>                                                                       
+ 1 Efecto promedio en logaritmo (bosque)                                       
+ 2 Promedio de los efectos por grupo dispositivo × SO                          
+ 3 Grupos con efecto positivo en logaritmo (% de usuarios)                     
+ 4 Gasto base de los grupos con efecto positivo                                
+ 5 Gasto base de los grupos con efecto negativo                                
+ 6 Efecto promedio en dólares (bosque)                                         
+ 7 Promedio de los efectos por grupo dispositivo × SO                          
+ 8 Implicado por el efecto proporcional de cada grupo, con un gasto base común 
+ 9 Implicado por el efecto proporcional de cada grupo, con su propio gasto base
+10 Usuarios cubiertos                                                          
+11 Efecto promedio en dólares (bosque)                                         
+12 Implicado con grupos dispositivo × SO                                       
+13 Implicado con grupos dispositivo × SO × sesiones                            
+14 Resto dentro de los grupos dispositivo × SO                                 
+15 Resto dentro de los grupos finos (cota superior de la transformación)       
+16 Parte del resto que absorben las sesiones (%)                               
+        valor unidad  
+        <dbl> <chr>   
+ 1    0.00388 log     
+ 2    0.00388 log     
+ 3   65.1     %       
+ 4    4.16    dólares 
+ 5    3.64    dólares 
+ 6    0.414   dólares 
+ 7    0.414   dólares 
+ 8    0.104   dólares 
+ 9    0.168   dólares 
+10 9601       usuarios
+11    0.391   dólares 
+12    0.149   dólares 
+13    0.218   dólares 
+14    0.241   dólares 
+15    0.172   dólares 
+16   28.6     %       
+
+Listo. Resultados guardados en 03_Resultados/{Figuras,Tablas}/13_focalizacion_experimento/.

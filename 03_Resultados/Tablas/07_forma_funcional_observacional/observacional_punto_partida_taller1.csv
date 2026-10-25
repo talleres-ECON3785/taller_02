@@ -1,9 +1,9 @@
 tema,cifra,escala,base,taller1,taller2
 Predicción,RMSE de la referencia ingenua,Dólares,Histórica,2.716,2.715954176468302
-Predicción,RMSE del lineal del Taller 1,Dólares,Histórica,2.314,2.3140442677848156
-Predicción,Mejora del lineal frente a la ingenua (%),Porcentaje,Histórica,14.8,14.798110813714503
-Efecto del registro,ITT sin controles,Dólares,Experimento,0.49,0.490859507020659
-Efecto del registro,ITT sin controles,Logaritmo,Experimento,0.0134,0.01340867595253835
+Predicción,RMSE del lineal del Taller 1,Dólares,Histórica,2.314,2.3140442677848063
+Predicción,Mejora del lineal frente a la ingenua (%),Porcentaje,Histórica,14.8,14.79811081371485
+Efecto del registro,ITT sin controles,Dólares,Experimento,0.49,0.49085950702069314
+Efecto del registro,ITT sin controles,Logaritmo,Experimento,0.0134,0.013408675952539443
 Efecto del registro,ITT con controles,Logaritmo,Experimento,0.0042,NA
 Quiebre en 5 minutos,Salto del ingreso promedio,Dólares,Histórica,3.13,3.0712172000758073
 Quiebre en 5 minutos,Salto del ingreso promedio,Dólares,Experimento,3.42,3.504264850687734

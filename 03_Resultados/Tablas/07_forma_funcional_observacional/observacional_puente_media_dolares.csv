@@ -1,6 +1,6 @@
 concepto,valor,unidad
-Media en dólares (media aritmética),3.9765773558058166,dólares
+Media en dólares (media aritmética),3.976577355805817,dólares
 Mediana en dólares,3.1369914177980487,dólares
 exp(media del logaritmo) = media geométrica,3.383792171424547,dólares
-Factor de corrección (media aritmética / media geométrica),1.1751836857438298,razón
-Factor si el logaritmo fuera normal: exp(varianza / 2),1.1539837927417644,razón
+Factor de corrección (media aritmética / media geométrica),1.17518368574383,razón
+Factor si el logaritmo fuera normal: exp(varianza / 2),1.1539837927417655,razón

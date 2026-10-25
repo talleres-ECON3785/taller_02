@@ -13,11 +13,11 @@
 # 1. Verificar que el directorio de trabajo es la raiz del proyecto
 # -----------------------------------------------------------------------------
 
-if (!file.exists("taller_02.Rproj")) {
-  stop(
-    "Este script debe ejecutarse con el directorio de trabajo en la raiz ",
-    "del proyecto (donde esta taller_02.Rproj). Directorio actual: ", getwd()
-  )
+# la raiz es la carpeta que tiene un archivo .Rproj (con cualquier nombre, p. ej.
+# taller_02.Rproj o el de una copia de respaldo) y la carpeta 02_Scripts/
+if (length(list.files(pattern = "\\.Rproj$")) == 0 || !dir.exists("02_Scripts")) {
+  stop("Ejecuta este script desde la raiz del proyecto (donde esta el .Rproj). ",
+       "Directorio actual: ", getwd())
 }
 
 # -----------------------------------------------------------------------------
@@ -70,7 +70,9 @@ carpetas_salida <- c(
   "03_Resultados/Tablas/11_comparacion_prediccion_observacional",
   "03_Resultados/Figuras/11_comparacion_prediccion_observacional",
   "03_Resultados/Tablas/12_heterogeneidad_experimento",
-  "03_Resultados/Figuras/12_heterogeneidad_experimento"
+  "03_Resultados/Figuras/12_heterogeneidad_experimento",
+  "03_Resultados/Tablas/13_focalizacion_experimento",
+  "03_Resultados/Figuras/13_focalizacion_experimento"
 )
 for (carpeta in carpetas_salida) {
   if (!dir.exists(carpeta)) dir.create(carpeta, recursive = TRUE)
@@ -92,7 +94,8 @@ scripts <- c(
   "02_Scripts/09_arboles_observacional.R",
   "02_Scripts/10_bosque_observacional.R",
   "02_Scripts/11_comparacion_prediccion_observacional.R",
-  "02_Scripts/12_heterogeneidad_experimento.R"
+  "02_Scripts/12_heterogeneidad_experimento.R",
+  "02_Scripts/13_focalizacion_experimento.R"
 )
 
 # nota: '00_formato_graficas.R' no aparece en esta lista porque no produce

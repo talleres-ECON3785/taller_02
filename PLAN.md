@@ -122,6 +122,9 @@ Scripts: `04_prediccion_lineal_observacional.R`, `05_lasso_observacional.R`,
   árbol en las dos escalas hecha (scripts 09 y 10). *Cerrado 2026-10-25:* en
   logaritmo, qué variables predicen lo responde la importancia del árbol y del
   bosque; la escalera lineal queda solo en dólares (decisión en `CLAUDE.md`).
+  *Avance 2026-10-25 (auditoría):* la escalera en `ln(Revenue)` sí se agregó al
+  script 04 (`observacional_escalera_rmse_log`; corte 60%, sesiones y cruce 33%,
+  dispositivo 6% de la caída).
 
 *Terminado cuando:* existen la tabla 2×2 de RMSE de prueba, la escalera, la
 figura del árbol y la de importancia, y la decisión de P2.5 está registrada.
@@ -145,14 +148,19 @@ Scripts: `06_ate_experimento_niveles.R`, `08_ate_experimento_log.R`.
   dólares no cambia: 0.414).
 - [ ] **P3.3** Conciliación nivel–log (H2): cuantiles de `Revenue` por brazo y
   efecto en nivel sin la cola alta (*avance 2026-10-24:* cuantiles, efecto con ingreso limitado y descomposición hechos en `08_ate_experimento_log.R`; faltan intervalos de los cuantiles). Sostiene la diapositiva "por qué los dos
-  números no se contradicen".
+  números no se contradicen". *Avance 2026-10-25 (auditoría):* conciliación por
+  grupos en `13_focalizacion_experimento.R` (`experimento_conciliacion_celdas`:
+  signos opuestos entre grupos, gasto base y ensanchamiento dentro de los grupos;
+  atribución "ambos"). Siguen faltando los intervalos de los cuantiles (requieren
+  ampliar el catálogo con remuestreo).
 
 *Terminado cuando:* la tabla de ATE (lineal y bosque, nivel y log, con IC) y
 las de validación salen desde `00_main.R`.
 
 ## H4. Parte B: ¿el efecto es igual para todos? · Resp.: ____
 
-Script: `12_heterogeneidad_experimento.R`.
+Scripts: `12_heterogeneidad_experimento.R` y `13_focalizacion_experimento.R`
+(efecto por dispositivo × SO y valor de las reglas, agregado en la auditoría).
 
 - [x] **P4.1** `causal_forest` sobre `ln(Revenue)` (≥2000 árboles,
   `seed = 2026`, las 5 covariables pre-tratamiento con `time_spent`), con los
@@ -186,8 +194,15 @@ CATE por grupo con IC y la comparación nivel–log de la heterogeneidad.
 - [x] **P5.2** Recomendación sí/no en una frase ("escalar / no escalar el
   registro facilitado [para todos | para el grupo G]"), separando la decisión
   respaldada de las preguntas abiertas (qué evidencia y qué resultado la
-  cambiarían).
-- [ ] **P5.3** Pasar la lista de chequeo H1–H10 sobre todos los resultados.
+  cambiarían). *Rehecho 2026-10-25 (auditoría):* la regla pasa a "registro
+  facilitado para todos, salvo celulares con Windows u otro SO", elegida en una
+  mitad del experimento y evaluada en la otra (`13_focalizacion_experimento.R`,
+  `experimento_valor_reglas`; decisión en `CLAUDE.md`).
+- [x] **P5.3** Pasar la lista de chequeo H1–H10 sobre todos los resultados.
+  *Hecho 2026-10-25 (auditoría)* en `10_Auditoria/respuestas_enunciado.md`
+  ("Lista de chequeo H1–H10"). Quedan parciales H8 (falta el costo de la
+  intervención) y H9 (decir en el video los supuestos de atribución); lo que
+  falta llevar a las diapositivas pasa a P6.1.
 
 ## H6. Presentación y video · Resp.: ____
 
@@ -204,7 +219,8 @@ CATE por grupo con IC y la comparación nivel–log de la heterogeneidad.
 ## H7. Entrega (domingo 25 oct) · Resp.: ____
 
 - [ ] **P7.1** Borrar `03_Resultados/` y correr `00_main.R` desde cero sin
-  errores.
+  errores. *Avance 2026-10-25 (auditoría):* corrida completa con 12 scripts sin
+  errores (45.6 min en Windows); falta una con los 13 scripts juntos.
 - [ ] **P7.2** README con el mapa completo script → tablas/figuras.
 - [ ] **P7.3** Integrar las ramas en `main` con pull requests (cuando cada
   integrante lo pida).

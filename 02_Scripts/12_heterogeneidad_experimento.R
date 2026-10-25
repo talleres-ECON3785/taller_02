@@ -8,7 +8,9 @@
 # experimento (asignacion aleatoria) sostiene esta lectura causal.
 # Estimador: bosque causal de grf (arboles honestos, 2,000 arboles), con las 5
 # covariables pre-tratamiento crudas (tiempo continuo, como los arboles de la
-# Parte A). W.hat lo estima grf (decision del 2026-10-25).
+# Parte A). W.hat = mean(W), la proporcion tratada observada: la asignacion es
+# aleatoria con una probabilidad comun (H7; mismo argumento del Lab 10, que fija
+# la probabilidad conocida). Decision del 2026-10-25, coherente con el script 13.
 #
 # Que un bosque produzca CATE distintos entre usuarios no prueba que haya
 # heterogeneidad: la evidencia formal es la prueba de calibracion y la curva
@@ -74,11 +76,13 @@ etiquetas_x <- c(
   os_typewindows    = "Windows (frente a osx)"
 )
 
-# mismo bosque para todas las especificaciones: sin W.hat (lo estima grf con
-# un bosque de regresion de W sobre X) y sin clusters (asignacion individual)
+# mismo bosque para todas las especificaciones: W.hat fijo en la proporcion
+# tratada de la muestra que recibe (en la muestra dividida, la de cada mitad)
+# y sin clusters (asignacion individual)
 estimar_bosque <- function(X, Y, W) {
   causal_forest(
     X, Y, W,
+    W.hat = mean(W),
     num.trees = n_arboles, seed = 2026, num.threads = n_hilos
   )
 }
@@ -87,13 +91,8 @@ cf_log <- estimar_bosque(X, experimento$log_revenue, W)
 cf_niv <- estimar_bosque(X, experimento$Revenue, W)
 cf_sin_tiempo <- estimar_bosque(X_sin_tiempo, experimento$log_revenue, W)
 
-# W.hat estimado: si la asignacion es aleatoria con probabilidad comun, debe
-# quedar cerca de la proporcion tratada (4,957 / 10,000) para todos
-rango_w_hat <- range(cf_log$W.hat)
-cat(sprintf(
-  "W.hat estimado: minimo %.3f, media %.3f, maximo %.3f (proporcion tratada %.3f)\n",
-  rango_w_hat[1], mean(cf_log$W.hat), rango_w_hat[2], mean(W)
-))
+# W.hat fijo: la proporcion tratada (4,957 / 10,000)
+cat(sprintf("W.hat fijo en la proporcion tratada: %.4f\n", mean(W)))
 
 # ATE (o ATE de un subgrupo) con su intervalo del 95%
 ate_bosque <- function(cf, subset = NULL) {
@@ -212,10 +211,10 @@ tabla_ate <- ate_tabla |>
         ),
         sprintf(
           paste(
-            "Probabilidad de asignación estimada por el bosque: entre %.3f y",
-            "%.3f (proporción tratada: %.3f)."
+            "Probabilidad de asignación fija en la proporción tratada (%.3f):",
+            "la asignación es aleatoria con una probabilidad común."
           ),
-          rango_w_hat[1], rango_w_hat[2], mean(W)
+          mean(W)
         )
       )
     )
