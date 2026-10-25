@@ -76,10 +76,16 @@ nota_tabla <- function(base = c("experimento", "observacional"),
   c(
     paste(
       c(
-        paste0(
-          texto_base, ", ", texto_muestra, " (n = ",
-          format(n, big.mark = ",", scientific = FALSE), ")."
-        ),
+        # n = NULL: la tabla ya muestra las observaciones (p. ej. regresiones),
+        # asi que la nota no las repite
+        if (is.null(n)) {
+          paste0(texto_base, ", ", texto_muestra, ".")
+        } else {
+          paste0(
+            texto_base, ", ", texto_muestra, " (n = ",
+            format(n, big.mark = ",", scientific = FALSE), ")."
+          )
+        },
         texto_enfoque
       ),
       collapse = " "

@@ -243,7 +243,7 @@ tabla_itt <- modelsummary(
     titulo = "El registro facilitado aumenta el ingreso en dólares",
     subtitulo = "Efecto de la asignación sobre el ingreso, MCO (dólares)",
     nota = nota_tabla(
-      "experimento", n_exp,
+      "experimento", NULL,
       extra = c(
         paste(
           "Errores estándar robustos (HC1) entre paréntesis. El efecto es el de",
@@ -421,19 +421,22 @@ tabla_patrones <- modelsummary(
   output = "gt"
 ) |>
   estilo_tabla(
-    titulo = "El salto de los 5 minutos y el cruce con las sesiones se repiten",
+    titulo = "Las sesiones anteriores se asocian con más ingreso solo después de los 5 minutos, en ambas bases",
     subtitulo = "Ingreso (dólares), MCO con los controles del modelo lineal final",
     nota = c(
-      sprintf(paste("Datos históricos, muestra completa (n = %s), y datos del",
-                    "experimento A/B (asignación aleatoria), muestra completa",
-                    "(n = %s)."),
-              format(n_obs, big.mark = ","), format(n_exp, big.mark = ",")),
+      paste("Datos históricos, muestra completa, y datos del experimento A/B",
+            "(asignación aleatoria), muestra completa."),
       paste("Errores estándar robustos (HC1) entre paréntesis. Controles no",
             "mostrados: dispositivo, sistema operativo y usuario recurrente;",
             "en el experimento, también la asignación al registro facilitado."),
       paste("El último renglón es la diferencia en la asociación de cada sesión",
             "anterior con el ingreso entre quienes pasan más de 5 minutos y",
-            "quienes no. Son asociaciones, no efectos causales.")
+            "quienes no. Son asociaciones, no efectos causales."),
+      paste("El primer renglón no es el salto de los 5 minutos: compara a",
+            "usuarios sin sesiones anteriores, que son pocos. Como las sesiones",
+            "suben el ingreso solo después del corte, el salto depende del",
+            "número de sesiones y se ve en la figura del ingreso frente al",
+            "tiempo, no en este coeficiente.")
     )
   )
 
