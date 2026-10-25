@@ -1,0 +1,83 @@
+Loading required package: pacman
+train = 80,000, test = 20,000
+# A tibble: 8 × 8
+   paso variable_agregada         rmse_cv ee_rmse_cv    caida ee_caida caida_pct
+  <dbl> <chr>                       <dbl>      <dbl>    <dbl>    <dbl>     <dbl>
+1     0 Ninguna (media del entre…    2.74    0.00931 NA       NA       NA       
+2     1 Más de 5 minutos en el s…    2.30    0.00862  4.36e-1  2.95e-3 15.9     
+3     2 Sesiones anteriores          2.17    0.00747  1.34e-1  2.22e-3  5.81    
+4     3 Más de 5 minutos × sesio…    1.91    0.00895  2.57e-1  4.39e-3 11.9     
+5     4 Dispositivo                  1.88    0.00876  2.95e-2  9.93e-4  1.54    
+6     5 Sistema operativo            1.87    0.00838  1.05e-2  7.63e-4  0.557   
+7     6 Usuario recurrente           1.87    0.00854  4.60e-3  3.65e-4  0.246   
+8     7 Registro                     1.87    0.00849 -8.20e-6  6.90e-5 -0.000439
+# ℹ 1 more variable: mejora_ingenuo_pct <dbl>
+# A tibble: 7 × 5
+  variable                 mejora_sola ee_mejora_sola aumento_sin ee_aumento_sin
+  <chr>                          <dbl>          <dbl>       <dbl>          <dbl>
+1 Más de 5 minutos             0.436         0.00295   0.724           0.00431  
+2 Sesiones anteriores          0.110         0.00151   0.394           0.00626  
+3 Cruce: más de 5 minutos…     0.257         0.00439   0.263           0.00507  
+4 Usuario recurrente           0.00632       0.000212  0.00462         0.000374 
+5 Dispositivo                  0.0212        0.00146   0.0298          0.00105  
+6 Sistema operativo            0.00733       0.000612  0.0105          0.000769 
+7 Registro                     0.00972       0.00125  -0.00000820      0.0000690
+# A tibble: 4 × 3
+  especificacion                                  rmse_cv ee_rmse_cv
+  <chr>                                             <dbl>      <dbl>
+1 Solo el indicador de más de 5 minutos              1.87    0.00849
+2 Solo el tiempo en minutos (lineal)                 1.87    0.00790
+3 Indicador y tiempo en minutos                      1.87    0.00846
+4 Indicador y una pendiente a cada lado del corte    1.87    0.00845
+                Estimate  Std. Error     t value   Pr(>|t|)
+(Intercept)  2.835235683 0.018288022 155.0323816 0.00000000
+mas_5_min    3.088124797 0.030294841 101.9356645 0.00000000
+t_bajo       0.007200200 0.007275569   0.9896408 0.32235269
+t_alto      -0.005962174 0.002687385  -2.2185780 0.02651824
+# A tibble: 3 × 7
+  modelo           rmse_cv rmse_prueba  brecha rmse_media_pct mejora_ingenuo_pct
+  <chr>              <dbl>       <dbl>   <dbl>          <dbl>              <dbl>
+1 Referencia inge…    2.74        2.72 -0.0249           68.3                0  
+2 Lineal del Tall…    2.34        2.31 -0.0254           58.2               14.8
+3 Lineal con quie…    1.87        1.84 -0.0239           46.4               32.1
+# ℹ 1 more variable: explicado_pct <dbl>
+Verificacion Taller 1: lineal 2.314 (esperado 2.314), ingenuo 2.716 (esperado 2.716)
+Ultimo paso: tiempo despues del corte baja 0.0000 (ee 0.0000); corte despues del tiempo baja 0.1955 (ee 0.0020)
+# A tibble: 8 × 8
+   paso variable_agregada   rmse_cv ee_rmse_cv    caida ee_caida caida_pct_total
+  <dbl> <chr>                 <dbl>      <dbl>    <dbl>    <dbl>           <dbl>
+1     0 Ninguna (media del…   0.535   0.00112  NA       NA              NA      
+2     1 Más de 5 minutos e…   0.436   0.000952  9.95e-2  5.75e-4        60.3    
+3     2 Sesiones anteriores   0.417   0.000817  1.92e-2  3.46e-4        11.6    
+4     3 Más de 5 minutos ×…   0.381   0.000908  3.57e-2  6.15e-4        21.7    
+5     4 Dispositivo           0.371   0.000795  9.51e-3  3.72e-4         5.76   
+6     5 Sistema operativo     0.371   0.000787  5.50e-4  7.84e-5         0.333  
+7     6 Usuario recurrente    0.370   0.000751  5.53e-4  6.99e-5         0.335  
+8     7 Registro              0.370   0.000747 -6.93e-6  5.39e-6        -0.00420
+# ℹ 1 more variable: mejora_ingenuo_pct <dbl>
+
+Listo. Tablas y figuras en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.
+Recordatorio: aporte predictivo en datos historicos, no efecto causal.
+# A tibble: 8 × 7
+   paso rmse_pipeline rmse_auditoria caida_pipeline caida_auditoria dif_rmse
+  <dbl>         <dbl>          <dbl>          <dbl>           <dbl>    <dbl>
+1     0         0.535          0.535    NA              NA                 0
+2     1         0.436          0.436     0.0995          0.0995            0
+3     2         0.417          0.417     0.0192          0.0192            0
+4     3         0.381          0.381     0.0357          0.0357            0
+5     4         0.371          0.371     0.00951         0.00951           0
+6     5         0.371          0.371     0.000550        0.000550          0
+7     6         0.370          0.370     0.000553        0.000553          0
+8     7         0.370          0.370    -0.00000693     -0.00000693        0
+  dif_caida
+      <dbl>
+1        NA
+2         0
+3         0
+4         0
+5         0
+6         0
+7         0
+8         0
+Diferencia maxima RMSE: 0 | caida: 0 
+% de la caida total (pipeline): NA / 60.3 / 11.6 / 21.7 / 5.8 / 0.3 / 0.3 / 0 

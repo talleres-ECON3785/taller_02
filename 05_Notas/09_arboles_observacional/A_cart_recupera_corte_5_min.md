@@ -63,7 +63,19 @@ basados en árboles?"):
   (`03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md`).
 - **Se agrega** que el sistema operativo y el dispositivo importan dentro de
   ciertos grupos (interacciones de tres variables), algo que el lineal con cruce
-  no incluye.
+  no incluye. En logaritmo el árbol usa dispositivo o sistema operativo en 6 de sus
+  9 cortes (5 de dispositivo y 1 de sistema operativo), aunque su importancia por
+  permutación en el bosque sea baja. Valores de las hojas del árbol en logaritmo
+  (`observacional_cart_arbol_log.png`), leídos como `exp(diferencia) − 1`:
+  - con 5 minutos o menos, el usuario típico de computador gasta +20% que el de
+    celular (1.08 frente a 0.90 en logaritmo);
+  - con más de 5 minutos y 4 sesiones o más, el de osx gasta +42% que el de
+    Windows u otro sistema (2.38 frente a 2.03).
+
+  Que el árbol use estas variables para predecir **cuánto** gasta un usuario no
+  dice cómo responde al registro facilitado. Eso lo mide el experimento, y allí el
+  sistema operativo sí cambia el signo del efecto
+  (`05_Notas/13_focalizacion_experimento/B_regla_focalizacion.md`).
 
 La ganancia frente al lineal se asocia al método: es la misma variable dependiente
 y son las mismas variables, solo que el árbol arma las interacciones solo.
@@ -95,3 +107,10 @@ de un usuario.
   `04_prediccion_lineal_observacional/` y `05_lasso_observacional/` (mismo corte,
   misma interacción, registro sin aporte predictivo). Lineal de referencia
   reproducido: 1.869 dólares en validación cruzada.
+- 2026-10-25 (auditoría): se agregan los cortes por dispositivo y sistema operativo
+  del árbol en logaritmo, con sus diferencias como `exp(diferencia) − 1`. Cifras sin
+  cambios: la corrida completa de `00_main.R` reproduce las tablas.
+- 2026-10-25 (auditoría): el corte de 5 minutos del lineal se eligió mirando la
+  base completa; el árbol, que solo ve entrenamiento, encuentra el mismo corte
+  (5.0007) y la misma interacción. Basta declararlo en una nota al pie de la
+  diapositiva.

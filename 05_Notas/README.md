@@ -95,14 +95,21 @@ Faltan las notas que comparan, figura por figura, qué cambia frente al script 0
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
 | [B_evidencia_hte.md](12_heterogeneidad_experimento/B_evidencia_hte.md) | vigente | B / experimento / causal | ¿Existe evidencia de HTE? (calibración 1.01, AUTOC 0.20 en log; el ATE ≈ 0 esconde efectos de signo opuesto) |
-| [B_cate_por_grupo.md](12_heterogeneidad_experimento/B_cate_por_grupo.md) | vigente | B / experimento / causal | ¿Cómo varían los CATE y qué grupos difieren? (computador, osx y más sesiones positivos; celular, Windows y usuarios nuevos negativos) |
+| [B_cate_por_grupo.md](12_heterogeneidad_experimento/B_cate_por_grupo.md) | matizado (la regla se define por dispositivo × SO en [B_regla_focalizacion](13_focalizacion_experimento/B_regla_focalizacion.md)) | B / experimento / causal | ¿Cómo varían los CATE y qué grupos difieren? (computador, osx y más sesiones positivos; celular, Windows y usuarios nuevos negativos) |
 | [X_hte_nivel_vs_log.md](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) | vigente | B / experimento / causal | ¿Cómo se relaciona con el ATE del Taller 1? ¿Qué cambia en log? (heterogeneidad en las dos escalas; en dólares se agranda en los usuarios de mayor gasto) |
+
+### `13_focalizacion_experimento/` (`13_focalizacion_experimento.R`: efecto por dispositivo × SO, valor de las reglas y conciliación)
+
+| Nota | Estado | Parte / base | Pregunta del taller que responde |
+| --- | --- | --- | --- |
+| [B_regla_focalizacion.md](13_focalizacion_experimento/B_regla_focalizacion.md) | vigente | B / experimento / causal | ¿Qué grupos difieren y qué implica para CheMarket? (todos salvo celulares con Windows u otro SO: +10.2% del gasto típico y 0.66 dólares por usuario en la mitad de evaluación, frente a +0.8% y 0.42 de dárselo a todos) |
+| [X_conciliacion_por_celdas.md](13_focalizacion_experimento/X_conciliacion_por_celdas.md) | vigente | B / experimento / causal (transversal) | ¿Por qué el efecto es ≈ 0 en log y +0.41 dólares? (signos opuestos entre grupos: método; gasto base y ensanchamiento dentro de los grupos: transformación) |
 
 ### Síntesis (transversal)
 
 | Nota | Estado | Parte / base | Pregunta del taller que responde |
 | --- | --- | --- | --- |
-| [sintesis.md](sintesis.md) | vigente | A y B / ambas bases | ¿Qué se mantiene, qué se matiza y qué cambia frente al Taller 1, y por qué? ¿Qué debe hacer CheMarket? (escalar el registro facilitado solo en computador y tableta) |
+| [sintesis.md](sintesis.md) | vigente | A y B / ambas bases | ¿Qué se mantiene, qué se matiza y qué cambia frente al Taller 1, y por qué? ¿Qué debe hacer CheMarket? (escalar el registro facilitado para todos salvo los celulares con Windows u otro SO) |
 
 ## Pendientes de conciliar
 

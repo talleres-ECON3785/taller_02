@@ -1,96 +1,104 @@
 # Síntesis del Taller 2: qué se mantiene, qué se matiza y qué cambia frente al Taller 1
 
-- **Estado:** vigente (P5.1 y P5.2 de `PLAN.md`; la lista de chequeo P5.3 sigue pendiente)
-- **Fuentes:** solo las notas de `05_Notas/` y las tablas y figuras que esas notas
+- **Estado:** vigente (P5.1 y P5.2 de `PLAN.md`; la lista de chequeo P5.3 está en
+  `10_Auditoria/respuestas_enunciado.md`)
+- **Fuentes:** las notas de `05_Notas/` y las tablas y figuras que esas notas
   citan en `03_Resultados/`. Esta síntesis no agrega estimaciones nuevas.
-- **Última verificación:** 2026-10-25
+- **Última verificación:** 2026-10-25, con `12_heterogeneidad_experimento.R` y
+  `13_focalizacion_experimento.R`
+- **Porcentajes:** los efectos en logaritmo se leen como `exp(τ) − 1`, el cambio
+  porcentual del gasto del usuario típico.
 
 ## Recomendación (P5.2)
 
-> **Escalar el registro facilitado solo para los usuarios que entran desde
-> computador o tableta, y no para los que entran desde celular.**
+> **Escalar el registro facilitado para todos los usuarios, salvo los que entran
+> desde un celular con Windows u otro sistema operativo (35% de la base
+> histórica). A esos usuarios se les mantiene el formulario actual.**
 
-**Estimando que guía la decisión.** La recomendación se apoya en el efecto
-causal del registro facilitado (ITT) **por grupo** (CATE). El efecto en dólares
-es el que pesa en el ingreso total. El efecto en logaritmo indica si al usuario
-típico del grupo le va mejor o peor. En la regla elegida las dos escalas
-coinciden: positivas en computador y tableta, negativas en celular.
+**Estimando (H1).** El estimando es el efecto causal del registro facilitado
+sobre `ln(Revenue)` en cada grupo de usuarios definido por dispositivo × sistema
+operativo (CATE por grupo). Se lee como el cambio porcentual del gasto del
+usuario típico del grupo. **Complemento etiquetado:** el mismo efecto en dólares
+por usuario, que dice cuánto pesa cada grupo en el ingreso total.
+
+**Criterio de la regla.** Se excluye solo donde hay daño distinguible de cero en
+las dos escalas. Los dos grupos excluidos son los únicos con efecto negativo
+distinguible, y lo es en logaritmo y en dólares. Ningún grupo tratado tiene
+efecto negativo en ninguna escala, así que la regla es la misma en las dos.
 
 ### Decisión respaldada
 
+Fuente: `03_Resultados/Tablas/13_focalizacion_experimento/` y
+`03_Resultados/Figuras/13_focalizacion_experimento/experimento_efecto_celdas_dispositivo_so.png`
+(experimento, n = 10,000), salvo donde se indica otra.
+
 | Evidencia | Cifra (escala, base) | Nota |
 | --- | --- | --- |
-| Hay heterogeneidad y no es un artefacto del método: calibración y muestra dividida | Calibración de las diferencias 1.01 en log y 1.06 en dólares (p < 0.001); AUTOC 0.200 en log y 1.41 dólares (experimento, mitad de evaluación, n = 5,000) | [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md), [X_hte_nivel_vs_log](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) |
-| Computador: efecto positivo | +0.163 en log (IC 0.140 a 0.186); +1.18 dólares (1.03 a 1.34); 40.0% de la base histórica | [B_cate_por_grupo](12_heterogeneidad_experimento/B_cate_por_grupo.md) |
-| Tableta: efecto positivo | +0.138 en log (0.093 a 0.183); +0.88 dólares (0.62 a 1.14); 9.9% de la base | ídem |
-| Celular: efecto negativo | −0.152 en log (−0.173 a −0.131); −0.30 dólares (−0.40 a −0.20); 50.1% de la base | ídem |
-| El dispositivo es lo que más usa el bosque causal para separar efectos | 61% de los cortes, en log (dónde corta, no qué causa la diferencia) | ídem |
-| Los grupos del experimento pesan lo mismo en la población de CheMarket | Celular 50.1% frente a 49.8%; prueba conjunta F = 0.66, p = 0.708 | [B_representatividad_experimento](06_ate_experimento_niveles/B_representatividad_experimento.md) |
+| Hay heterogeneidad y no es un artefacto del método | Calibración de las diferencias 1.01 (p < 0.001); AUTOC 0.200 en log con muestra dividida (mitad de evaluación, n = 5,000) | [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md) |
+| Celular–Windows: el registro facilitado baja el gasto | −22.5% [−24.5%; −20.4%]; −0.67 dólares [−0.77; −0.56]; 29.9% de la base histórica | [B_regla_focalizacion](13_focalizacion_experimento/B_regla_focalizacion.md) |
+| Celular–otro SO: lo baja | −19.4% [−24.2%; −14.3%]; −0.61 dólares [−0.85; −0.36]; 5.0% | ídem |
+| Computador–osx y tableta–osx: lo suben mucho | +44.5% [+38.7%; +50.5%] y +35.0% [+25.1%; +45.6%]; +2.59 y +1.93 dólares; 15.0% de la base | ídem |
+| Computador–Windows y celular–osx: lo suben poco | +8.0% [+5.0%; +11.1%] y +7.6% [+3.8%; +11.6%]; +0.61 y +0.54 dólares; 39.2% | ídem |
+| Computador–otro y tableta–Windows: sin efecto distinguible en log | +7.4% [−0.3%; +15.6%] y +5.8% [−0.2%; +12.0%]; en dólares +0.36 [−0.01; 0.73] y +0.39 [0.13; 0.65]; 9.9%. Se tratan porque no hay evidencia de daño en ninguna escala | ídem |
+| La regla se elige en una mitad y se evalúa en la otra (Lab 10) | La mitad de entrenamiento elige exactamente estos grupos. En la mitad de evaluación, con un bosque independiente, el gasto del usuario típico de la población sube +10.2% [+8.4%; +12.0%] (todos: +0.8%; solo computador y tableta: +8.7%). En dólares, 0.66 por usuario [0.55; 0.77] (todos: 0.42; computador y tableta: 0.58) | ídem (`experimento_valor_reglas`) |
+| Ventaja sobre "solo computador y tableta" | El efecto en celular–osx en la mitad de evaluación, por su peso (15.2%): +1.4% [+0.6%; +2.2%] del gasto típico; +0.076 dólares por usuario [0.031; 0.121] | ídem |
+| Los grupos pesan lo mismo en la población de CheMarket | Prueba conjunta experimento frente a base histórica F = 0.66, p = 0.708 | [B_representatividad_experimento](06_ate_experimento_niveles/B_representatividad_experimento.md) |
 | El experimento es válido | Balance F = 0.96, p = 0.456; cumplimiento perfecto (5,043 / 4,957) | [B_balance_y_cumplimiento](06_ate_experimento_niveles/B_balance_y_cumplimiento.md) |
 
-El dispositivo se elige como regla porque es la característica que más separa los
-efectos, sus intervalos están lejos de cero en las dos escalas y CheMarket la
-conoce cuando el usuario entra, antes de mostrarle el formulario de registro. El
-sistema operativo apunta en la misma dirección (osx +0.213 en log y +1.50 dólares;
-Windows −0.089 en log y −0.05 dólares). No se agrega a la regla porque se traslapa
-con el dispositivo (osx es de computadores y tabletas) y en Windows el efecto en
-dólares no se distingue de cero.
+**Por qué dispositivo × sistema operativo.** El sistema operativo separa tanto
+como el dispositivo, y no se traslapa con él: dentro de cada dispositivo, cerca de
+30% de los usuarios usa osx, 10% otro sistema y 60% Windows. En logaritmo el
+efecto se comporta como la suma de las dos características: es menor en celular y
+menor fuera de osx, y en celular con Windows u otro sistema se vuelve negativo.
+Las dos características son observables cuando el usuario entra, antes de ver el
+formulario.
 
-**Orden de magnitud de la regla** (aritmética con las cifras de la tabla
-anterior; no es una estimación exportada y no tiene intervalo). Con los pesos de
-la base histórica, dar el registro facilitado a todos promedia 0.40 × 1.18 + 0.50
-× (−0.30) + 0.10 × 0.88 ≈ 0.41 dólares por usuario. La cifra coincide con el ATE
-del bosque (0.414). Dárselo solo a computador y tableta deja a los usuarios de
-celular sin cambio: ≈ 0.40 × 1.18 + 0.10 × 0.88 ≈ 0.56 dólares por usuario. La
-regla evita la pérdida de unos 0.15 dólares por usuario que hoy se concentra en
-la mitad de la base.
+**Por qué no por sesiones anteriores.** La regla que elige la mitad de
+entrenamiento por dispositivo × sesiones vale menos en la mitad de evaluación
+(0.54 dólares frente a 0.66). En celular, el efecto en logaritmo es negativo en
+los tres tramos de sesiones (`experimento_efecto_celdas_dispositivo_sesiones`).
 
-### Complemento predictivo: a quién priorizar dentro de la regla
+**Grupos pequeños.** Tableta–otro sistema tiene 84 usuarios (45 / 39 por mitad).
+De ese grupo no se concluye nada. La regla lo trata porque no hay evidencia de
+daño en ninguna escala.
 
-La base histórica no dice qué hace el registro facilitado. Sí dice quién gasta
-más, y eso sirve para ordenar la implementación.
+### Complemento predictivo: qué predice el gasto no es lo que separa el efecto
 
-- El árbol y el bosque predicen el gasto sobre todo con el **tiempo en el sitio y
-  las sesiones anteriores**. Esas dos variables suman 93% de la importancia por
-  permutación en dólares y 94.5% en logaritmo. El dispositivo y el sistema
-  operativo aportan poco a la predicción del nivel de gasto: 2.2% y 4.7% en
-  dólares ([A_importancia_bosque](10_bosque_observacional/A_importancia_bosque.md)).
-  Las variables que predicen **cuánto** gasta un usuario no son las que separan
-  **cómo responde** al registro facilitado. Por eso la regla sale del bosque
-  causal y no del predictivo.
-- El árbol de predicción separa a los usuarios de gasto alto con el corte de 5
-  minutos y 3 o más sesiones
-  ([A_cart_recupera_corte_5_min](09_arboles_observacional/A_cart_recupera_corte_5_min.md)).
-  En esos usuarios, el efecto causal en dólares es mayor:
-  - más de 5 minutos: 0.84 dólares frente a 0.16;
-  - 5 o más sesiones: 1.28 dólares frente a −0.19 con 0 a 2 sesiones
-    ([X_hte_nivel_vs_log](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md)).
+La base histórica no dice qué hace el registro facilitado; sí dice quién gasta
+más. El árbol y el bosque predicen el gasto sobre todo con el tiempo en el sitio y
+las sesiones anteriores ([A_importancia_bosque](10_bosque_observacional/A_importancia_bosque.md)).
+En `ln(Revenue)`, la escalera de validación cruzada atribuye el 60% de la caída del
+error al corte de 5 minutos, el 33% a las sesiones y su cruce con el corte, el 6%
+al dispositivo y menos del 1% al sistema operativo
+([A_escalera_importancia_lineal](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md)).
+El sistema operativo casi no predice cuánto gasta un usuario, pero cambia el signo
+de cómo responde al registro facilitado. Por eso la regla sale del experimento y no
+de la base histórica. El registro (`sign_up`) tampoco aporta a la predicción: es
+0.03% de la importancia del bosque. Eso no dice nada sobre su efecto, que lo mide
+el experimento.
 
-  La segmentación predictiva sirve para priorizar, dentro de computador y tableta,
-  a los usuarios frecuentes, donde cada usuario aporta más dólares.
-- El registro (`sign_up`) casi no aporta a la predicción: 0.03% de la importancia
-  del bosque y −0.00001 dólares en la escalera lineal. Esto no dice nada sobre su
-  efecto. El efecto lo mide el experimento.
+### Preguntas abiertas (H10)
 
-### Preguntas abiertas (qué evidencia, sobre esta misma decisión, la cambiaría)
-
-1. **Ingreso de la regla frente a darlo a todos.** No se estimó con su intervalo.
-   La aritmética de arriba lo aproxima. La evidencia que falta es una
-   **validación focalizada**:
-   - población: usuarios de celular;
-   - brazos: registro facilitado frente a control;
-   - métrica: ingreso en dólares por usuario.
-
-   Si el efecto en celular resulta mayor o igual a cero, la recomendación pasa a
-   escalar para todos, porque el ATE en dólares es positivo (0.49). Si sale
-   negativo, como estima el bosque (−0.30 dólares), se confirma la regla.
-2. **Multiplicidad.** Son 13 grupos en dos escalas y no hay corrección. Los
-   intervalos de dispositivo están lejos de cero, así que la corrección no cambia
-   la regla. Sí puede cambiar la lectura de los grupos con intervalos cerca de
-   cero (Windows y otro sistema en dólares, recurrentes en log).
-3. **Mecanismo.** No se sabe por qué el formulario simplificado baja el gasto en
-   celular. La regla se sostiene solo si la diferencia por dispositivo se mantiene
-   fuera del periodo del experimento.
+1. **Mecanismo en celulares no osx.** Los datos no explican por qué el mismo
+   formulario baja el gasto en celulares con Windows u otro sistema y lo sube en
+   celulares con osx. La evidencia que lo resolvería es una **validación
+   focalizada**:
+   - **Población:** usuarios que entran desde celular con Windows u otro sistema
+     operativo.
+   - **Brazos:** formulario facilitado frente al actual, con asignación aleatoria
+     individual.
+   - **Métrica principal:** `ln(Revenue)` por usuario; complemento: ingreso en
+     dólares.
+   - **Tamaño de referencia:** en el experimento actual ese grupo tuvo 3,489
+     usuarios; solo con la mitad de evaluación (1,762), el error estándar de su
+     efecto en log fue 0.017.
+   - **Qué cambiaría la regla:** si el efecto resulta mayor o igual a cero, con un
+     intervalo que descarte una caída, se extiende el registro facilitado a todos.
+     Si sale negativo, como estima el bosque (−22.5% en celular–Windows), se
+     confirma la exclusión.
+2. **Estabilidad en el tiempo.** El experimento es de un solo periodo. La regla se
+   sostiene si la diferencia por dispositivo × sistema operativo se mantiene; la
+   misma validación lo comprueba en otro periodo.
 
 ## Tabla de conclusiones (P5.1)
 
@@ -106,11 +114,12 @@ La última columna dice de dónde viene la diferencia con el Taller 1:
 
 | Conclusión | Taller 1 | Taller 2 | Se mantiene / matiza / cambia | Atribución | Nota |
 | --- | --- | --- | --- | --- | --- |
-| El gasto da un salto en 5 minutos en el sitio | Salto ≈ 3.13 dólares, confirmado fuera de muestra | Salto y gasto plano a cada lado; el árbol encuentra solo el corte (5.0007 min) en las dos escalas | Se mantiene | — (el método lo recupera sin que se le indique) | [A_quiebre_time_spent](03_punto_partida/A_quiebre_time_spent.md), [A_cart_recupera_corte_5_min](09_arboles_observacional/A_cart_recupera_corte_5_min.md) |
-| El tiempo entra de forma continua (elasticidad ≈ 0.169) | Tiempo lineal en el modelo | Con el corte incluido, el tiempo exacto no reduce el error | Cambia | Especificación | [A_corte_5_minutos_captura_tiempo](04_prediccion_lineal_observacional/A_corte_5_minutos_captura_tiempo.md) |
+| El gasto da un salto en 5 minutos en el sitio | Salto ≈ 3.13 dólares, confirmado fuera de muestra | Salto y gasto plano a cada lado; el árbol encuentra solo el corte (5.0007 min) en las dos escalas, usando solo entrenamiento | Se mantiene | — (el método lo recupera sin que se le indique) | [A_quiebre_time_spent](03_punto_partida/A_quiebre_time_spent.md), [A_cart_recupera_corte_5_min](09_arboles_observacional/A_cart_recupera_corte_5_min.md) |
+| El tiempo entra de forma continua (elasticidad ≈ 0.169) | Tiempo lineal en el modelo | Con el corte incluido, el tiempo exacto no reduce el error, en dólares ni en log | Cambia | Especificación | [A_corte_5_minutos_captura_tiempo](04_prediccion_lineal_observacional/A_corte_5_minutos_captura_tiempo.md) |
 | Las sesiones anteriores se suman de forma independiente | Término lineal | Solo se asocian con más gasto pasados los 5 minutos (cruce); el árbol parte por sesiones solo de ese lado | Cambia | Especificación y método | [A_sesiones_pasadas_interaccion_tiempo](03_punto_partida/A_sesiones_pasadas_interaccion_tiempo.md), [A_cart_recupera_corte_5_min](09_arboles_observacional/A_cart_recupera_corte_5_min.md) |
-| Error de predicción fuera de muestra | RMSE 2.314 dólares (14.8% menos que la media, 2.716) | Lineal con corte y cruce 1.845; LASSO 1.765; árbol 1.627 y bosque 1.626 (40.1%); en log, árbol 0.349 frente a 0.361 de LASSO | Cambia | Casi dos tercios de la ganancia vienen de la especificación; el resto, del método (1.765 → 1.627). La transformación es neutra en los árboles (1.627 al retransformar) y empeora los lineales simples (2.382 y 1.952) | [X_rmse_metodo_por_escala](11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md), [A_lineal_flexible_vs_taller1](04_prediccion_lineal_observacional/A_lineal_flexible_vs_taller1.md), [A_lasso_vs_lineal_flexible](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) |
-| Qué variables predicen el gasto | Sin escalera ni importancia | Tiempo y sesiones (con su cruce) concentran casi toda la caída del error y más del 90% de la importancia del bosque en las dos escalas; dispositivo, sistema operativo, recurrente y registro aportan poco | Matiza (se cuantifica) | Método (importancia por permutación) | [A_escalera_importancia_lineal](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md), [A_importancia_bosque](10_bosque_observacional/A_importancia_bosque.md) |
+| Dispositivo y sistema operativo | Términos lineales | El árbol en log los usa en 6 de sus 9 cortes: con 5 minutos o menos, el usuario típico de computador gasta +20% que el de celular; con 4 o más sesiones, el de osx +42% que el de Windows u otro | Matiza | Método | [A_cart_recupera_corte_5_min](09_arboles_observacional/A_cart_recupera_corte_5_min.md) |
+| Error de predicción fuera de muestra | RMSE 2.314 dólares (14.8% menos que la media, 2.716) | Lineal con corte y cruce 1.845; LASSO 1.765; árbol 1.627 y bosque 1.626 (40.1%); en log, árbol 0.349 frente a 0.361 de LASSO | Cambia | Especificación y método. De los 0.687 dólares que se ganan frente al Taller 1, el corte y el cruce dan 0.469 (68%), el diccionario de LASSO 0.080 (12%) y el árbol 0.138 (20%). El árbol llega a la misma especificación por sí solo, así que el reparto depende del camino. La transformación es neutra en los árboles (1.627 al retransformar) y empeora los lineales simples (2.382 y 1.952) | [X_rmse_metodo_por_escala](11_comparacion_prediccion_observacional/X_rmse_metodo_por_escala.md), [A_lineal_flexible_vs_taller1](04_prediccion_lineal_observacional/A_lineal_flexible_vs_taller1.md), [A_lasso_vs_lineal_flexible](05_lasso_observacional/A_lasso_vs_lineal_flexible.md) |
+| Qué variables predicen el gasto | Sin escalera ni importancia | Escalera en las dos escalas: en log, corte de 5 minutos 60% de la caída del error, sesiones y cruce 33%, dispositivo 6%, el resto < 1%. Tiempo y sesiones concentran más del 90% de la importancia del bosque en las dos escalas | Matiza (se cuantifica) | Especificación (escalera) y método (importancia) | [A_escalera_importancia_lineal](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md), [A_importancia_bosque](10_bosque_observacional/A_importancia_bosque.md) |
 | Registro y gasto en la base histórica | Asociación 0.080 en log con controles (no causal) | El registro no reduce el error una vez incluidas las demás variables (−0.00001 dólares; 0.03% de importancia) | Matiza | Método y especificación | [A_escalera_importancia_lineal](04_prediccion_lineal_observacional/A_escalera_importancia_lineal.md), [A_importancia_bosque](10_bosque_observacional/A_importancia_bosque.md) |
 | Forma de la distribución | Cola alta en dólares | El logaritmo comprime la cola; la media en dólares no se recupera con exp() sin un factor de corrección | Matiza | Transformación | [X_distribucion_dolares_vs_logaritmo](07_forma_funcional_observacional/X_distribucion_dolares_vs_logaritmo.md) |
 
@@ -120,23 +129,36 @@ La última columna dice de dónde viene la diferencia con el Taller 1:
 | --- | --- | --- | --- | --- | --- |
 | Validez del experimento | Balance (sin `os_type`) y cumplimiento perfecto | Balance con `os_type`: F = 0.96, p = 0.456; cumplimiento 5,043 / 4,957 | Se mantiene | — | [B_balance_y_cumplimiento](06_ate_experimento_niveles/B_balance_y_cumplimiento.md) |
 | Representatividad frente a la base histórica | F = 0.65, p = 0.712 | F = 0.66, p = 0.708 (especificación del balance) | Se mantiene | — | [B_representatividad_experimento](06_ate_experimento_niveles/B_representatividad_experimento.md) |
-| Efecto promedio en dólares | ITT 0.49 (p = 1.8e-11) | MCO 0.491 (IC 0.347 a 0.634) y 0.454 con controles; bosque 0.414 (0.328 a 0.499) | Se mantiene | — | [B_ols_efecto_registro](06_ate_experimento_niveles/B_ols_efecto_registro.md), [X_hte_nivel_vs_log](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) |
-| Efecto promedio en log | 0.0134, no distinguible de cero | 0.0134 (−0.010 a 0.037); bosque 0.004 (−0.011 a 0.019) | Se mantiene | — | [B_log_a_dolares_efecto_registro](08_ate_experimento_log/B_log_a_dolares_efecto_registro.md), [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md) |
-| Por qué las dos escalas difieren | Sin conciliar | El tratamiento ensancha la distribución (desviación de `ln(Revenue)` de 0.53 a 0.66): la media sube 12% y la mediana no cambia | Cambia (queda conciliado) | Transformación | [B_log_a_dolares_efecto_registro](08_ate_experimento_log/B_log_a_dolares_efecto_registro.md) |
-| ¿El efecto es igual para todos? | Un solo efecto | Evidencia formal de HTE; efectos de signo opuesto (computador, tableta, osx y 3 o más sesiones positivos; celular, Windows, nuevos y 0 a 2 sesiones negativos) | Cambia | Método | [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md), [B_cate_por_grupo](12_heterogeneidad_experimento/B_cate_por_grupo.md) |
+| Efecto promedio en dólares | ITT 0.49 (p = 1.8e-11) | MCO 0.491 (IC 0.347 a 0.634) y 0.454 con controles; bosque 0.414 (0.330 a 0.498) | Se mantiene | — | [B_ols_efecto_registro](06_ate_experimento_niveles/B_ols_efecto_registro.md), [X_hte_nivel_vs_log](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) |
+| Efecto promedio en log | 0.0134, no distinguible de cero | +1.3% (−1.0% a +3.8%) con MCO; bosque +0.4% (−1.1% a +1.9%) | Se mantiene | — | [B_log_a_dolares_efecto_registro](08_ate_experimento_log/B_log_a_dolares_efecto_registro.md), [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md) |
+| Por qué las dos escalas difieren | Sin conciliar | Los efectos por grupo tienen signo opuesto y se cancelan en log: el promedio de los efectos por grupo reproduce el ATE (0.004). En dólares quedan positivos por dos razones. Primera, los grupos con efecto positivo gastan algo más (4.16 frente a 3.64 dólares de base). Segunda, dentro de cada grupo el tratamiento sube la media más que el gasto típico. En los usuarios de grupos finos con 100 o más (9,601), los efectos proporcionales por dispositivo × SO explican 0.15 de 0.39 dólares; al partir también por sesiones, 0.22; quedan 0.17 dentro de los grupos | Cambia (queda conciliado) | **Ambos.** Método: la heterogeneidad de signo entre grupos. Transformación: el gasto base distinto entre grupos y, como mucho, los 0.17 dólares que quedan dentro de los grupos finos (cota superior: pueden incluir diferencias por otras características, como el tiempo en el sitio) | [X_conciliacion_por_celdas](13_focalizacion_experimento/X_conciliacion_por_celdas.md), [B_log_a_dolares_efecto_registro](08_ate_experimento_log/B_log_a_dolares_efecto_registro.md) |
+| ¿El efecto es igual para todos? | Un solo efecto | Evidencia formal de HTE. Por dispositivo × SO: −22.5% en celular–Windows y −19.4% en celular–otro; de +5.8% a +44.5% en los demás grupos grandes | Cambia | Método | [B_evidencia_hte](12_heterogeneidad_experimento/B_evidencia_hte.md), [B_regla_focalizacion](13_focalizacion_experimento/B_regla_focalizacion.md) |
 | Hipótesis de que el efecto en dólares viene de pocos usuarios de la cola | Sugerida (p99: 14.4 frente a 24.9) | Hay heterogeneidad en las dos escalas con el mismo orden de grupos; en dólares se agranda en los usuarios de mayor gasto | Matiza | Método (existencia) y transformación (tamaño en dólares) | [X_hte_nivel_vs_log](12_heterogeneidad_experimento/X_hte_nivel_vs_log.md) |
-| Recomendación | "Todavía no" escalar (criticada por la H10) | Escalar solo en computador y tableta | Cambia | Método (CATE), con apoyo de la transformación (dólares frente a log) | Esta nota |
+| Recomendación | "Todavía no" escalar (criticada por la H10) | Escalar para todos salvo celulares con Windows u otro SO; valor evaluado fuera de la muestra de selección | Cambia | Método (CATE). La regla es la misma en log y en dólares | Esta nota |
 
 ## Límites de la síntesis
+
 - Predicción no es causalidad. Las conclusiones de la Parte A describen quién
   gasta más, no qué palanca mueve el gasto. Solo la Parte B sostiene afirmaciones
   causales.
 - Cada cifra conserva los límites de su nota de origen: una sola partición en la
-  Parte A, cuantiles sin intervalos y grupos sin corrección por multiplicidad en la
-  Parte B.
-- Falta pasar la lista de chequeo H1–H10 (P5.3) sobre la presentación.
+  Parte A y cuantiles sin intervalos en la Parte B. La multiplicidad de grupos se
+  trata eligiendo la regla en una mitad y evaluándola en la otra (Lab 10), no
+  ajustando p-valores.
+- La escalera en logaritmo sale del script 04
+  (`03_Resultados/Tablas/04_prediccion_lineal_observacional/observacional_escalera_rmse_log.png`).
 
 ## Historial
+
 - 2026-10-25: primera versión (P5.1 y P5.2). La recomendación se alinea con los
   CATE del bosque causal y se complementa con los bosques predictivos, por
   decisión del usuario.
+- 2026-10-25: corregida tras la auditoría (`10_Auditoria/informe_auditoria.md`),
+  con aprobación del usuario.
+  - La regla pasa de "solo computador y tableta" a "todos salvo celulares con
+    Windows u otro SO", con su valor evaluado fuera de la muestra de selección
+    (script 13).
+  - Se elimina "osx es de computadores y tabletas", que es falso.
+  - La conciliación nivel–log pasa a "ambos" (método y transformación).
+  - Se corrige "casi dos tercios" (68%, 12% y 20%).
+  - Porcentajes con `exp(τ) − 1`.

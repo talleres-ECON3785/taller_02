@@ -1,0 +1,17 @@
+bloque,concepto,valor,unidad
+Todos los usuarios,Efecto promedio en logaritmo (bosque),0.003882959548020652,log
+Todos los usuarios,Promedio de los efectos por grupo dispositivo × SO,0.0038829595480206463,log
+Todos los usuarios,Grupos con efecto positivo en logaritmo (% de usuarios),65.11,%
+Todos los usuarios,Gasto base de los grupos con efecto positivo,4.1635567269278,dólares
+Todos los usuarios,Gasto base de los grupos con efecto negativo,3.6435288661416547,dólares
+Todos los usuarios,Efecto promedio en dólares (bosque),0.4138967215005647,dólares
+Todos los usuarios,Promedio de los efectos por grupo dispositivo × SO,0.41389672150056467,dólares
+Todos los usuarios,"Implicado por el efecto proporcional de cada grupo, con un gasto base común",0.1039007620118091,dólares
+Todos los usuarios,"Implicado por el efecto proporcional de cada grupo, con su propio gasto base",0.16752188184965605,dólares
+Usuarios en grupos finos con 100 o más,Usuarios cubiertos,9601,usuarios
+Usuarios en grupos finos con 100 o más,Efecto promedio en dólares (bosque),0.39054930664072934,dólares
+Usuarios en grupos finos con 100 o más,Implicado con grupos dispositivo × SO,0.14924235426851454,dólares
+Usuarios en grupos finos con 100 o más,Implicado con grupos dispositivo × SO × sesiones,0.2183734444878647,dólares
+Usuarios en grupos finos con 100 o más,Resto dentro de los grupos dispositivo × SO,0.2413069523722148,dólares
+Usuarios en grupos finos con 100 o más,Resto dentro de los grupos finos (cota superior de la transformación),0.17217586215286465,dólares
+Usuarios en grupos finos con 100 o más,Parte del resto que absorben las sesiones (%),28.648611049016022,%

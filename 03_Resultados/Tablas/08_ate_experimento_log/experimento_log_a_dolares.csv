@@ -1,7 +1,7 @@
 fila,sin_controles,con_controles,unidad
-Coeficiente en logaritmo (efecto en la media del logaritmo),0.01340867595253835,0.006458412198298897,log
-Cambio porcentual en el ingreso del usuario típico: exp(coef) − 1,1.3498975395213941,0.647931271284663,%
-Efecto en dólares si se retransforma con un factor común,0.05658886786979345,0.027024654412925012,dólares
-Efecto en dólares si se retransforma con un factor por grupo,0.4908595070206814,0.07744482770814179,dólares
-Efecto en dólares estimado directamente (diferencia de medias / MCO),0.490859507020659,0.45394780522714134,dólares
-Cambio porcentual en el ingreso promedio (efecto directo / media del control),12.338505083305428,11.410672956803285,%
+Coeficiente en logaritmo (efecto en la media del logaritmo),0.013408675952539443,0.006458412198302961,log
+Cambio porcentual en el ingreso del usuario típico: exp(coef) − 1,1.3498975395215052,0.6479312712850627,%
+Efecto en dólares si se retransforma con un factor común,0.056588867869798776,0.02702465441294181,dólares
+Efecto en dólares si se retransforma con un factor por grupo,0.49085950702069203,0.07744482770816337,dólares
+Efecto en dólares estimado directamente (diferencia de medias / MCO),0.49085950702069314,0.45394780522719747,dólares
+Cambio porcentual en el ingreso promedio (efecto directo / media del control),12.338505083306286,11.410672956804696,%

@@ -22,7 +22,9 @@
 #     con ambos). Si se incluyera como primer escalon, "inflaria" la importancia
 #     del tiempo al hacer de aproximacion del salto. time_spent continuo solo
 #     aparece en el lineal del Taller 1, que es la referencia.
-#   - Solo Revenue en nivel. La escala logaritmica queda para otro script.
+#   - Revenue en nivel en las secciones 1 a 8. La seccion 9 repite la escalera
+#     en ln(Revenue) con los mismos pliegues y el mismo orden (H5 en la escala
+#     del taller); la comparacion de prueba en log esta en el script 11.
 # =============================================================================
 
 # los paquetes los carga 00_main.R con pacman
@@ -524,6 +526,121 @@ grafica_orden <- ggplot(orden_tiempo, aes(x = paso, y = rmse_cv)) +
 
 guardar_figura(
   "observacional_orden_tiempo_corte.png", grafica_orden, carpeta_salida
+)
+
+# -----------------------------------------------------------------------------
+# 9. Escalera en ln(Revenue): que variables predicen el logaritmo del ingreso
+# -----------------------------------------------------------------------------
+
+# misma particion, mismos 5 pliegues y mismo orden de escalones que en dolares;
+# solo cambia la variable dependiente (H5 en la escala del taller). Se agrega
+# como salida aparte: las tablas en dolares de arriba no cambian
+cv_rmse_log <- function(formula) {
+  map_dbl(pliegues, function(idx) {
+    ajuste <- lm(formula, data = train[-idx, ])
+    rmse(train$log_revenue[idx], predict(ajuste, newdata = train[idx, ]))
+  })
+}
+formula_hasta_log <- function(k) {
+  terminos <- na.omit(escalones$termino[seq_len(k)])
+  reformulate(if (length(terminos) == 0) "1" else terminos, response = "log_revenue")
+}
+
+rmse_pliegues_log <- map(seq_len(nrow(escalones)), ~ cv_rmse_log(formula_hasta_log(.x)))
+
+escalera_log <- map_dfr(seq_along(rmse_pliegues_log), function(k) {
+  actual <- resumir_cv(rmse_pliegues_log[[k]])
+  dif <- if (k == 1) c(media = NA_real_, ee = NA_real_)
+         else resumir_cv(rmse_pliegues_log[[k - 1]] - rmse_pliegues_log[[k]])
+  tibble(
+    paso = k - 1,
+    variable_agregada = escalones$variable[k],
+    rmse_cv = actual[["media"]],
+    ee_rmse_cv = actual[["ee"]],
+    caida = dif[["media"]],
+    ee_caida = dif[["ee"]]
+  )
+}) |>
+  mutate(
+    # participacion de cada paso en la caida total, de la media al modelo completo
+    caida_pct_total = 100 * caida / (rmse_cv[1] - rmse_cv[n()]),
+    mejora_ingenuo_pct = 100 * (1 - rmse_cv / rmse_cv[1])
+  )
+
+print(escalera_log, n = Inf)
+
+tabla_escalera_log <- escalera_log |>
+  transmute(
+    paso, variable_agregada, rmse_cv,
+    caida_txt = if_else(is.na(caida), "",
+      sprintf("%.*f (%.*f)", decimales$rmse, round(caida, decimales$rmse) + 0, decimales$rmse, ee_caida)),
+    caida_pct_total, mejora_ingenuo_pct
+  ) |>
+  gt() |>
+  cols_label(
+    paso = "Paso", variable_agregada = "Variable agregada",
+    rmse_cv = "RMSE (log)", caida_txt = "Caída (log)",
+    caida_pct_total = "% de la caída total",
+    mejora_ingenuo_pct = "Mejora frente a la media (%)"
+  ) |>
+  fmt_number(rmse_cv, decimals = decimales$rmse) |>
+  fmt_number(c(caida_pct_total, mejora_ingenuo_pct), decimals = decimales$porcentaje) |>
+  sub_missing(missing_text = "") |>
+  cols_align("center", -variable_agregada) |>
+  estilo_tabla(
+    titulo = "Cuánto baja el error de predicción del logaritmo del ingreso al agregar cada variable",
+    subtitulo = "Regresión lineal; logaritmo del ingreso; validación cruzada",
+    nota = nota_tabla(
+      "observacional", nrow(train), "entrenamiento", enfoque = "predictivo",
+      extra = c(
+        paste(
+          "RMSE de validación cruzada de 5 pliegues, en unidades de logaritmo",
+          "(un RMSE de 0.37 equivale a desviaciones típicas del gasto de un factor",
+          "cercano a 1.45). Mismos pliegues y mismo orden que la escalera en dólares."
+        ),
+        paste(
+          "Caída: diferencia con el paso anterior, calculada pliegue a pliegue.",
+          "Error estándar entre paréntesis, calculado entre los pliegues.",
+          "% de la caída total: participación del paso en la caída de la media al",
+          "modelo completo."
+        ),
+        "El aporte de cada variable depende del orden de los pasos."
+      )
+    )
+  )
+
+guardar_tabla("observacional_escalera_rmse_log", tabla_escalera_log, escalera_log,
+              carpeta_salida)
+
+datos_figura_log <- escalera_log |>
+  mutate(etiqueta = factor(
+    paste0(paso, ". ", variable_agregada),
+    levels = rev(paste0(paso, ". ", variable_agregada))
+  ))
+
+grafica_escalera_log <- ggplot(datos_figura_log, aes(x = rmse_cv, y = etiqueta)) +
+  geom_vline(xintercept = escalera_log$rmse_cv[1], linetype = "dotted",
+             color = gris_nota) +
+  geom_point(color = paleta_categorica[1], size = 3) +
+  labs(
+    title = "Error de predicción del logaritmo del ingreso al agregar cada variable",
+    subtitle = subtitulo_observacional_predictivo,
+    x = "RMSE de validación cruzada (logaritmo del ingreso)", y = NULL,
+    caption = paste(
+      sprintf(
+        "Nota: n = %s usuarios de entrenamiento; validación cruzada de 5 pliegues.",
+        format(nrow(train), big.mark = ",")
+      ),
+      "El error estándar entre pliegues (menos de 0.002) no se distingue en la escala.\nLa línea punteada marca el RMSE de la media.",
+      "Cada paso agrega una variable a las anteriores.",
+      sep = "\n"
+    )
+  ) +
+  tema_presentacion +
+  theme(plot.title.position = "plot", plot.caption.position = "plot")
+
+guardar_figura(
+  "observacional_escalera_rmse_log.png", grafica_escalera_log, carpeta_salida
 )
 
 cat("\nListo. Tablas y figuras en 03_Resultados/{Tablas,Figuras}/04_prediccion_lineal_observacional/.\n")

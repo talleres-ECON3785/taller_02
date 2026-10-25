@@ -1,0 +1,5 @@
+is_returning_user,sesiones_cero,n,base
+0,TRUE,519,experimento
+1,FALSE,9481,experimento
+0,TRUE,4930,historica
+1,FALSE,95070,historica
